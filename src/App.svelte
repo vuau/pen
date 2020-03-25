@@ -10,8 +10,6 @@
   };
 </script>
 
-<main class="w-100 pa4 pa0-l sans-serif bg-white">
-  <section class="mw7 center">
-    <Router {routes} />
-  </section>
+<main class="w-100 h-100 pa4 sans-serif bg-white">
+  <Router {routes} />
 </main>

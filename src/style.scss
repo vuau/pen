@@ -1,0 +1,12 @@
+html, body {
+  height: 100%;
+}
+
+.hover-to-show {
+  .hover-element-to-show { display: none }
+  &:hover {
+    > .hover-element-to-show {
+      display: inline-block;
+    }
+  }
+}

@@ -14,12 +14,13 @@
     "last 1 chrome versions"
   ],
   "devDependencies": {
-    "tachyons": "^4.10.0",
+    "gun": "^0.2020.301",
     "material-design-icons": "^3.0.1",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-svelte": "^4.0.6",
+    "sass": "^1.26.3",
     "svelte": "^3.20.1",
     "svelte-spa-router": "^2.1.0",
-    "gun": "^0.2020.301"
+    "tachyons": "^4.10.0"
   }
 }
