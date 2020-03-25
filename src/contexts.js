@@ -1,6 +1,6 @@
 import Gun from 'gun/gun';
 
-const gun = Gun(['http://localhost:8765/gun']);
+const gun = Gun(['https://somewhere-on-heroku.herokuapp.com/gun']);
 
 export { gun };
 

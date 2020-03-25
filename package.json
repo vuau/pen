@@ -6,24 +6,19 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "parcel src/index.html",
-    "build": "parcel build src/index.html",
-    "gun": "cd node_modules/gun && npm start"
+    "build": "parcel build src/index.html"
   },
   "author": "Au Pham <phamvuau@gmail.com>",
   "license": "ISC",
-  "dependencies": {
-    "bulma": "^0.8.0",
-    "gun": "^0.2020.301",
+  "browserslist": [
+    "last 1 chrome versions"
+  ],
+  "devDependencies": {
+    "tachyons": "^4.10.0",
     "material-design-icons": "^3.0.1",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-svelte": "^4.0.6",
     "svelte": "^3.20.1",
     "svelte-spa-router": "^2.1.0"
-  },
-  "browserslist": [
-    "last 1 chrome versions"
-  ],
-  "devDependencies": {
-    "tachyons": "^4.10.0"
   }
 }
