@@ -19,7 +19,7 @@
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-svelte": "^4.0.6",
     "svelte": "^3.20.1",
-    "svelte-spa-router": "^2.1.0"
-  },
-  "dependencies": {}
+    "svelte-spa-router": "^2.1.0",
+    "gun": "^0.2020.301"
+  }
 }
