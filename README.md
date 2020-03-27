@@ -3,7 +3,8 @@
 Decentralized Note Taking App
 
 ## TODO
-- [ ] Deploy to now.sh
+- [X] Deploy to now.sh
+- [ ] Add Auth
 - [ ] Sync to S3
 - [ ] Improve responsiveness
 - [ ] Turn to PWA
