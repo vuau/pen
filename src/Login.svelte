@@ -50,7 +50,6 @@
       <a
         href="#0"
         on:click|preventDefault={onSubmit}
-        type="submit"
         class="f6 link dim br1 ph3 pv2 mb2 dib white bg-black">
         {#if isRegister}Register{:else}Login{/if}
       </a>

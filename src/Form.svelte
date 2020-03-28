@@ -1,7 +1,6 @@
 <script>
   import { push } from 'svelte-spa-router'
   import { updateNote, notes } from './stores.js'
-  import { createKey } from './contexts.js'
 
   export let params = {}
   let title, content

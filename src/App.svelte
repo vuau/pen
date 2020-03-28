@@ -1,5 +1,4 @@
 <script>
-  import { onMount } from 'svelte'
   import Router, { wrap, replace } from 'svelte-spa-router'
   import List from './List.svelte'
   import Form from './Form.svelte'
