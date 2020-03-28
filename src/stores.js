@@ -1,8 +1,9 @@
 import { writable } from 'svelte/store';
 import { gun } from './contexts';
 
+/* NOTES */
+
 const gunNotes = gun.get('notes');
-gunNotes.on(data => console.log('DEBUG CHANGE NOTES', data));
 
 const notes = (function createNoteStore() {
   const { subscribe, update } = writable([]);
@@ -51,3 +52,55 @@ const deleteNote = async function({ id }) {
 };
 
 export { notes, updateNote, deleteNote };
+
+/* USER */
+const gunUser = gun.user();
+
+const user = (function createUserStore() {
+  const { subscribe, set } = writable({
+    isLoggedIn: false
+  });
+  const createUser = (user, pass, cb) => {
+    gunUser.create(user, pass, ack => {
+      if (ack.err) {
+        alert(ack.err);
+        return;
+      }
+      set({ isLoggedIn: true });
+      cb();
+    });
+  };
+  const login = (user, pass, cb) => {
+    gunUser.auth(user, pass, ack => {
+      if (ack.err) {
+        alert(ack.err);
+        return;
+      }
+      set({ isLoggedIn: true });
+      cb();
+    });
+  };
+  const logout = () => {
+    gunUser.leave();
+    set({ isLoggedIn: false });
+  };
+  const checkLogin = () => new Promise((resolve, reject) => {
+    gunUser.recall({ sessionStorage: true }, ack => {
+      if (ack.err) {
+        alert(ack.err);
+        reject(false);
+      }
+      set({ isLoggedIn: gunUser.is });
+      resolve(true);
+    });
+  });
+  return {
+    subscribe,
+    createUser,
+    login,
+    logout,
+    checkLogin
+  };
+})();
+
+export { user };

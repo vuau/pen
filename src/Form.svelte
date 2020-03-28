@@ -15,8 +15,7 @@
     }
   }
 
-  function onSave(e) {
-    e.preventDefault();
+  function onSave() {
     updateNote({
       ...(params.id && { id: params.id }),
       title,
@@ -58,13 +57,13 @@
     </div>
     <div>
       <a
-        on:click="{onSave}"
+        on:click|preventDefault="{onSave}"
         class="f6 link dim br1 ph3 pv2 mb2 dib white bg-black"
         href="#0"
         >Save</a
       >
       <a
-        on:click="{goToList}"
+        on:click|preventDefault="{goToList}"
         class="f6 link dim br1 ph3 pv2 mb2 dib black"
         href="#0"
         >Cancel</a
