@@ -14,10 +14,14 @@
     "last 1 chrome versions"
   ],
   "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-plugin-svelte3": "^2.7.3",
     "gun": "^0.2020.301",
     "material-design-icons": "^3.0.1",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-svelte": "^4.0.6",
+    "prettier": "^2.0.2",
+    "prettier-plugin-svelte": "^0.7.0",
     "sass": "^1.26.3",
     "svelte": "^3.20.1",
     "svelte-spa-router": "^2.1.0",
