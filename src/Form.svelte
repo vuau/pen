@@ -28,30 +28,21 @@
 </script>
 
 <section class="mw7 h-100 center flex flex-column">
-  <h2 class="athelas flex items-center justify-between">
-    <span>
-      {#if isEdit}Edit note{:else}New note{/if}
-    </span>
-  </h2>
-  <form class="black-80 flex-auto flex flex-column">
-    <div class="pb3">
-      <label for="name" class="f6 b db mb2">Title</label>
-      <input
-        bind:value={title}
-        id="name"
-        class="input-reset ba b--black-20 pa2 mb2 db w-100"
-        type="text"
-        aria-describedby="name-desc" />
-    </div>
-    <div class="pb3 flex-auto flex flex-column">
-      <label for="comment" class="f6 b db mb2">Content</label>
-      <textarea
-        bind:value={content}
-        id="comment"
-        name="comment"
-        class="flex-auto db border-box hover-black w-100 ba b--black-20 pa2 mb2"
-        aria-describedby="comment-desc" />
-    </div>
+  <form class="ph2 pb2 ph0-ns black-80 flex-auto flex flex-column">
+    <input
+      bind:value={title}
+      id="name"
+      placeholder="Title"
+      class="input-reset h3 f4 bt-0 bl-0 br-0 bb b--black-20 pv3  db w-100"
+      type="text"
+      aria-describedby="name-desc" />
+    <textarea
+      bind:value={content}
+      id="comment"
+      name="comment"
+      style="resize: none"
+      class="pb3 flex-auto db border-box hover-black w-100 bt-0 bl-0 br-0 bb-0 pv pt3 mb2"
+      aria-describedby="comment-desc" />
     <div>
       <a
         on:click|preventDefault={onSave}

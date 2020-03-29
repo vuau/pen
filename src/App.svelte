@@ -15,7 +15,7 @@
   onMount(user.checkLogin)
 </script>
 
-<main class="w-100 h-100 pa4 sans-serif bg-white">
+<main class="w-100 h-100 sans-serif bg-white">
   {#if $user.isLoggedIn}
     <Router {routes} />
   {:else}
