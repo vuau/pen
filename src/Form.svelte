@@ -31,17 +31,18 @@
   <form class="ph2 pb2 ph0-ns black-80 flex-auto flex flex-column">
     <input
       bind:value={title}
-      id="name"
+      id="title"
       placeholder="Title"
-      class="input-reset h3 f4 bt-0 bl-0 br-0 bb b--black-20 pv3  db w-100"
+      class="input-reset outline-transparent h3 f4 br0 bt-0 bl-0 br-0 bb b--black-20 pv3  db w-100"
       type="text"
       aria-describedby="name-desc" />
     <textarea
       bind:value={content}
-      id="comment"
-      name="comment"
+      id="content"
+      placeholder="Content"
+      name="content"
       style="resize: none"
-      class="pb3 flex-auto db border-box hover-black w-100 bt-0 bl-0 br-0 bb-0 pv pt3 mb2"
+      class="input-reset outline-transparent pb3 flex-auto db border-box hover-black w-100 br0 bt-0 bl-0 br-0 bb-0 pv pt3 mb2"
       aria-describedby="comment-desc" />
     <div>
       <a
