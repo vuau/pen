@@ -10,6 +10,7 @@
 <style>
   .sticky {
     position: sticky;
+    position: -webkit-sticky;
     top: 0;
     background: white;
   }
