@@ -6,13 +6,9 @@
 
   function onSubmit() {
     if (isRegister) {
-      user.createUser(username, password).then(() => {
-        replace('/')
-      })
+      user.createUser(username, password)
     } else {
-      user.login(username, password, () => {
-        replace('/')
-      })
+      user.login(username, password)
     }
   }
 
