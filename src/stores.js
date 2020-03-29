@@ -1,6 +1,31 @@
 import { writable } from 'svelte/store'
 import { gun } from './contexts'
 
+/* ACTIONS */
+const bulkAction = (() => {
+  const { subscribe, update } = writable({
+    isSelecting: false,
+    data: []
+  });
+  return {
+    subscribe,
+    toggleSelect: () => {
+      update(b => ({...b, isSelecting: !b.isSelecting}));
+    },
+    select: item => {
+      update(({ isSelecting, data }) => ({
+        isSelecting,
+        data: data.includes(item) ? data.filter(i => i !== item) : [
+          ...data,
+          item,
+        ]
+      }));
+    }
+  };
+})();
+
+export { bulkAction };
+
 /* NOTES */
 
 const gunNotes = gun.get('notes')
@@ -47,7 +72,7 @@ const updateNote = async function ({ id, title, content }) {
   }
 }
 
-const deleteNote = async function ({ id }) {
+const deleteNote = async function (id) {
   await gunNotes.get(id).put(null)
 }
 

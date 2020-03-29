@@ -1,10 +1,22 @@
 <script>
   import { push } from 'svelte-spa-router';
-  import { notes } from './stores.js';
+  import { notes, deleteNote, bulkAction } from './stores.js';
   import ListItem from './ListItem.svelte';
 
   function openNewNote() {
     push('/notes/new');
+  }
+
+  async function deleteNotes() {
+    if ($bulkAction.data.length) {
+      let deletingNoteNames = $bulkAction.data.map(
+        id => $notes.find(n => n.id === id)['title']
+      ).join(',');
+      if (confirm(`Are you sure to delete "${deletingNoteNames}"?`)) {
+        await $bulkAction.data.forEach(deleteNote);
+      }
+      bulkAction.toggleSelect();
+    }
   }
 </script>
 <style>
@@ -21,9 +33,20 @@
     <span>
       Notes
     </span>
-    <span on:click="{openNewNote}" class="material-icons w2 pointer">
-      note_add
-    </span>
+    <div class="flex items-center">
+      <span on:click="{openNewNote}" class="material-icons w2 pointer">
+        create
+      </span>
+      <span on:click={bulkAction.toggleSelect} class="material-icons w2 pointer">
+        check_box_outline_blank
+      </span>
+      {#if $bulkAction.isSelecting}
+        <span class="w2 tc f5">|</span>
+        <span on:click={deleteNotes} class="material-icons w2 pointer">
+          delete_outline
+        </span>
+      {/if}
+    </div>
   </h2>
   <ul class="list ph2 ph0-ns mt0 overflow-x-hidden">
     {#each $notes as {title, id}}
