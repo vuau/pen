@@ -1,6 +1,9 @@
 import { writable } from 'svelte/store'
 import { gun } from './contexts'
 
+const gunUser = gun.user()
+let gunNotes
+
 /* ACTIONS */
 const bulkAction = (() => {
   const { subscribe, update } = writable({
@@ -27,9 +30,6 @@ const bulkAction = (() => {
 export { bulkAction };
 
 /* NOTES */
-
-const gunNotes = gun.get('notes')
-
 const notes = (function createNoteStore() {
   const { subscribe, update } = writable([])
   const listen = function (note, id) {
@@ -51,7 +51,6 @@ const notes = (function createNoteStore() {
       return notes
     })
   }
-  gunNotes.map().on(listen)
   return {
     subscribe,
     listen,
@@ -79,8 +78,6 @@ const deleteNote = async function (id) {
 export { notes, updateNote, deleteNote }
 
 /* USER */
-const gunUser = gun.user()
-
 const user = (function createUserStore() {
   const { subscribe, set } = writable({
     isLoggedIn: false,
@@ -99,6 +96,8 @@ const user = (function createUserStore() {
       alert(ack.err)
       return
     }
+    gunNotes = gunUser.get('notes')
+    gunNotes.map().on(notes.listen)
     set({ isLoggedIn: true })
   }
   const login = (user, pass) => {

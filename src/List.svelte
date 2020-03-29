@@ -1,6 +1,6 @@
 <script>
   import { push } from 'svelte-spa-router';
-  import { notes, deleteNote, bulkAction } from './stores.js';
+  import { notes, deleteNote, bulkAction, user } from './stores.js';
   import ListItem from './ListItem.svelte';
 
   function openNewNote() {
@@ -37,6 +37,9 @@
       </span>
       <span on:click={bulkAction.toggleSelect} class="material-icons w2 pointer">
         check_box_outline_blank
+      </span>
+      <span on:click={user.logout} class="material-icons w2 pointer">
+        exit_to_app
       </span>
       {#if $bulkAction.isSelecting && $bulkAction.data.length}
         <span class="w1 tc f5">|</span>
