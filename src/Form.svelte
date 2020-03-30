@@ -42,7 +42,7 @@
       placeholder="Content"
       name="content"
       style="resize: none"
-      class="input-reset outline-transparent pb3 flex-auto db border-box hover-black w-100 br0 bt-0 bl-0 br-0 bb-0 pv pt3 mb2"
+      class="input-reset outline-transparent lh-copy pb3 flex-auto db border-box hover-black w-100 br0 bt-0 bl-0 br-0 bb-0 pv pt3 mb2"
       aria-describedby="comment-desc" />
     <div>
       <a
