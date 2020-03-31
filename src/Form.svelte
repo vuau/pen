@@ -1,17 +1,21 @@
 <script>
+  import { onDestroy } from 'svelte'
   import { push } from 'svelte-spa-router'
   import { updateNote, notes } from './stores.js'
 
   export let params = {}
   let title, content
-  let isEdit = params.id
+  let id = params.id
 
-  if (isEdit) {
-    let editingNote = $notes.find(n => n.id === params.id)
-    if (editingNote) {
-      title = editingNote.title
-      content = editingNote.content
-    }
+  if (id) {
+    const unsubscribe = notes.subscribe(noteItems => {
+      let editingNote = noteItems.find(n => n.id === id)
+      if (editingNote) {
+        title = editingNote.title
+        content = editingNote.content
+      }
+    });
+    onDestroy(unsubscribe);
   }
 
   function debounce(func, waitTime) {
