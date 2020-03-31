@@ -26,7 +26,7 @@
     console.log('saving...')
     updateNote({
       ...(params.id && { id: params.id }),
-      title,
+      title: title || 'No title',
       content,
     }).then(() => console.log('...saved!'))
   }, 500)
