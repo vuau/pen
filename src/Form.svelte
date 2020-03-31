@@ -14,13 +14,22 @@
     }
   }
 
-  function onSave() {
+  function debounce(func, waitTime) {
+    var timeout
+    return function () {
+      clearTimeout(timeout);
+      timeout = setTimeout(func, waitTime);
+    }
+  }
+
+  let autosave = debounce(() => {
+    console.log('saving...')
     updateNote({
       ...(params.id && { id: params.id }),
       title,
       content,
-    }).then(goToList)
-  }
+    }).then(() => console.log('...saved!'))
+  }, 500)
 
   function goToList() {
     push('/')
@@ -31,6 +40,7 @@
   <form class="ph2 pb2 ph0-ns black-80 flex-auto flex flex-column">
     <input
       bind:value={title}
+      on:keyup={autosave}
       id="title"
       placeholder="Title"
       class="input-reset outline-transparent h3 f4 br0 bt-0 bl-0 br-0 bb b--black-20 pv3  db w-100"
@@ -38,6 +48,7 @@
       aria-describedby="name-desc" />
     <textarea
       bind:value={content}
+      on:keyup={autosave}
       id="content"
       placeholder="Content"
       name="content"
@@ -46,16 +57,10 @@
       aria-describedby="comment-desc" />
     <div>
       <a
-        on:click|preventDefault={onSave}
+        on:click|preventDefault={goToList}
         class="f6 link dim br1 ph3 pv2 mb2 dib white bg-black"
         href="#0">
-        Save
-      </a>
-      <a
-        on:click|preventDefault={goToList}
-        class="f6 link dim br1 ph3 pv2 mb2 dib black"
-        href="#0">
-        Cancel
+        Done
       </a>
     </div>
   </form>
