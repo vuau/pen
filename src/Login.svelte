@@ -12,6 +12,12 @@
     }
   }
 
+  function checkEnter(e) {
+    if (e.code == 'Enter') {
+      onSubmit()
+    }
+  }
+
   function toggle() {
     isRegister = !isRegister
   }
@@ -29,19 +35,23 @@
         <label for="name" class="f6 b db mb2">Username</label>
         <input
           bind:value={username}
+          on:keyup={checkEnter}
           id="username"
           class="input-reset ba b--black-20 pa2 mb2 db w-100"
           type="text"
-          aria-describedby="username" />
+          aria-describedby="username"
+          autocomplete="new-password" />
       </div>
       <div class="pb3">
         <label for="name" class="f6 b db mb2">Password</label>
         <input
           bind:value={password}
+          on:keyup={checkEnter}
           id="password"
           class="input-reset ba b--black-20 pa2 mb2 db w-100"
           type="password"
-          aria-describedby="password" />
+          aria-describedby="password"
+          autocomplete="new-password" />
       </div>
       <div>
         <a

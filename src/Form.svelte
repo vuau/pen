@@ -14,15 +14,15 @@
         title = editingNote.title
         content = editingNote.content
       }
-    });
-    onDestroy(unsubscribe);
+    })
+    onDestroy(unsubscribe)
   }
 
   function debounce(func, waitTime) {
     var timeout
-    return function () {
-      clearTimeout(timeout);
-      timeout = setTimeout(func, waitTime);
+    return function() {
+      clearTimeout(timeout)
+      timeout = setTimeout(func, waitTime)
     }
   }
 
@@ -52,10 +52,10 @@
       on:keyup={autosave}
       id="title"
       placeholder="Title"
-      class="input-reset outline-transparent h3 f4 br0 bt-0 bl-0 br-0 bb b--black-20 pv3 db w-100"
+      class="input-reset outline-transparent h3 f4 br0 bt-0 bl-0 br-0 bb
+      b--black-20 pv3 db w-100"
       type="text"
-      aria-describedby="name-desc"
-      autocomplete="new-password" />
+      aria-describedby="name-desc" />
     <textarea
       bind:value={content}
       on:keyup={autosave}
@@ -63,9 +63,9 @@
       placeholder="Content"
       name="content"
       style="resize: none"
-      class="input-reset outline-transparent lh-copy pb3 flex-auto db border-box hover-black w-100 br0 bt-0 bl-0 br-0 bb-0 pv pt3 mb2"
-      aria-describedby="comment-desc"
-      autocomplete="new-password" />
+      class="input-reset outline-transparent lh-copy pb3 flex-auto db border-box
+      hover-black w-100 br0 bt-0 bl-0 br-0 bb-0 pv pt3 mb2"
+      aria-describedby="comment-desc" />
     <div>
       <a
         on:click|preventDefault={goToList}
