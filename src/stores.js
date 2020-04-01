@@ -59,12 +59,12 @@ const notes = (function createNoteStore() {
 
 const updateNote = async function ({ id, title, content }) {
   if (id) {
-    await gunNotes.get(id).put({
+    return await gunNotes.get(id).put({
       title,
       content,
     })
   } else {
-    await gunNotes.set({
+    return await gunNotes.set({
       title,
       content,
     })

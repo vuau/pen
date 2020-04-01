@@ -29,10 +29,15 @@
   let autosave = debounce(() => {
     console.log('saving...')
     updateNote({
-      ...(params.id && { id: params.id }),
+      ...(id && { id }),
       title: title || 'No title',
       content,
-    }).then(() => console.log('...saved!'))
+    }).then(ack => {
+      if (!id) {
+        id = ack['_']['#']
+      }
+      console.log('...saved!')
+    })
   }, 500)
 
   function goToList() {
