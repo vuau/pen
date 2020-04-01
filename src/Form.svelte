@@ -52,9 +52,10 @@
       on:keyup={autosave}
       id="title"
       placeholder="Title"
-      class="input-reset outline-transparent h3 f4 br0 bt-0 bl-0 br-0 bb b--black-20 pv3  db w-100"
+      class="input-reset outline-transparent h3 f4 br0 bt-0 bl-0 br-0 bb b--black-20 pv3 db w-100"
       type="text"
-      aria-describedby="name-desc" />
+      aria-describedby="name-desc"
+      autocomplete="new-password" />
     <textarea
       bind:value={content}
       on:keyup={autosave}
@@ -63,7 +64,8 @@
       name="content"
       style="resize: none"
       class="input-reset outline-transparent lh-copy pb3 flex-auto db border-box hover-black w-100 br0 bt-0 bl-0 br-0 bb-0 pv pt3 mb2"
-      aria-describedby="comment-desc" />
+      aria-describedby="comment-desc"
+      autocomplete="new-password" />
     <div>
       <a
         on:click|preventDefault={goToList}
