@@ -26,5 +26,8 @@
     "svelte": "^3.20.1",
     "svelte-spa-router": "^2.1.0",
     "tachyons": "^4.10.0"
+  },
+  "dependencies": {
+    "autosize": "^4.0.2"
   }
 }
