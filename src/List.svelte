@@ -20,7 +20,7 @@
 <section class="mw7 center">
   <h2 class="h3 sticky athelas ma0 ph2 pv3 ph0-ns bb b--near-black flex items-center justify-between">
     <span>
-      Notes
+      Pen
     </span>
     <div class="flex items-center">
       <span on:click={openNewNote} class="material-icons w2 pointer">
