@@ -27,23 +27,33 @@
         create
       </span>
       <span on:click={bulkAction.toggleSelect} class="material-icons w2 tc pointer">
-        check_box_outline_blank
+        {#if $bulkAction.isSelecting}
+          check_box
+        {:else}
+          check_box_outline_blank
+        {/if}
       </span>
       {#if $bulkAction.isSelecting && $bulkAction.data.length}
-        <span class="w1 tc f5">|</span>
+        <span class="dib br b--black h1 ml2 mr2"></span>
         <span on:click={deleteNotes} class="material-icons tc w2 pointer">
-          delete_outline
+          delete
         </span>
       {/if}
-      <span class="w1 tc f5">|</span>
+      <span class="dib br b--black h1 ml2 mr2"></span>
       <span on:click={user.logout} class="material-icons w2 tc pointer">
-        close
+        power_settings_new
       </span>
     </div>
   </h2>
-  <ul class="list ph2 ph0-ns mt0 overflow-x-hidden">
-    {#each $notes as {title, id}}
-    <ListItem {title} {id}></ListItem>
-    {/each}
-  </ul>
+  {#if $notes.length > 0}
+    <ul class="list ph2 ph0-ns mt0 overflow-x-hidden">
+      {#each $notes as {title, id}}
+      <ListItem {title} {id}></ListItem>
+      {/each}
+    </ul>
+  {:else}
+    <small class="f6 black-60 db ph2 ph0-ns pt4">
+      There is no notes. <a href="/#/notes/new" class="blue link">Create one?</a>
+    </small>
+  {/if}
 </section>

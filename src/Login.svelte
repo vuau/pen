@@ -52,8 +52,9 @@
           aria-describedby="password"
           autocomplete="off" />
         {#if isRegister}
-          <small id="password-desc" class="f6 black-60 db mb2">Be careful! You cannot reset your password if you forgot
-          it.</small>
+          <small id="password-desc" class="f6 black-60 db mb2">
+            Be careful! You cannot reset your password if you forgot it.
+          </small>
         {/if}
       </div>
       <div>
