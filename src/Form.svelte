@@ -43,7 +43,7 @@
     updateNote({
       ...(id && { id }),
       title: title || 'No title',
-      content,
+      content: content || '',
     }).then(ack => {
       if (!id) {
         id = ack['_']['#']
@@ -58,7 +58,7 @@
 </script>
 
 <section class="mw7 h-100 center">
-  <form class="ph2 pb2 ph0-ns black-80">
+  <div class="ph2 pb2 ph0-ns black-80">
     <div class="flex items-center justify-between">
       <input
         bind:value={title}
@@ -81,5 +81,5 @@
       class="input-reset outline-transparent lh-copy pb3 db border-box
       hover-black w-100 br0 bt-0 bl-0 br-0 bb-0 pv pt3 mb2"
       aria-describedby="comment-desc" />
-  </form>
+  </div>
 </section>
