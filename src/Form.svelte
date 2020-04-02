@@ -57,7 +57,7 @@
   }
 </script>
 
-<section class="mw7 h-100 center">
+<section class="mw7 center">
   <div class="ph2 pb2 ph0-ns black-80">
     <div class="flex items-center justify-between">
       <input
