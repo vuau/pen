@@ -15,9 +15,9 @@
   onMount(() => autosize(textareaEl))
 
   if (id) {
-    const unsubscribe = notes.subscribe(noteItems => {
-      let editingNote = noteItems.find(n => n.id === id)
-      let update = async note => {
+    const unsubscribe = notes.subscribe((noteItems) => {
+      let editingNote = noteItems.find((n) => n.id === id)
+      let update = async (note) => {
         title = note.title
         content = note.content
         await tick()
@@ -32,7 +32,7 @@
 
   function debounce(func, waitTime) {
     var timeout
-    return function() {
+    return function () {
       clearTimeout(timeout)
       timeout = setTimeout(func, waitTime)
     }
@@ -44,7 +44,7 @@
       ...(id && { id }),
       title: title || 'No title',
       content: content || '',
-    }).then(ack => {
+    }).then((ack) => {
       if (!id) {
         id = ack['_']['#']
       }
@@ -59,7 +59,9 @@
 
 <section class="mw7 center">
   <div class="ph2 pb2 ph0-ns black-80">
-    <div class="sticky flex items-center justify-between bt-0 bl-0 br-0 bb b--black-20 ">
+    <div
+      class="sticky flex items-center justify-between bt-0 bl-0 br-0 bb
+      b--black-20 ">
       <input
         bind:value={title}
         on:keyup={autosave}
