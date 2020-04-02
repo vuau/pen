@@ -4,7 +4,7 @@
   import { push } from 'svelte-spa-router'
   import { updateNote, notes } from './stores.js'
 
-  export const params = {}
+  export let params = {}
 
   let title, content
   let id = params.id

@@ -13,7 +13,8 @@
     "html/html-extensions": [".html", ".svelte"]
   },
   "rules": {
-    "no-unused-vars": "warn"
+    "no-unused-vars": "warn",
+    "prefer-const": "warn"
   }
 }
 
