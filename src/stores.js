@@ -13,7 +13,7 @@ const bulkAction = (() => {
   return {
     subscribe,
     toggleSelect: () => {
-      update(b => ({ ...b, isSelecting: !b.isSelecting }))
+      update(b => ({ ...b, isSelecting: !b.isSelecting, data: [] }))
     },
     select: item => {
       update(({ isSelecting, data }) => ({

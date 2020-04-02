@@ -2,18 +2,30 @@
   import { push } from 'svelte-spa-router'
   import { bulkAction } from './stores.js'
 
-  function openEditNote (id) {
-    push(`/notes/${id}`)
-  }
-
   export let id = null
   export let title = ''
+
+  $: checked = $bulkAction.data.includes(id)
+
+  const onCheck = () => {
+    bulkAction.select(id)
+  }
+
+  const onClick = () => {
+    if ($bulkAction.isSelecting) {
+      onCheck()
+    } else {
+      push(`/notes/${id}`)
+    }
+  }
 </script>
 
-<li on:click={() => openEditNote(id) }
+<li on:click={onClick}
   class="hover-to-show pointer dim flex items-center lh-copy pv3 ba bl-0 bt-0 br-0 b--dotted b--black-30">
   {#if $bulkAction.isSelecting}
-  <input on:click|stopPropagation={() => bulkAction.select(id)} class="mr2" type="checkbox" />
+    <span class="pa2 pl0 pointer">
+      <input type="checkbox" {checked} />
+    </span>
   {/if}
   <span>{title}</span>
 </li>
