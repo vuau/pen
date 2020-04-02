@@ -67,7 +67,8 @@
         placeholder="Title"
         class="input-reset outline-transparent h3 f4 br0 bn pv3 db w-100"
         type="text"
-        aria-describedby="name-desc" />
+        aria-describedby="name-desc"
+        autocomplete="off" />
       <span on:click={goToList} class="material-icons w2 pointer">clear</span>
     </div>
     <textarea
@@ -79,6 +80,7 @@
       style="resize: none"
       class="input-reset outline-transparent lh-copy pb3 db border-box
       hover-black w-100 br0 bt-0 bl-0 br-0 bb-0 pv pt3 mb2"
-      aria-describedby="comment-desc" />
+      aria-describedby="comment-desc"
+      autocomplete="off" />
   </div>
 </section>
