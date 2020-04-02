@@ -23,18 +23,18 @@
       Pen
     </span>
     <div class="flex items-center">
-      <span on:click={openNewNote} class="material-icons w2 pointer">
+      <span on:click={openNewNote} class="material-icons w2 tc pointer">
         create
       </span>
-      <span on:click={bulkAction.toggleSelect} class="material-icons w2 pointer">
+      <span on:click={bulkAction.toggleSelect} class="material-icons w2 tc pointer">
         check_box_outline_blank
       </span>
-      <span on:click={user.logout} class="material-icons w2 pointer">
+      <span on:click={user.logout} class="material-icons w2 tc pointer">
         exit_to_app
       </span>
       {#if $bulkAction.isSelecting && $bulkAction.data.length}
         <span class="w1 tc f5">|</span>
-        <span on:click={deleteNotes} class="material-icons w2 pointer">
+        <span on:click={deleteNotes} class="material-icons tc w2 pointer">
           delete_outline
         </span>
       {/if}
