@@ -4,8 +4,6 @@
   import { push } from 'svelte-spa-router'
   import { updateNote, notes } from './stores.js'
 
-  window.autosize = autosize
-
   export let params = {}
 
   let title, content
