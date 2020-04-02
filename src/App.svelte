@@ -8,8 +8,8 @@
 
   const routes = {
     '/': List,
-    '/notes/new':Form,
-    '/notes/:id': Form,
+    '/notes/new': Form,
+    '/notes/:id': Form
   }
 
   onMount(user.checkLogin)

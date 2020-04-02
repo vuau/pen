@@ -1,10 +1,9 @@
 <script>
-  import { replace } from 'svelte-spa-router'
   import { user } from './stores.js'
 
   let username, password, isRegister
 
-  function onSubmit() {
+  function onSubmit () {
     if (isRegister) {
       user.createUser(username, password)
     } else {
@@ -12,13 +11,13 @@
     }
   }
 
-  function checkEnter(e) {
-    if (e.code == 'Enter') {
+  function checkEnter (e) {
+    if (e.code === 'Enter') {
       onSubmit()
     }
   }
 
-  function toggle() {
+  function toggle () {
     isRegister = !isRegister
   }
 </script>

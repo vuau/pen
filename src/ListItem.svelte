@@ -1,19 +1,13 @@
 <script>
-  import { push } from 'svelte-spa-router';
-  import { deleteNote, bulkAction } from './stores.js';
+  import { push } from 'svelte-spa-router'
+  import { bulkAction } from './stores.js'
 
-  function openEditNote(id) {
-    push(`/notes/${id}`);
+  function openEditNote (id) {
+    push(`/notes/${id}`)
   }
 
-  function confirmToDelete(id) {
-    if (confirm('Are you sure to delete this note?')) {
-      deleteNote({ id });
-    }
-  }
-
-  export let id = null;
-  export let title = '';
+  export let id = null
+  export let title = ''
 </script>
 
 <li on:click={() => openEditNote(id) }
@@ -22,8 +16,4 @@
   <input on:click|stopPropagation={() => bulkAction.select(id)} class="mr2" type="checkbox" />
   {/if}
   <span>{title}</span>
-  <!-- <span -->
-  <!--   on:click|stopPropagation={() => confirmToDelete(id)} -->
-  <!--   class="hover-element-to-show material-icons w2 pointer" -->
-  <!-- >delete_outline</span> -->
 </li>
