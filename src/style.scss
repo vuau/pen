@@ -1,13 +1,23 @@
-html, body {
+html,
+body {
   height: 100%;
   overflow-x: hidden;
 }
 
 .hover-to-show {
-  .hover-element-to-show { display: none }
+  .hover-element-to-show {
+    display: none;
+  }
   &:hover {
     > .hover-element-to-show {
       display: inline-block;
     }
   }
+}
+
+.sticky {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  background: white;
 }

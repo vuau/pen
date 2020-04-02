@@ -59,14 +59,13 @@
 
 <section class="mw7 center">
   <div class="ph2 pb2 ph0-ns black-80">
-    <div class="flex items-center justify-between">
+    <div class="sticky flex items-center justify-between bt-0 bl-0 br-0 bb b--black-20 ">
       <input
         bind:value={title}
         on:keyup={autosave}
         id="title"
         placeholder="Title"
-        class="input-reset outline-transparent h3 f4 br0 bt-0 bl-0 br-0 bb
-        b--black-20 pv3 db w-100"
+        class="input-reset outline-transparent h3 f4 br0 bn pv3 db w-100"
         type="text"
         aria-describedby="name-desc" />
       <span on:click={goToList} class="material-icons w2 pointer">clear</span>

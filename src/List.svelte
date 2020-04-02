@@ -17,14 +17,6 @@
     bulkAction.toggleSelect();
   }
 </script>
-<style>
-  .sticky {
-    position: sticky;
-    position: -webkit-sticky;
-    top: 0;
-    background: white;
-  }
-</style>
 
 <section class="mw7 center">
   <h2 class="h3 sticky athelas ma0 ph2 pv3 ph0-ns bb b--near-black flex items-center justify-between">
