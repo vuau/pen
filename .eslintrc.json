@@ -1,22 +1,19 @@
 {
-  "env": {
-    "browser": true,
-    "es6": true
-  },
+  "parser": "babel-eslint",
   "parserOptions": {
-    "ecmaVersion": 2019,
-    "sourceType": "module"
-  },
-  "plugins": ["svelte3"],
-  "extends": ["eslint:recommended"],
-  "overrides": [
-    {
-      "files": ["**/*.svelte"],
-      "processor": "svelte3/svelte3"
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
     }
-  ],
+  },
+  "extends": "standard",
+  "plugins": ["html"],
+  "settings": {
+    "html/html-extensions": [".html", ".svelte"]
+  },
   "rules": {
-    "prettier/prettier": "error",
-    "svelte3/lint-template": 2
+    "no-unused-vars": "warn"
   }
 }
+

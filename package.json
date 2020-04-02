@@ -14,19 +14,23 @@
     "last 1 chrome versions"
   ],
   "devDependencies": {
+    "autosize": "^4.0.2",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-html": "^6.0.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
     "gun": "^0.2020.301",
     "material-design-icons": "^3.0.1",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-svelte": "^4.0.6",
-    "eslint": "^6.8.0",
-    "eslint-plugin-svelte3": "^2.7.3",
-    "prettier": "^2.0.2",
-    "prettier-plugin-svelte": "^0.7.0",
-    "prettier-standard": "^16.2.1",
     "sass": "^1.26.3",
+    "standard": "^14.3.3",
     "svelte": "^3.20.1",
     "svelte-spa-router": "^2.1.0",
-    "tachyons": "^4.10.0",
-    "autosize": "^4.0.2"
+    "tachyons": "^4.10.0"
   }
 }

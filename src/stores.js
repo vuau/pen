@@ -9,28 +9,28 @@ const bulkAction = (() => {
   const { subscribe, update } = writable({
     isSelecting: false,
     data: []
-  });
+  })
   return {
     subscribe,
     toggleSelect: () => {
-      update(b => ({...b, isSelecting: !b.isSelecting}));
+      update(b => ({ ...b, isSelecting: !b.isSelecting }))
     },
     select: item => {
       update(({ isSelecting, data }) => ({
         isSelecting,
         data: data.includes(item) ? data.filter(i => i !== item) : [
           ...data,
-          item,
+          item
         ]
-      }));
+      }))
     }
-  };
-})();
+  }
+})()
 
-export { bulkAction };
+export { bulkAction }
 
 /* NOTES */
-const notes = (function createNoteStore() {
+const notes = (function createNoteStore () {
   const { subscribe, update } = writable([])
   const listen = function (note, id) {
     if (!note) {
@@ -38,12 +38,12 @@ const notes = (function createNoteStore() {
       return
     }
     update((notes) => {
-      let foundIndex = notes.findIndex((n) => n.id === id)
+      const foundIndex = notes.findIndex((n) => n.id === id)
       if (foundIndex !== -1) {
         notes[foundIndex] = {
           id,
           title: note.title,
-          content: note.content,
+          content: note.content
         }
       } else {
         notes.push({ ...note, id })
@@ -53,7 +53,7 @@ const notes = (function createNoteStore() {
   }
   return {
     subscribe,
-    listen,
+    listen
   }
 })()
 
@@ -61,12 +61,12 @@ const updateNote = async function ({ id, title, content }) {
   if (id) {
     return await gunNotes.get(id).put({
       title,
-      content,
+      content
     })
   } else {
     return await gunNotes.set({
       title,
-      content,
+      content
     })
   }
 }
@@ -78,14 +78,14 @@ const deleteNote = async function (id) {
 export { notes, updateNote, deleteNote }
 
 /* USER */
-const user = (function createUserStore() {
+const user = (function createUserStore () {
   const { subscribe, set } = writable({
-    isLoggedIn: false,
+    isLoggedIn: false
   })
   const createUser = (user, pass) => {
     gunUser.create(user, pass, (ack) => {
       if (ack.err) {
-        alert(ack.err)
+        window.alert(ack.err)
         return
       }
       set({ isLoggedIn: true })
@@ -93,7 +93,7 @@ const user = (function createUserStore() {
   }
   const finishLogin = ack => {
     if (ack.err) {
-      alert(ack.err)
+      window.alert(ack.err)
       return
     }
     gunNotes = gunUser.get('notes')
@@ -115,7 +115,7 @@ const user = (function createUserStore() {
     createUser,
     login,
     logout,
-    checkLogin,
+    checkLogin
   }
 })()
 

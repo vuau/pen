@@ -4,18 +4,18 @@
   import { push } from 'svelte-spa-router'
   import { updateNote, notes } from './stores.js'
 
-  export let params = {}
+  export const params = {}
 
   let title, content
   let id = params.id
-  let textareaEl = document.querySelector('textarea')
+  const textareaEl = document.querySelector('textarea')
 
   onMount(() => autosize(textareaEl))
 
   if (id) {
     const unsubscribe = notes.subscribe((noteItems) => {
-      let editingNote = noteItems.find((n) => n.id === id)
-      let update = async (note) => {
+      const editingNote = noteItems.find((n) => n.id === id)
+      const update = async (note) => {
         title = note.title
         content = note.content
         await tick()
@@ -28,7 +28,7 @@
     onDestroy(unsubscribe)
   }
 
-  function debounce(func, waitTime) {
+  function debounce (func, waitTime) {
     var timeout
     return function () {
       clearTimeout(timeout)
@@ -36,21 +36,21 @@
     }
   }
 
-  let autosave = debounce(() => {
+  const autosave = debounce(() => {
     console.log('saving...')
     updateNote({
       ...(id && { id }),
       title: title || 'No title',
-      content: content || '',
+      content: content || ''
     }).then((ack) => {
       if (!id) {
-        id = ack['_']['#']
+        id = ack._['#']
       }
       console.log('...saved!')
     })
   }, 500)
 
-  function goToList() {
+  function goToList () {
     push('/')
   }
 </script>
