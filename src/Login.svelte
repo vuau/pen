@@ -4,6 +4,7 @@
   let username, password, isRegister, isLoading
 
   function onSubmit () {
+    if (isLoading) return
     isLoading = true
     if (isRegister) {
       user.createUser(username, password).then(() => { isLoading = false })
