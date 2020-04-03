@@ -83,7 +83,7 @@ const user = (function createUserStore () {
     isLoggedIn: false
   })
   const createUser = (user, pass) => {
-    gunUser.create(user, pass, (ack) => {
+    return gunUser.create(user, pass, (ack) => {
       if (ack.err) {
         window.alert(ack.err)
         return
@@ -101,7 +101,7 @@ const user = (function createUserStore () {
     set({ isLoggedIn: true })
   }
   const login = (user, pass) => {
-    gunUser.auth(user, pass, finishLogin)
+    return gunUser.auth(user, pass, finishLogin)
   }
   const logout = () => {
     gunUser.leave()

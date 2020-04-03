@@ -21,3 +21,20 @@ body {
   background: white;
   z-index: 1;
 }
+
+.loader {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #cacaca5c;
+  svg path,
+  svg rect {
+    fill: #FF6700;
+  }
+}
