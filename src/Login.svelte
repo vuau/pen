@@ -26,11 +26,17 @@
 
 <section class="mw6 h-100 center flex items-center">
   <div class="w-100 pa3 pt0">
+    <h1 class="f2 fw7 ttu tracked lh-title mt0 mb2 avenir tc">
+      Pen
+    </h1>
+    <h4 class="f5 fw1 i lh-title mt0 tc mb5">A decentralized note taking app</h4>
+
     <h2 class="mt0 athelas flex items-center justify-between">
       <span>
         {#if isRegister}Create an account{:else}Login{/if}
       </span>
     </h2>
+
     <form class="black-80 flex-auto flex flex-column" autocomplete="off">
       <div class="pb3">
         <label for="username" class="f6 b db mb2">Username</label>
