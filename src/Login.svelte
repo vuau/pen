@@ -6,10 +6,16 @@
   function onSubmit () {
     if (isLoading) return
     isLoading = true
+    const cb = msg => {
+      if (msg) {
+        alert(msg)
+      }
+      isLoading = false
+    }
     if (isRegister) {
-      user.createUser(username, password).then(() => { isLoading = false })
+      user.createUser(username, password, cb)
     } else {
-      user.login(username, password).then(() => { isLoading = false })
+      user.login(username, password, cb)
     }
   }
 

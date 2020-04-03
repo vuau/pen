@@ -82,26 +82,28 @@ const user = (function createUserStore () {
   const { subscribe, set } = writable({
     isLoggedIn: false
   })
-  const createUser = (user, pass) => {
+  const createUser = (user, pass, cb) => {
     return gunUser.create(user, pass, (ack) => {
       if (ack.err) {
-        window.alert(ack.err)
-        return
+        if (cb) cb(ack.err)
+      } else {
+        set({ isLoggedIn: true })
+        if (cb) cb()
       }
-      set({ isLoggedIn: true })
     })
   }
-  const finishLogin = ack => {
+  const finishLogin = cb => ack => {
     if (ack.err) {
-      window.alert(ack.err)
-      return
+      if (cb) cb(ack.err)
+    } else {
+      gunNotes = gunUser.get('notes')
+      gunNotes.map().on(notes.listen)
+      set({ isLoggedIn: true })
+      if (cb) cb()
     }
-    gunNotes = gunUser.get('notes')
-    gunNotes.map().on(notes.listen)
-    set({ isLoggedIn: true })
   }
-  const login = (user, pass) => {
-    return gunUser.auth(user, pass, finishLogin)
+  const login = (user, pass, cb) => {
+    return gunUser.auth(user, pass, finishLogin(cb))
   }
   const logout = () => {
     gunUser.leave()
@@ -109,7 +111,7 @@ const user = (function createUserStore () {
     window.localStorage.removeItem('gun/')
   }
   const checkLogin = function () {
-    gunUser.recall({ sessionStorage: true }, finishLogin)
+    gunUser.recall({ sessionStorage: true }, finishLogin())
   }
   return {
     subscribe,
