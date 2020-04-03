@@ -106,6 +106,7 @@ const user = (function createUserStore () {
   const logout = () => {
     gunUser.leave()
     set({ isLoggedIn: false })
+    window.localStorage.removeItem('gun/')
   }
   const checkLogin = function () {
     gunUser.recall({ sessionStorage: true }, finishLogin)
