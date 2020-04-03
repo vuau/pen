@@ -31,6 +31,6 @@
     "standard": "^14.3.3",
     "svelte": "^3.20.1",
     "svelte-spa-router": "^2.1.0",
-    "tachyons": "^4.10.0"
+    "tachyons": "^4.11.1"
   }
 }
