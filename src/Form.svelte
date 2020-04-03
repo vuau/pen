@@ -74,6 +74,7 @@
     <textarea
       bind:value={content}
       on:keyup={autosave}
+      on:paste={() => autosize(document.querySelector('textarea'))}
       id="content"
       placeholder="Content"
       name="content"
