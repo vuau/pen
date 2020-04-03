@@ -3,10 +3,6 @@ import { gun } from './contexts'
 
 const gunUser = gun.user()
 
-window.onbeforeunload = () => {
-  gunUser.leave()
-}
-
 let gunNotes
 
 /* ACTIONS */
