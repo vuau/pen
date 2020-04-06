@@ -1,31 +1,46 @@
 <script>
-  import autosize from 'autosize'
-  import { onMount, onDestroy, tick } from 'svelte'
+  import { onMount, onDestroy } from 'svelte'
   import { push } from 'svelte-spa-router'
+  import SimpleMirror from 'simplemirror'
   import { updateNote, notes } from './stores.js'
 
   export let params = {}
 
   let title, content
   let id = params.id
-  const textareaEl = document.querySelector('textarea')
+  let editor
+  let unsubscribe
 
-  onMount(() => autosize(textareaEl))
+  onMount(() => {
+    if (id) {
+      unsubscribe = notes.subscribe((noteItems) => {
+        const editingNote = noteItems.find((n) => n.id === id)
+        if (editingNote) {
+          title = editingNote.title
+          content = editingNote.content
+          createEditor(content)
+        }
+      })
+    } else {
+      createEditor()
+    }
+  })
 
-  if (id) {
-    const unsubscribe = notes.subscribe((noteItems) => {
-      const editingNote = noteItems.find((n) => n.id === id)
-      const update = async (note) => {
-        title = note.title
-        content = note.content
-        await tick()
-        autosize(document.querySelector('textarea'))
-      }
-      if (editingNote) {
-        update(editingNote)
+  onDestroy(() => {
+    if (editor) editor.remove()
+    if (unsubscribe) unsubscribe()
+  })
+
+  function createEditor (value) {
+    if (editor) return
+    editor = new SimpleMirror({
+      selector: '#content',
+      value: value || '',
+      onChange: value => {
+        content = value
+        autosave()
       }
     })
-    onDestroy(unsubscribe)
   }
 
   function debounce (func, waitTime) {
@@ -71,17 +86,9 @@
         autocomplete="off" />
       <span on:click={goToList} class="material-icons w2 pointer">clear</span>
     </div>
-    <textarea
-      bind:value={content}
-      on:keyup={autosave}
-      on:paste={() => autosize(document.querySelector('textarea'))}
+    <div
       id="content"
-      placeholder="Content"
-      name="content"
-      style="resize: none"
-      class="input-reset outline-transparent lh-copy pb3 db border-box
-      hover-black w-100 br0 bt-0 bl-0 br-0 bb-0 pv pt3 mb2"
-      aria-describedby="comment-desc"
-      autocomplete="off" />
+      class="flex flex-column outline-transparent lh-copy"
+      />
   </div>
 </section>

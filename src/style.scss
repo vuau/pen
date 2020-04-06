@@ -38,3 +38,18 @@ body {
     fill: #FF6700;
   }
 }
+
+#content {
+  min-height: calc(100vh - 73px)
+}
+
+.menubar {
+  position: sticky;
+  top: 65px;
+  background: white;
+  z-index: 1;
+}
+
+.ProseMirror {
+  flex: 1 1 auto;
+}
