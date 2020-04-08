@@ -11,9 +11,10 @@
   "author": "Au Pham <phamvuau@gmail.com>",
   "license": "ISC",
   "browserslist": [
-    "last 1 chrome versions"
+    "last 2 versions"
   ],
   "devDependencies": {
+    "autoprefixer": "^9.7.6",
     "autosize": "^4.0.2",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.8.0",
@@ -27,7 +28,6 @@
     "material-design-icons": "^3.0.1",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-svelte": "^4.0.6",
-    "sass": "^1.26.3",
     "standard": "^14.3.3",
     "svelte": "^3.20.1",
     "svelte-spa-router": "^2.1.0",
