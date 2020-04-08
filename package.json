@@ -35,6 +35,6 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.13.0",
-    "simplemirror": "^1.0.5"
+    "simplemirror": "^1.0.6"
   }
 }
