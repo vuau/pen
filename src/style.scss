@@ -3,15 +3,12 @@ body {
   height: 100%;
 }
 
-.hover-to-show {
-  .hover-element-to-show {
-    display: none;
-  }
-  &:hover {
-    > .hover-element-to-show {
-      display: inline-block;
-    }
-  }
+.no-select {
+  user-select: none;
+}
+
+.fix-icon {
+  margin-top: 1px;
 }
 
 .sticky {
@@ -43,11 +40,16 @@ body {
   min-height: calc(100vh - 73px)
 }
 
+#content.showMenu .menubar {
+ display: flex; 
+}
+
 .menubar {
   position: sticky;
-  top: 65px;
+  top: 0;
   background: white;
   z-index: 1;
+  display: none;
 }
 
 .ProseMirror {
