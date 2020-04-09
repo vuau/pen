@@ -23,26 +23,17 @@
       Pen
     </span>
     <div class="flex items-center">
-      <span on:click={openNewNote} class="material-icons w2 tc pointer">
-        create
-      </span>
-      <span on:click={bulkAction.toggleSelect} class="material-icons w2 tc pointer">
-        {#if $bulkAction.isSelecting}
-          check_box
-        {:else}
-          check_box_outline_blank
-        {/if}
+      <span on:click={openNewNote} class="icon-create w2 tc pointer"></span>
+      <span
+        on:click={bulkAction.toggleSelect}
+        class="icon-{$bulkAction.isSelecting ? 'check' : 'uncheck'} w2 tc pointer">
       </span>
       {#if $bulkAction.isSelecting && $bulkAction.data.length}
         <span class="dib br b--black h1 ml2 mr2"></span>
-        <span on:click={deleteNotes} class="material-icons tc w2 pointer">
-          delete
-        </span>
+        <span on:click={deleteNotes} class="icon-delete tc w2 pointer"></span>
       {/if}
       <span class="dib br b--black h1 ml2 mr2"></span>
-      <span on:click={user.logout} class="material-icons w2 tc pointer">
-        power_settings_new
-      </span>
+      <span on:click={user.logout} class="icon-power w2 tc pointer"></span>
     </div>
   </h2>
   {#if $notes.length > 0}

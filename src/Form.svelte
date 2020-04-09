@@ -2,7 +2,9 @@
   import { onMount, onDestroy } from 'svelte'
   import { push } from 'svelte-spa-router'
   import SimpleMirror from 'simplemirror'
+
   import { updateNote, notes } from './stores.js'
+  import commands from './editorCommands.js'
 
   export let params = {}
 
@@ -49,7 +51,8 @@
       onChange: value => {
         content = value
         autosave()
-      }
+      },
+      commands
     })
   }
 
@@ -100,8 +103,8 @@
         autocomplete="off" />
 
       <div class="flex items-center">
-        <span on:click={toggleFormatTool} class="material-icons w2 tc pointer no-select fix-icon {showFormatTool ? 'blue' : ''}">text_format</span>
-        <span on:click={goToList} class="material-icons w2 tc pointer no-select">clear</span>
+        <span on:click={toggleFormatTool} class="icon-format w2 pv2 tc pointer no-select fix-icon {showFormatTool ? 'blue' : ''}"></span>
+        <span on:click={goToList} class="icon-x w2 pv2 tc pointer no-select"></span>
       </div>
     </div>
     <div

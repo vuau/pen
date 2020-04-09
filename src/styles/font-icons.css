@@ -1,0 +1,80 @@
+@font-face {
+  font-family: 'pen-icon';
+  src:
+    url('fonts/pen-icon.ttf?cpf7h0') format('truetype'),
+    url('fonts/pen-icon.woff?cpf7h0') format('woff'),
+    url('fonts/pen-icon.svg?cpf7h0#pen-icon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'pen-icon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-x:before {
+  content: "\e900";
+}
+.icon-create:before {
+  content: "\e901";
+}
+.icon-redo:before {
+  content: "\e90e";
+}
+.icon-undo:before {
+  content: "\e90f";
+}
+.icon-bold:before {
+  content: "\e902";
+}
+.icon-format:before {
+  content: "\e903";
+}
+.icon-outdent:before {
+  content: "\e910";
+}
+.icon-indent:before {
+  content: "\e911";
+}
+.icon-italic:before {
+  content: "\e904";
+}
+.icon-unordered-list:before {
+  content: "\e905";
+}
+.icon-ordered-list:before {
+  content: "\e906";
+}
+.icon-quote:before {
+  content: "\e907";
+}
+.icon-strikethrough:before {
+  content: "\e908";
+}
+.icon-check:before {
+  content: "\e909";
+}
+.icon-uncheck:before {
+  content: "\e90a";
+}
+.icon-code:before {
+  content: "\e90b";
+}
+.icon-power:before {
+  content: "\e90c";
+}
+.icon-delete:before {
+  content: "\e90d";
+}

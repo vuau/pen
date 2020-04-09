@@ -26,17 +26,13 @@
     "eslint-plugin-standard": "^4.0.1",
     "eslint-plugin-svelte3": "^2.7.3",
     "gun": "^0.2020.401",
-    "material-design-icons": "^3.0.1",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-svelte": "^4.0.6",
     "regenerator-runtime": "^0.13.5",
+    "simplemirror": "^1.0.7",
     "standard": "^14.3.3",
     "svelte": "^3.20.1",
     "svelte-spa-router": "^2.1.0",
     "tachyons": "^4.11.1"
-  },
-  "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.13.0",
-    "simplemirror": "^1.0.6"
   }
 }
