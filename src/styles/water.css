@@ -207,3 +207,7 @@ tbody tr:nth-child(even) {
 ::-webkit-scrollbar-thumb:hover {
   background: #c4c4c4;
 }
+
+ul, ol {
+  padding-left: 2em;
+}

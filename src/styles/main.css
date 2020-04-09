@@ -30,18 +30,20 @@ body {
   align-items: center;
   justify-content: center;
   background: #cacaca5c;
-  svg path,
-  svg rect {
-    fill: #FF6700;
+  svg {
+    path,
+    rect {
+      fill: #ff6700;
+    }
   }
 }
 
 #content {
-  min-height: calc(100vh - 73px)
+  min-height: calc(100vh - 73px);
 }
 
 #content.showMenu .menubar {
- display: flex; 
+  display: flex;
 }
 
 .menubar {
@@ -50,6 +52,10 @@ body {
   background: white;
   z-index: 1;
   display: none;
+}
+
+.menuitem {
+  font-size: 1.25em;
 }
 
 .ProseMirror {

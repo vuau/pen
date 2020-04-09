@@ -8,6 +8,7 @@
 
   export let params = {}
 
+  /* eslint-disable */
   function isMobile() {
     var check = false;
     (function(a){
@@ -16,12 +17,13 @@
     })(navigator.userAgent||navigator.vendor||window.opera);
     return check;
   };
+  /* eslint-enable */
 
   let title, content
   let id = params.id
   let editor
   let unsubscribe
-  let showFormatTool = isMobile() ? false : true
+  let showFormatTool = !isMobile()
 
   onMount(() => {
     if (id) {
@@ -97,12 +99,12 @@
         on:keyup={autosave}
         id="title"
         placeholder="Title"
-        class="input-reset outline-transparent h3 f4 br0 bn pv3 db w-100"
+        class="input-reset outline-transparent h3 f4 br0 bn pv3 mr2 db w-100"
         type="text"
         aria-describedby="name-desc"
         autocomplete="off" />
 
-      <div class="flex items-center">
+      <div class="flex items-center f4">
         <span on:click={toggleFormatTool} class="icon-format w2 pv2 tc pointer no-select fix-icon {showFormatTool ? 'blue' : ''}"></span>
         <span on:click={goToList} class="icon-x w2 pv2 tc pointer no-select"></span>
       </div>
