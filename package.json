@@ -28,6 +28,8 @@
     "gun": "^0.2020.401",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-svelte": "^4.0.6",
+    "postcss-nested": "^4.2.1",
+    "postcss-preset-env": "^6.7.0",
     "regenerator-runtime": "^0.13.5",
     "simplemirror": "^1.0.7",
     "standard": "^14.3.3",

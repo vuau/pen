@@ -1,7 +1,10 @@
 module.exports = {
   plugins: {
-    autoprefixer: {
-      grid: true
+    'postcss-nested': true,
+    'postcss-preset-env': {
+      autoprefixer: {
+        grid: true
+      }
     }
   }
 }
