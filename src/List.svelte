@@ -9,6 +9,8 @@
   let searchInput
   let displayedNotes = $notes
 
+  const isMac = typeof navigator != "undefined" ? /Mac/.test(navigator.platform) : false
+
   function openNewNote () {
     push('/notes/new')
   }
@@ -21,7 +23,9 @@
     showSearch.update(f => !f)
     searchKeyword = ''
     await tick()
-    searchInput.focus()
+    if (searchInput) {
+      searchInput.focus()
+    }
   }
 
   async function clearKeyword () {
@@ -39,7 +43,17 @@
       )
     }
   }, 300)
+
+  const pressedKeys = {}
+  const handleShortcuts = async e => {
+    pressedKeys[e.code] = e.type === 'keydown'
+    if ((isMac && pressedKeys.ControlLeft && pressedKeys.KeyS) || (!isMac && pressedKeys.AltLeft && pressedKeys.KeyS)) {
+      await toggleSearch()
+    }
+  }
 </script>
+
+<svelte:window on:keydown={handleShortcuts} on:keyup={handleShortcuts} />
 
 <section class="mw7 center">
   <h2 class="h3 {$showSearch ? '' : 'sticky'} athelas ma0 ph2 pv3 ph0-ns bb b--near-black flex items-center justify-between">
