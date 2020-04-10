@@ -7,6 +7,7 @@ let gunNotes
 
 /* ACTIONS */
 export const showActions = writable(false)
+export const showSearch = writable(false)
 
 const bulkAction = (() => {
   const { subscribe, update } = writable({

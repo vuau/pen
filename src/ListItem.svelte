@@ -1,3 +1,4 @@
+<svelte:options immutable={true} />
 <script>
   import { push } from 'svelte-spa-router'
   import { showActions, deleteNote } from './stores.js'

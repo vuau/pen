@@ -5,6 +5,7 @@
 
   import { updateNote, notes } from './stores.js'
   import commands from './editorCommands.js'
+  import { debounce } from './utils.js'
 
   export let params = {}
 
@@ -47,16 +48,7 @@
     })
   }
 
-  function debounce (func, waitTime) {
-    var timeout
-    return function () {
-      clearTimeout(timeout)
-      timeout = setTimeout(func, waitTime)
-    }
-  }
-
   const autosave = debounce(() => {
-    console.log('saving...')
     updateNote({
       ...(id && { id }),
       title: title || 'No title',
@@ -65,7 +57,6 @@
       if (!id) {
         id = ack._['#']
       }
-      console.log('...saved!')
     })
   }, 500)
 
