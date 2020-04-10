@@ -1,30 +1,24 @@
 <script>
   import { push } from 'svelte-spa-router'
-  import { bulkAction } from './stores.js'
+  import { showActions, deleteNote } from './stores.js'
 
   export let id = null
   export let title = ''
 
-  $: checked = $bulkAction.data.includes(id)
-
-  const onCheck = () => {
-    bulkAction.select(id)
+  const viewNote = () => {
+    push(`/notes/${id}`)
   }
 
-  const onClick = () => {
-    if ($bulkAction.isSelecting) {
-      onCheck()
-    } else {
-      push(`/notes/${id}`)
+  async function confirmDelete () {
+    if (confirm(`Are you sure to delete "${title}"?`)) {
+      await deleteNote(id)
     }
   }
 </script>
 
-<li on:click={onClick} class="hover-to-show pointer dim flex items-center lh-copy pv3 ba bl-0 bt-0 br-0 b--dotted b--black-30">
-  {#if $bulkAction.isSelecting}
-    <span class="mr2 pointer flex items-center">
-      <input type="checkbox" {checked} />
-    </span>
-  {/if}
+<li on:click={viewNote} class="hover-to-show pointer dim flex items-center justify-between lh-copy pv3 ba bl-0 bt-0 br-0 b--dotted b--black-30">
   <span>{title}</span>
+  {#if $showActions}
+  <span on:click|stopPropagation={confirmDelete} class="ml2 tc w2 pointer icon-delete"></span>
+  {/if}
 </li>

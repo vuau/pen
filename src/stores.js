@@ -6,6 +6,8 @@ const gunUser = gun.user()
 let gunNotes
 
 /* ACTIONS */
+export const showActions = writable(false)
+
 const bulkAction = (() => {
   const { subscribe, update } = writable({
     isSelecting: false,

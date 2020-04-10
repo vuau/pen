@@ -1,9 +1,9 @@
 @font-face {
   font-family: 'pen-icon';
   src:
-    url('fonts/pen-icon.ttf?cpf7h0') format('truetype'),
-    url('fonts/pen-icon.woff?cpf7h0') format('woff'),
-    url('fonts/pen-icon.svg?cpf7h0#pen-icon') format('svg');
+    url('fonts/pen-icon.ttf?pzghef') format('truetype'),
+    url('fonts/pen-icon.woff?pzghef') format('woff'),
+    url('fonts/pen-icon.svg?pzghef#pen-icon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -63,6 +63,9 @@
 .icon-strikethrough:before {
   content: "\e908";
 }
+.icon-config:before {
+  content: "\e90d";
+}
 .icon-check:before {
   content: "\e909";
 }
@@ -72,9 +75,12 @@
 .icon-code:before {
   content: "\e90b";
 }
+.icon-delete:before {
+  content: "\e914";
+}
 .icon-power:before {
   content: "\e90c";
 }
-.icon-delete:before {
-  content: "\e90d";
+.icon-search:before {
+  content: "\e915";
 }

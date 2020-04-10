@@ -1,19 +1,14 @@
 <script>
   import { push } from 'svelte-spa-router'
-  import { notes, deleteNote, bulkAction, user } from './stores.js'
+  import { showActions, notes, user } from './stores.js'
   import ListItem from './ListItem.svelte'
 
   function openNewNote () {
     push('/notes/new')
   }
 
-  async function deleteNotes () {
-    const deletingNoteNames = $bulkAction.data.map(
-      id => $notes.find(n => n.id === id).title
-    ).join(',')
-    if (confirm(`Are you sure to delete "${deletingNoteNames}"?`)) {
-      await $bulkAction.data.forEach(deleteNote)
-    }
+  function toggleActions () {
+    showActions.update(f => !f)
   }
 </script>
 
@@ -24,14 +19,8 @@
     </span>
     <div class="flex items-center">
       <span on:click={openNewNote} class="icon-create w2 tc pointer"></span>
-      <span
-        on:click={bulkAction.toggleSelect}
-        class="icon-{$bulkAction.isSelecting ? 'check' : 'uncheck'} w2 tc pointer">
-      </span>
-      {#if $bulkAction.isSelecting && $bulkAction.data.length}
-        <span class="dib br b--black h1 ml2 mr2"></span>
-        <span on:click={deleteNotes} class="icon-delete tc w2 pointer"></span>
-      {/if}
+      <span class="icon-search w2 tc pointer"></span>
+      <span on:click={toggleActions} class="icon-config w2 tc pointer {$showActions ? 'blue' : ''}"></span>
       <span class="dib br b--black h1 ml2 mr2"></span>
       <span on:click={user.logout} class="icon-power w2 tc pointer"></span>
     </div>
