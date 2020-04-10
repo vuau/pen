@@ -1,15 +1,20 @@
 <script>
-  import { tick } from 'svelte'
+  import { tick, onMount } from 'svelte'
   import { push } from 'svelte-spa-router'
-  import { showActions, showSearch, notes, user } from './stores.js'
+  import { showActions, showSearch, searchKeyword, notes, user } from './stores.js'
   import ListItem from './ListItem.svelte'
   import { debounce } from './utils.js'
 
-  let searchKeyword
+  const isMac = typeof navigator !== 'undefined' ? /Mac/.test(navigator.platform) : false
   let searchInput
+
   $: displayedNotes = $notes
 
-  const isMac = typeof navigator !== 'undefined' ? /Mac/.test(navigator.platform) : false
+  onMount(() => {
+    if ($searchKeyword && $searchKeyword.trim() !== '') {
+      search()
+    }
+  })
 
   function openNewNote () {
     push('/notes/new')
@@ -21,7 +26,7 @@
 
   async function toggleSearch () {
     showSearch.update(f => !f)
-    searchKeyword = ''
+    searchKeyword.set('')
     await tick()
     if (searchInput) {
       searchInput.focus()
@@ -29,20 +34,22 @@
   }
 
   async function clearKeyword () {
-    searchKeyword = ''
+    searchKeyword.set('')
     displayedNotes = $notes
     await tick()
     searchInput.focus()
   }
 
-  const search = debounce(() => {
-    if (searchKeyword) {
+  const search = () => {
+    if ($searchKeyword) {
       displayedNotes = $notes.filter(({ title, content }) =>
-        title.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-        content.toLowerCase().includes(searchKeyword.toLowerCase())
+        title.toLowerCase().includes($searchKeyword.toLowerCase()) ||
+        content.toLowerCase().includes($searchKeyword.toLowerCase())
       )
     }
-  }, 300)
+  }
+
+  const debounceSearch = debounce(search, 300)
 
   const pressedKeys = {}
   const handleShortcuts = async e => {
@@ -74,8 +81,8 @@
     <div class="bb b--black-20 sticky flex items-center justify-between">
       <input
         bind:this={searchInput}
-        bind:value={searchKeyword}
-        on:keyup={search}
+        bind:value={$searchKeyword}
+        on:keyup={debounceSearch}
         placeholder="Type to search..."
         class="input-reset outline-transparent br0 bn pa2 w-100"
         type="text"
