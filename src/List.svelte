@@ -7,9 +7,9 @@
 
   let searchKeyword
   let searchInput
-  let displayedNotes = $notes
+  $: displayedNotes = $notes
 
-  const isMac = typeof navigator != "undefined" ? /Mac/.test(navigator.platform) : false
+  const isMac = typeof navigator !== 'undefined' ? /Mac/.test(navigator.platform) : false
 
   function openNewNote () {
     push('/notes/new')

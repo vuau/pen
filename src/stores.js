@@ -35,7 +35,7 @@ export { bulkAction }
 
 /* NOTES */
 const notes = (function createNoteStore () {
-  const { subscribe, update } = writable([])
+  const { subscribe, update, set } = writable([])
   const listen = function (note, id) {
     if (!note) {
       update((notes) => notes.filter((n) => n.id !== id))
@@ -57,6 +57,7 @@ const notes = (function createNoteStore () {
   }
   return {
     subscribe,
+    set,
     listen
   }
 })()
@@ -86,7 +87,13 @@ const user = (function createUserStore () {
   const { subscribe, set } = writable({
     isLoggedIn: false
   })
+  const cleanUp = () => {
+    gunUser.leave()
+    localStorage.clear()
+    notes.set([])
+  }
   const createUser = (user, pass, cb) => {
+    cleanUp()
     return gunUser.create(user, pass, (ack) => {
       if (ack.err) {
         if (cb) cb(ack.err)
@@ -107,6 +114,7 @@ const user = (function createUserStore () {
     }
   }
   const login = (user, pass, cb) => {
+    cleanUp()
     return gunUser.auth(user, pass, finishLogin(cb))
   }
   const logout = () => {
