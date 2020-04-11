@@ -89,20 +89,8 @@ const user = (function createUserStore () {
     isLoggedIn: false
   })
   const cleanUp = () => {
-    gunUser.leave()
     localStorage.clear()
     notes.set([])
-  }
-  const createUser = (user, pass, cb) => {
-    cleanUp()
-    return gunUser.create(user, pass, (ack) => {
-      if (ack.err) {
-        if (cb) cb(ack.err)
-      } else {
-        set({ isLoggedIn: true })
-        if (cb) cb()
-      }
-    })
   }
   const finishLogin = cb => ack => {
     if (ack.err) {
@@ -114,6 +102,16 @@ const user = (function createUserStore () {
       if (cb) cb()
     }
   }
+  const createUser = (user, pass, cb) => {
+    cleanUp()
+    return gunUser.create(user, pass, ack => {
+      if (ack.err) {
+        if (cb) cb(ack.err)
+      } else {
+        login(user, pass, cb)
+      }
+    })
+  }
   const login = (user, pass, cb) => {
     cleanUp()
     return gunUser.auth(user, pass, finishLogin(cb))
@@ -121,7 +119,7 @@ const user = (function createUserStore () {
   const logout = () => {
     gunUser.leave()
     set({ isLoggedIn: false })
-    window.localStorage.removeItem('gun/')
+    cleanUp()
   }
   const checkLogin = function () {
     gunUser.recall({ sessionStorage: true }, finishLogin())
