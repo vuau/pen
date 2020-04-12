@@ -3,17 +3,16 @@
   import { push } from 'svelte-spa-router'
   import { showActions, showSearch, searchKeyword, notes, user } from './stores.js'
   import ListItem from './ListItem.svelte'
-  import { debounce } from './utils.js'
+  import { debounce, whenEsc, whenEnter } from './utils.js'
 
   const isMac = typeof navigator !== 'undefined' ? /Mac/.test(navigator.platform) : false
   let searchInput
 
-  $: displayedNotes = $notes
-
-  onMount(() => {
-    if ($searchKeyword && $searchKeyword.trim() !== '') {
-      search()
+  $: displayedNotes = $notes.filter(({ title, content }) => {
+    if ($searchKeyword) {
+      return title.toLowerCase().includes($searchKeyword.toLowerCase()) || content.toLowerCase().includes($searchKeyword.toLowerCase())
     }
+    return true
   })
 
   function openNewNote () {
@@ -26,30 +25,16 @@
 
   async function toggleSearch () {
     showSearch.update(f => !f)
+    clearKeyword()
+  }
+
+  async function clearKeyword () {
     searchKeyword.set('')
     await tick()
     if (searchInput) {
       searchInput.focus()
     }
   }
-
-  async function clearKeyword () {
-    searchKeyword.set('')
-    displayedNotes = $notes
-    await tick()
-    searchInput.focus()
-  }
-
-  const search = () => {
-    if ($searchKeyword) {
-      displayedNotes = $notes.filter(({ title, content }) =>
-        title.toLowerCase().includes($searchKeyword.toLowerCase()) ||
-        content.toLowerCase().includes($searchKeyword.toLowerCase())
-      )
-    }
-  }
-
-  const debounceSearch = debounce(search, 300)
 
   const pressedKeys = {}
   const handleShortcuts = async e => {
@@ -68,13 +53,13 @@
       Pen
     </span>
     <div class="flex items-center">
-      <span on:click={openNewNote} class="icon-create w2 tc pointer"></span>
+      <span tabindex="0" on:click={openNewNote} on:keyup={whenEnter(openNewNote)} class="icon-create w2 tc pointer"></span>
       {#if $notes.length > 0}
-        <span on:click={toggleSearch} class="icon-search w2 tc pointer {$showSearch ? 'blue' : ''}"></span>
-        <span on:click={toggleActions} class="icon-config w2 tc pointer {$showActions ? 'blue' : ''}"></span>
+        <span tabindex="0" on:click={toggleSearch} on:keyup={whenEnter(toggleSearch)} class="icon-search w2 tc pointer {$showSearch ? 'blue' : ''}"></span>
+        <span tabindex="0" on:click={toggleActions} on:keyup={whenEnter(toggleActions)} class="icon-config w2 tc pointer {$showActions ? 'blue' : ''}"></span>
       {/if}
       <span class="dib br b--black h1 ml2 mr2"></span>
-      <span on:click={user.logout} class="icon-power w2 tc pointer"></span>
+      <span tabindex="0" on:click={user.logout}  on:keyup={whenEnter(user.logout)} class="icon-power w2 tc pointer"></span>
     </div>
   </h2>
   {#if $showSearch}
@@ -82,7 +67,8 @@
       <input
         bind:this={searchInput}
         bind:value={$searchKeyword}
-        on:keyup={debounceSearch}
+        on:keyup={whenEsc(toggleSearch)}
+        tabindex="0" 
         placeholder="Type to search..."
         class="input-reset outline-transparent br0 bn pa2 w-100"
         type="text"
@@ -90,6 +76,7 @@
         autocomplete="off" />
       <span
         on:click={clearKeyword}
+        tabindex="0" 
         class="icon-x w2 tc pointer">
       </span>
     </div>

@@ -1,5 +1,6 @@
 <script>
   import { user } from './stores.js'
+  import { whenEnter } from './utils.js'
 
   let username, password, isRegister, isLoading
 
@@ -19,18 +20,12 @@
     }
   }
 
-  function checkEnter (e) {
-    if (e.code === 'Enter') {
-      onSubmit()
-    }
-  }
-
   function toggle () {
     isRegister = !isRegister
   }
 </script>
 
-<section class="mw6 h-100 center flex items-center">
+<section class="mw6 h-100 center flex items-center" on:keyup={whenEnter(onSubmit)}>
   <div class="w-100 pa3 pt0">
     <h1 class="f2 fw7 ttu tracked lh-title mt0 mb2 avenir tc">
       Pen
@@ -48,7 +43,6 @@
         <label for="username" class="f6 b db mb2">Username</label>
         <input
           bind:value={username}
-          on:keypress={checkEnter}
           id="username"
           class="input-reset ba b--black-20 pa2 mb2 db w-100"
           type="text"
@@ -59,7 +53,6 @@
         <label for="password" class="f6 b db mb2">Password</label>
         <input
           bind:value={password}
-          on:keypress={checkEnter}
           id="password"
           class="input-reset ba b--black-20 pa2 mb2 db w-100"
           type="password"

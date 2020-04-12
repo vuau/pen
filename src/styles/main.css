@@ -38,6 +38,10 @@ body {
   }
 }
 
+.note-item:focus {
+  background-color: lightcyan;
+}
+
 #content {
   min-height: calc(100vh - 73px);
 }

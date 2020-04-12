@@ -5,7 +5,7 @@
 
   import { updateNote, notes } from './stores.js'
   import commands from './editorCommands.js'
-  import { debounce } from './utils.js'
+  import { debounce, whenEsc } from './utils.js'
 
   export let params = {}
 
@@ -14,6 +14,7 @@
   let editor
   let unsubscribe
   let showFormatTool = false
+  let titleInput
 
   onMount(() => {
     if (id) {
@@ -27,6 +28,9 @@
       })
     } else {
       createEditor()
+      if (titleInput) {
+        titleInput.focus()
+      }
     }
   })
 
@@ -69,12 +73,15 @@
   }
 </script>
 
+<svelte:window on:keyup={whenEsc(goToList)} />
+
 <section class="mw7 center">
   <div class="ph2 pb2 ph0-ns black-80">
     <div
       class="flex items-center justify-between bt-0 bl-0 br-0 bb
       b--black-20 {showFormatTool ? '' : 'sticky'}">
       <input
+        bind:this={titleInput}
         bind:value={title}
         on:keyup={autosave}
         id="title"

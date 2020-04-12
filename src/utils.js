@@ -5,3 +5,11 @@ export function debounce (func, waitTime) {
     timeout = setTimeout(func, waitTime)
   }
 }
+
+export const whenEnter = cb => e => {
+  if (e.code === 'Enter') cb()
+}
+
+export const whenEsc = cb => e => {
+  if (e.code === 'Escape') cb()
+}
