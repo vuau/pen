@@ -39,7 +39,7 @@ body {
 }
 
 .note-item:focus {
-  background-color: lightcyan;
+  background-color: lightyellow;
 }
 
 #content {
