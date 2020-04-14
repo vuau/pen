@@ -1,5 +1,5 @@
 import Gun from 'gun/gun'
-import 'gun/sea'
+import SEA from 'gun/sea'
 
 let gun
 
@@ -11,4 +11,4 @@ if (process.env.NODE_ENV === 'production') {
 }
 window.gun = gun
 
-export { gun }
+export { gun, SEA }

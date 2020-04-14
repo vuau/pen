@@ -1,9 +1,10 @@
 import { writable } from 'svelte/store'
-import { gun } from './contexts'
+import { gun, SEA } from './contexts'
 
 const gunUser = gun.user()
 
 let gunNotes
+let salt
 
 /* ACTIONS */
 export const showActions = writable(false)
@@ -42,18 +43,24 @@ const notes = (function createNoteStore () {
       update((notes) => notes.filter((n) => n.id !== id))
       return
     }
-    update((notes) => {
-      const foundIndex = notes.findIndex((n) => n.id === id)
-      if (foundIndex !== -1) {
-        notes[foundIndex] = {
-          id,
-          title: note.title,
-          content: note.content
+    SEA.decrypt(note.content, salt, decryptedContent => {
+      update((notes) => {
+        const foundIndex = notes.findIndex((n) => n.id === id)
+        if (foundIndex !== -1) {
+          notes[foundIndex] = {
+            id,
+            title: note.title,
+            content: decryptedContent
+          }
+        } else {
+          notes.push({
+            id,
+            title: note.title,
+            content: decryptedContent
+          })
         }
-      } else {
-        notes.push({ ...note, id })
-      }
-      return notes
+        return notes
+      })
     })
   }
   return {
@@ -64,15 +71,16 @@ const notes = (function createNoteStore () {
 })()
 
 const updateNote = async function ({ id, title, content }) {
+  const encryptedContent = await SEA.encrypt(content, salt)
   if (id) {
     return await gunNotes.get(id).put({
       title,
-      content
+      content: encryptedContent
     })
   } else {
     return await gunNotes.set({
       title,
-      content
+      content: encryptedContent
     })
   }
 }
@@ -98,6 +106,7 @@ const user = (function createUserStore () {
     } else {
       gunNotes = gunUser.get('notes')
       gunNotes.map().on(notes.listen)
+      salt = ack.sea
       set({ isLoggedIn: true })
       if (cb) cb()
     }
