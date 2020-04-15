@@ -38,30 +38,29 @@ export { bulkAction }
 /* NOTES */
 const notes = (function createNoteStore () {
   const { subscribe, update, set } = writable([])
+  const updateToStore = ({ id, title, content }) => {
+    update((notes) => {
+      const foundIndex = notes.findIndex((n) => n.id === id)
+      if (foundIndex !== -1) {
+        notes[foundIndex] = { id, title, content }
+      } else {
+        notes.push({ id, title, content })
+      }
+      return notes
+    })
+  }
   const listen = function (note, id) {
-    if (!note) {
+    if (!note) { // Note is null (maybe deleted or bad data)
       update((notes) => notes.filter((n) => n.id !== id))
       return
     }
-    SEA.decrypt(note.content, salt, decryptedContent => {
-      update((notes) => {
-        const foundIndex = notes.findIndex((n) => n.id === id)
-        if (foundIndex !== -1) {
-          notes[foundIndex] = {
-            id,
-            title: note.title,
-            content: decryptedContent
-          }
-        } else {
-          notes.push({
-            id,
-            title: note.title,
-            content: decryptedContent
-          })
-        }
-        return notes
+    if (/^SEA{/g.test(note.content)) { // Note is encrypted
+      SEA.decrypt(note.content, salt, decryptedContent => {
+        updateToStore({ id, title: note.title, content: decryptedContent })
       })
-    })
+    } else { // Note is not encrypted (old data)
+      updateToStore({ ...note, id })
+    }
   }
   return {
     subscribe,
