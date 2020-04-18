@@ -9,6 +9,5 @@ if (process.env.NODE_ENV === 'production') {
   localStorage.clear()
   gun = Gun()
 }
-window.gun = gun
 
 export { gun, SEA }

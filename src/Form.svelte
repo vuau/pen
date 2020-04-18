@@ -3,7 +3,7 @@
   import { push } from 'svelte-spa-router'
   import SimpleMirror from 'simplemirror'
 
-  import { updateNote, notes } from './stores.js'
+  import { notes } from './stores.js'
   import commands from './editorCommands.js'
   import { debounce, whenEsc } from './utils.js'
 
@@ -53,7 +53,7 @@
   }
 
   const autosave = debounce(() => {
-    updateNote({
+    notes.updateNote({
       ...(id && { id }),
       title: title || 'No title',
       content: content || ''

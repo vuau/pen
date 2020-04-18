@@ -11,32 +11,8 @@ export const showActions = writable(false)
 export const showSearch = writable(false)
 export const searchKeyword = writable('')
 
-const bulkAction = (() => {
-  const { subscribe, update } = writable({
-    isSelecting: false,
-    data: []
-  })
-  return {
-    subscribe,
-    toggleSelect: () => {
-      update(b => ({ ...b, isSelecting: !b.isSelecting, data: [] }))
-    },
-    select: item => {
-      update(({ isSelecting, data }) => ({
-        isSelecting,
-        data: data.includes(item) ? data.filter(i => i !== item) : [
-          ...data,
-          item
-        ]
-      }))
-    }
-  }
-})()
-
-export { bulkAction }
-
 /* NOTES */
-const notes = (function createNoteStore () {
+export const notes = (function createNoteStore () {
   const { subscribe, update, set } = writable([])
   const updateToStore = ({ id, title, content }) => {
     update((notes) => {
@@ -49,49 +25,45 @@ const notes = (function createNoteStore () {
       return notes
     })
   }
-  const listen = function (note, id) {
-    if (!note) { // Note is null (maybe deleted or bad data)
+
+  const updateNote = async function ({ id, title, content }) {
+    const data = {
+      title: await SEA.encrypt(title, salt),
+      content: await SEA.encrypt(content, salt)
+    }
+    if (id) {
+      return await gunNotes.get(id).put(data)
+    } else {
+      return await gunNotes.set(data)
+    }
+  }
+
+  const deleteNote = async function (id) {
+    await gunNotes.get(id).put(null)
+  }
+
+  const listen = async function (note, id) {
+    if (!note) { // maybe deleted or bad data
       update((notes) => notes.filter((n) => n.id !== id))
       return
     }
-    if (/^SEA{/g.test(note.content)) { // Note is encrypted
-      SEA.decrypt(note.content, salt, decryptedContent => {
-        updateToStore({ id, title: note.title, content: decryptedContent })
-      })
-    } else { // Note is not encrypted (old data)
-      updateToStore({ ...note, id })
+    const data = {
+      title: /^SEA{/g.test(note.title) ? await SEA.decrypt(note.title, salt) : note.title,
+      content: /^SEA{/g.test(note.title) ? await SEA.decrypt(note.content, salt) : note.content
     }
+    updateToStore({ ...data, id })
   }
   return {
     subscribe,
     set,
-    listen
+    listen,
+    updateNote,
+    deleteNote
   }
 })()
 
-const updateNote = async function ({ id, title, content }) {
-  const encryptedContent = await SEA.encrypt(content, salt)
-  if (id) {
-    return await gunNotes.get(id).put({
-      title,
-      content: encryptedContent
-    })
-  } else {
-    return await gunNotes.set({
-      title,
-      content: encryptedContent
-    })
-  }
-}
-
-const deleteNote = async function (id) {
-  await gunNotes.get(id).put(null)
-}
-
-export { notes, updateNote, deleteNote }
-
 /* USER */
-const user = (function createUserStore () {
+export const user = (function createUserStore () {
   const { subscribe, set } = writable({
     isLoggedIn: false
   })
@@ -140,5 +112,3 @@ const user = (function createUserStore () {
     checkLogin
   }
 })()
-
-export { user }
