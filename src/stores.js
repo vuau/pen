@@ -67,10 +67,6 @@ export const user = (function createUserStore () {
   const { subscribe, set } = writable({
     isLoggedIn: false
   })
-  const cleanUp = () => {
-    localStorage.clear()
-    notes.set([])
-  }
   const finishLogin = (cb) => (ack) => {
     if (ack.err) {
       if (cb) cb(ack.err)
@@ -83,7 +79,6 @@ export const user = (function createUserStore () {
     }
   }
   const createUser = (user, pass, cb) => {
-    cleanUp()
     return gunUser.create(user, pass, (ack) => {
       if (ack.err) {
         if (cb) cb(ack.err)
@@ -93,13 +88,11 @@ export const user = (function createUserStore () {
     })
   }
   const login = (user, pass, cb) => {
-    cleanUp()
     return gunUser.auth(user, pass, finishLogin(cb))
   }
   const logout = () => {
     gunUser.leave()
     set({ isLoggedIn: false })
-    cleanUp()
   }
   const checkLogin = function () {
     gunUser.recall({ sessionStorage: true }, finishLogin())

@@ -1,5 +1,4 @@
 <script>
-  import { onMount } from 'svelte'
   import Router from 'svelte-spa-router'
   import List from './List.svelte'
   import Form from './Form.svelte'
@@ -11,8 +10,6 @@
     '/notes/new': Form,
     '/notes/:id': Form
   }
-
-  onMount(user.checkLogin)
 </script>
 
 <main class="w-100 h-100 sans-serif bg-white">
