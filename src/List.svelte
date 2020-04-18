@@ -1,19 +1,12 @@
 <script>
   import { tick, onMount } from 'svelte'
   import { push } from 'svelte-spa-router'
-  import { showActions, showSearch, searchKeyword, notes, user } from './stores.js'
+  import { showActions, showSearch, searchKeyword, displayedNotes, user } from './stores.js'
   import ListItem from './ListItem.svelte'
   import { debounce, whenEsc, whenEnter } from './utils.js'
 
   const isMac = typeof navigator !== 'undefined' ? /Mac/.test(navigator.platform) : false
   let searchInput
-
-  $: displayedNotes = $notes.filter(({ title, content }) => {
-    if ($searchKeyword) {
-      return title.toLowerCase().includes($searchKeyword.toLowerCase()) || content.toLowerCase().includes($searchKeyword.toLowerCase())
-    }
-    return true
-  })
 
   function openNewNote () {
     push('/notes/new')
@@ -54,7 +47,7 @@
     </span>
     <div class="flex items-center">
       <span tabindex="0" on:click={openNewNote} on:keyup={whenEnter(openNewNote)} class="icon-create w2 tc pointer"></span>
-      {#if $notes.length > 0}
+      {#if $displayedNotes.length > 0}
         <span tabindex="0" on:click={toggleSearch} on:keyup={whenEnter(toggleSearch)} class="icon-search w2 tc pointer {$showSearch ? 'blue' : ''}"></span>
         <span tabindex="0" on:click={toggleActions} on:keyup={whenEnter(toggleActions)} class="icon-config w2 tc pointer {$showActions ? 'blue' : ''}"></span>
       {/if}
@@ -81,9 +74,9 @@
       </span>
     </div>
   {/if}
-  {#if $notes.length > 0}
+  {#if $displayedNotes.length > 0}
     <ul class="list ph2 ph0-ns mt0 overflow-x-hidden">
-      {#each displayedNotes as {title, id}}
+      {#each $displayedNotes as {title, id}}
         <ListItem {title} {id}></ListItem>
       {/each}
     </ul>

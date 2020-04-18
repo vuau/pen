@@ -13,6 +13,9 @@
   "browserslist": [
     "defaults"
   ],
+  "svelte": {
+    "sourceMaps": true
+  },
   "devDependencies": {
     "autoprefixer": "^9.7.6",
     "autosize": "^4.0.2",

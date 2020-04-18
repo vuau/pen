@@ -19,7 +19,7 @@
   onMount(() => {
     if (id) {
       unsubscribe = notes.subscribe((noteItems) => {
-        const editingNote = noteItems.find((n) => n.id === id)
+        const editingNote = noteItems[id]
         if (editingNote) {
           title = editingNote.title
           content = editingNote.content

@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store'
+import { writable, derived } from 'svelte/store'
 import { gun, SEA } from './contexts'
 
 const gunUser = gun.user()
@@ -13,17 +13,12 @@ export const searchKeyword = writable('')
 
 /* NOTES */
 export const notes = (function createNoteStore () {
-  const { subscribe, update, set } = writable([])
+  const { subscribe, update, set } = writable({})
   const updateToStore = ({ id, title, content }) => {
-    update((notes) => {
-      const foundIndex = notes.findIndex((n) => n.id === id)
-      if (foundIndex !== -1) {
-        notes[foundIndex] = { id, title, content }
-      } else {
-        notes.push({ id, title, content })
-      }
-      return notes
-    })
+    update((notes) => ({
+      ...notes,
+      [id]: { title, content }
+    }))
   }
 
   const updateNote = async function ({ id, title, content }) {
@@ -43,13 +38,18 @@ export const notes = (function createNoteStore () {
   }
 
   const listen = async function (note, id) {
-    if (!note) { // maybe deleted or bad data
+    if (!note) {
+      // maybe deleted or bad data
       update((notes) => notes.filter((n) => n.id !== id))
       return
     }
     const data = {
-      title: /^SEA{/g.test(note.title) ? await SEA.decrypt(note.title, salt) : note.title,
-      content: /^SEA{/g.test(note.title) ? await SEA.decrypt(note.content, salt) : note.content
+      title: /^SEA{/g.test(note.title)
+        ? await SEA.decrypt(note.title, salt)
+        : note.title,
+      content: /^SEA{/g.test(note.title)
+        ? await SEA.decrypt(note.content, salt)
+        : note.content
     }
     updateToStore({ ...data, id })
   }
@@ -71,7 +71,7 @@ export const user = (function createUserStore () {
     localStorage.clear()
     notes.set([])
   }
-  const finishLogin = cb => ack => {
+  const finishLogin = (cb) => (ack) => {
     if (ack.err) {
       if (cb) cb(ack.err)
     } else {
@@ -84,7 +84,7 @@ export const user = (function createUserStore () {
   }
   const createUser = (user, pass, cb) => {
     cleanUp()
-    return gunUser.create(user, pass, ack => {
+    return gunUser.create(user, pass, (ack) => {
       if (ack.err) {
         if (cb) cb(ack.err)
       } else {
@@ -112,3 +112,25 @@ export const user = (function createUserStore () {
     checkLogin
   }
 })()
+
+export const displayedNotes = derived(
+  [notes, searchKeyword],
+  ([$notes, $searchKeyword]) => {
+    const arr = []
+    for (const [id, { title, content }] of Object.entries($notes)) {
+      if ($searchKeyword) {
+        if (
+          (title &&
+            title.toLowerCase().includes($searchKeyword.toLowerCase())) ||
+          (content &&
+            content.toLowerCase().includes($searchKeyword.toLowerCase()))
+        ) {
+          arr.push({ id, title, content })
+        }
+      } else {
+        arr.push({ id, title, content })
+      }
+    }
+    return arr
+  }
+)
