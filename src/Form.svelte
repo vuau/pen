@@ -86,7 +86,7 @@
         on:keyup={autosave}
         id="title"
         placeholder="Title"
-        class="input-reset outline-transparent h3 f4 br0 bn pv3 mr2 db w-100"
+        class="input-reset outline-transparent h3 f4 br0 bn pv3 ph2 mr2 db w-100"
         type="text"
         aria-describedby="name-desc"
         autocomplete="off" />

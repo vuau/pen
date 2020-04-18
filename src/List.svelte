@@ -16,6 +16,9 @@
     showActions.update(f => !f)
   }
 
+  function configUser () {
+  }
+
   async function toggleSearch () {
     showSearch.update(f => !f)
     clearKeyword()
@@ -52,6 +55,7 @@
         <span tabindex="0" on:click={toggleActions} on:keyup={whenEnter(toggleActions)} class="icon-config w2 tc pointer {$showActions ? 'blue' : ''}"></span>
       {/if}
       <span class="dib br b--black h1 ml2 mr2"></span>
+      <span tabindex="0" on:click={configUser}  on:keyup={configUser} class="icon-user w2 tc pointer"></span>
       <span tabindex="0" on:click={user.logout}  on:keyup={whenEnter(user.logout)} class="icon-power w2 tc pointer"></span>
     </div>
   </h2>
