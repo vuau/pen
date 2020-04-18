@@ -10,4 +10,6 @@ if (process.env.NODE_ENV === 'production') {
   window.gun = gun
 }
 
-export { gun, SEA }
+const gunUser = gun.user()
+
+export { gun, gunUser, SEA }

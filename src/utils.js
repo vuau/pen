@@ -6,10 +6,5 @@ export function debounce (func, waitTime) {
   }
 }
 
-export const whenEnter = cb => e => {
-  if (e.code === 'Enter') cb()
-}
-
-export const whenEsc = cb => e => {
-  if (e.code === 'Escape') cb()
-}
+export const whenEnter = (cb) => (e) => e.code === 'Enter' && cb()
+export const whenEsc = (cb) => (e) => e.code === 'Escape' && cb()

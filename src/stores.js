@@ -1,7 +1,5 @@
 import { writable, derived } from 'svelte/store'
-import { gun, SEA } from './contexts'
-
-const gunUser = gun.user()
+import { gunUser, SEA } from './contexts'
 
 let gunNotes
 let salt
@@ -95,7 +93,9 @@ export const user = (function createUserStore () {
     set({ isLoggedIn: false })
   }
   const checkLogin = function () {
-    gunUser.recall({ sessionStorage: true }, finishLogin())
+    // get pass from localstorage
+    // ask for pin code
+    // log user in
   }
   return {
     subscribe,
