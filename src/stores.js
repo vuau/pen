@@ -93,15 +93,17 @@ export const user = (function createUserStore () {
     salt = ack.sea
     gunUser
       .get('config')
-      .not(function () {
-        const defaultConfig = getDefaultConfig()
+      .not(async function () {
+        const defaultConfig = await SEA.encrypt(getDefaultConfig(), salt)
         gunUser.get('config').put(defaultConfig, () => {
           update(user => ({ ...user, config: defaultConfig }))
         })
       })
       .on(async (configValue) => {
-        update(user => ({ ...user, config: configValue }))
-        await saveAuthInfo({ user, pass }, configValue.pin)
+        const config = await SEA.decrypt(configValue, salt)
+        if (!config) return
+        update(user => ({ ...user, config }))
+        await saveAuthInfo({ user, pass }, config.pin)
       })
     update(user => ({ ...user, isLoggedIn: true }))
   }
@@ -137,8 +139,9 @@ export const user = (function createUserStore () {
     return SEA.err
   }
 
-  const updateConfig = (config, cb) => {
-    gunUser.get('config').put(config, cb)
+  const updateConfig = async (config, cb) => {
+    const encryptedConfig = await SEA.encrypt(config, salt)
+    gunUser.get('config').put(encryptedConfig, cb)
   }
 
   return {

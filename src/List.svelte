@@ -43,6 +43,8 @@
   const pressedKeys = {}
   const handleShortcuts = async e => {
     pressedKeys[e.code] = e.type === 'keydown'
+
+    // Open search box when pressing: Ctrl-S on Mac or Alt-S on Win
     if ((isMac && pressedKeys.ControlLeft && pressedKeys.KeyS) || (!isMac && pressedKeys.AltLeft && pressedKeys.KeyS)) {
       await toggleSearch()
     }
@@ -57,14 +59,14 @@
       Pen
     </span>
     <div class="flex items-center">
-      <span tabindex="0" on:click={openNewNote} on:keyup={whenEnter(openNewNote)} class="icon-create w2 tc pointer"></span>
+      <span tabindex="0" on:click={openNewNote} on:keyup={whenEnter(openNewNote)} class="dim icon-create w2 tc pointer"></span>
       {#if $displayedNotes.length > 0}
-        <span tabindex="0" on:click={toggleSearch} on:keyup={whenEnter(toggleSearch)} class="icon-search w2 tc pointer {$showSearch ? 'blue' : ''}"></span>
-        <span tabindex="0" on:click={toggleActions} on:keyup={whenEnter(toggleActions)} class="icon-config w2 tc pointer {$showActions ? 'blue' : ''}"></span>
+        <span tabindex="0" on:click={toggleSearch} on:keyup={whenEnter(toggleSearch)} class="dim icon-search w2 tc pointer {$showSearch ? 'blue' : ''}"></span>
+        <span tabindex="0" on:click={toggleActions} on:keyup={whenEnter(toggleActions)} class="dim icon-config w2 tc pointer {$showActions ? 'blue' : ''}"></span>
       {/if}
       <span class="dib br b--black h1 ml2 mr2"></span>
-      <span tabindex="0" on:click={configUser}  on:keyup={configUser} class="icon-user w2 tc pointer"></span>
-      <span tabindex="0" on:click={user.logout}  on:keyup={whenEnter(user.logout)} class="icon-power w2 tc pointer"></span>
+      <span tabindex="0" on:click={configUser}  on:keyup={whenEnter(configUser)} class="dim icon-user w2 tc pointer"></span>
+      <span tabindex="0" on:click={user.logout}  on:keyup={whenEnter(user.logout)} class="dim icon-power w2 tc pointer"></span>
     </div>
   </h2>
   {#if $showSearch}
@@ -80,7 +82,7 @@
         aria-describedby="name-desc"
         autocomplete="off" />
       <span
-        on:click={clearKeyword}
+        on:click={toggleSearch}
         tabindex="0" 
         class="icon-x w2 tc pointer">
       </span>

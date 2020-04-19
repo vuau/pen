@@ -5,8 +5,8 @@
 
   let pin = $user.config ? $user.config.pin : ''
 
-  function onSubmit () {
-    user.updateConfig({ pin })
+  async function onSubmit () {
+    await user.updateConfig({ pin })
     $modal.onClose()
   }
 </script>
