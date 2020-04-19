@@ -3,7 +3,7 @@
   import { push } from 'svelte-spa-router'
   import SimpleMirror from 'simplemirror'
 
-  import { updateNote, notes } from './stores.js'
+  import { notes } from './stores.js'
   import commands from './editorCommands.js'
   import { debounce, whenEsc } from './utils.js'
 
@@ -19,7 +19,7 @@
   onMount(() => {
     if (id) {
       unsubscribe = notes.subscribe((noteItems) => {
-        const editingNote = noteItems.find((n) => n.id === id)
+        const editingNote = noteItems[id]
         if (editingNote) {
           title = editingNote.title
           content = editingNote.content
@@ -53,7 +53,7 @@
   }
 
   const autosave = debounce(() => {
-    updateNote({
+    notes.updateNote({
       ...(id && { id }),
       title: title || 'No title',
       content: content || ''
@@ -86,7 +86,7 @@
         on:keyup={autosave}
         id="title"
         placeholder="Title"
-        class="input-reset outline-transparent h3 f4 br0 bn pv3 mr2 db w-100"
+        class="input-reset outline-transparent h3 f4 br0 bn pv3 ph2 mr2 db w-100"
         type="text"
         aria-describedby="name-desc"
         autocomplete="off" />

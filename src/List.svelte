@@ -1,19 +1,13 @@
 <script>
   import { tick, onMount } from 'svelte'
   import { push } from 'svelte-spa-router'
-  import { showActions, showSearch, searchKeyword, notes, user } from './stores.js'
+  import { modal, showActions, showSearch, searchKeyword, displayedNotes, user } from './stores.js'
   import ListItem from './ListItem.svelte'
   import { debounce, whenEsc, whenEnter } from './utils.js'
+  import ConfigUserModal from './modals/ConfigUser.svelte'
 
   const isMac = typeof navigator !== 'undefined' ? /Mac/.test(navigator.platform) : false
   let searchInput
-
-  $: displayedNotes = $notes.filter(({ title, content }) => {
-    if ($searchKeyword) {
-      return title.toLowerCase().includes($searchKeyword.toLowerCase()) || content.toLowerCase().includes($searchKeyword.toLowerCase())
-    }
-    return true
-  })
 
   function openNewNote () {
     push('/notes/new')
@@ -21,6 +15,16 @@
 
   function toggleActions () {
     showActions.update(f => !f)
+  }
+
+  function configUser () {
+    modal.set({
+      title: 'Account',
+      content: ConfigUserModal,
+      onClose: () => {
+        modal.set(null)
+      }
+    })
   }
 
   async function toggleSearch () {
@@ -39,6 +43,8 @@
   const pressedKeys = {}
   const handleShortcuts = async e => {
     pressedKeys[e.code] = e.type === 'keydown'
+
+    // Open search box when pressing: Ctrl-S on Mac or Alt-S on Win
     if ((isMac && pressedKeys.ControlLeft && pressedKeys.KeyS) || (!isMac && pressedKeys.AltLeft && pressedKeys.KeyS)) {
       await toggleSearch()
     }
@@ -53,13 +59,14 @@
       Pen
     </span>
     <div class="flex items-center">
-      <span tabindex="0" on:click={openNewNote} on:keyup={whenEnter(openNewNote)} class="icon-create w2 tc pointer"></span>
-      {#if $notes.length > 0}
-        <span tabindex="0" on:click={toggleSearch} on:keyup={whenEnter(toggleSearch)} class="icon-search w2 tc pointer {$showSearch ? 'blue' : ''}"></span>
-        <span tabindex="0" on:click={toggleActions} on:keyup={whenEnter(toggleActions)} class="icon-config w2 tc pointer {$showActions ? 'blue' : ''}"></span>
+      <span tabindex="0" on:click={openNewNote} on:keyup={whenEnter(openNewNote)} class="dim icon-create w2 tc pointer"></span>
+      {#if $displayedNotes.length > 0}
+        <span tabindex="0" on:click={toggleSearch} on:keyup={whenEnter(toggleSearch)} class="dim icon-search w2 tc pointer {$showSearch ? 'blue' : ''}"></span>
+        <span tabindex="0" on:click={toggleActions} on:keyup={whenEnter(toggleActions)} class="dim icon-config w2 tc pointer {$showActions ? 'blue' : ''}"></span>
       {/if}
       <span class="dib br b--black h1 ml2 mr2"></span>
-      <span tabindex="0" on:click={user.logout}  on:keyup={whenEnter(user.logout)} class="icon-power w2 tc pointer"></span>
+      <span tabindex="0" on:click={configUser}  on:keyup={whenEnter(configUser)} class="dim icon-user w2 tc pointer"></span>
+      <span tabindex="0" on:click={user.logout}  on:keyup={whenEnter(user.logout)} class="dim icon-power w2 tc pointer"></span>
     </div>
   </h2>
   {#if $showSearch}
@@ -75,15 +82,15 @@
         aria-describedby="name-desc"
         autocomplete="off" />
       <span
-        on:click={clearKeyword}
+        on:click={toggleSearch}
         tabindex="0" 
         class="icon-x w2 tc pointer">
       </span>
     </div>
   {/if}
-  {#if $notes.length > 0}
+  {#if $displayedNotes.length > 0}
     <ul class="list ph2 ph0-ns mt0 overflow-x-hidden">
-      {#each displayedNotes as {title, id}}
+      {#each $displayedNotes as {title, id}}
         <ListItem {title} {id}></ListItem>
       {/each}
     </ul>
