@@ -1,9 +1,10 @@
 <script>
   import { tick, onMount } from 'svelte'
   import { push } from 'svelte-spa-router'
-  import { showActions, showSearch, searchKeyword, displayedNotes, user } from './stores.js'
+  import { modal, showActions, showSearch, searchKeyword, displayedNotes, user } from './stores.js'
   import ListItem from './ListItem.svelte'
   import { debounce, whenEsc, whenEnter } from './utils.js'
+  import ConfigUserModal from './modals/ConfigUser.svelte'
 
   const isMac = typeof navigator !== 'undefined' ? /Mac/.test(navigator.platform) : false
   let searchInput
@@ -17,6 +18,13 @@
   }
 
   function configUser () {
+    modal.set({
+      title: 'Account',
+      content: ConfigUserModal,
+      onClose: () => {
+        modal.set(null)
+      }
+    })
   }
 
   async function toggleSearch () {

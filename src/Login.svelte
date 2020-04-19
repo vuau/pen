@@ -4,20 +4,19 @@
 
   let username, password, isRegister, isLoading
 
-  function onSubmit () {
+  async function onSubmit () {
     if (isLoading) return
     isLoading = true
-    const cb = msg => {
-      if (msg) {
-        alert(msg)
-      }
-      isLoading = false
-    }
+    let err 
     if (isRegister) {
-      user.createUser(username, password, cb)
+      err = await user.createUser(username, password)
     } else {
-      user.login(username, password, cb)
+      err = await user.login(username, password)
     }
+    if (err) {
+      alert(err)
+    }
+    isLoading = false
   }
 
   function toggle () {
