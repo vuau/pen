@@ -1,9 +1,11 @@
 <script>
+  import { onMount } from 'svelte'
   import { push } from 'svelte-spa-router'
   import { user, modal } from '../stores.js'
   import { whenEnter } from '../utils.js'
 
   let pin
+  let inputEl
 
   async function onSubmit () {
     let err = await user.loginWithPin(pin)
@@ -18,12 +20,16 @@
     localStorage.removeItem('auth')
     location.reload()
   }
+
+  onMount(() => {
+    if (inputEl) inputEl.focus()
+  })
 </script>
 
 <form on:submit|preventDefault class="black-80">
   <div class="measure">
     <label for="pin" class="f6 b db mb2">Pin Code</label>
-    <input type="number" bind:value={pin} on:keyup={whenEnter(onSubmit)} id="pin" class="input-reset ba b--black-20 pa2 mb2 db w-100"
+    <input type="number" bind:this={inputEl} bind:value={pin} on:keyup={whenEnter(onSubmit)} id="pin" class="input-reset ba b--black-20 pa2 mb2 db w-100"
     aria-describedby="pin-desc" />
     <small id="pin-desc" class="f6 black-60 db mb2">
       You can find your Pin code in the account setting

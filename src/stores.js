@@ -94,10 +94,11 @@ export const user = (function createUserStore () {
     gunUser
       .get('config')
       .not(async function () {
-        const defaultConfig = await SEA.encrypt(getDefaultConfig(), salt)
-        gunUser.get('config').put(defaultConfig, () => {
-          update(user => ({ ...user, config: defaultConfig }))
-        })
+        const defaultConfig = getDefaultConfig()
+        const encryptedConfig = await SEA.encrypt(defaultConfig, salt)
+        gunUser.get('config').put(encryptedConfig)
+        update(user => ({ ...user, config: encryptedConfig }))
+        await saveAuthInfo({ user, pass }, defaultConfig.pin)
       })
       .on(async (configValue) => {
         const config = await SEA.decrypt(configValue, salt)
