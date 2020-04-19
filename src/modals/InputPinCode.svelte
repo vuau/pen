@@ -1,4 +1,5 @@
 <script>
+  import { push } from 'svelte-spa-router'
   import { user, modal } from '../stores.js'
   import { whenEnter } from '../utils.js'
 
@@ -15,7 +16,7 @@
 
   function onLogin () {
     localStorage.removeItem('auth')
-    location.href = '/'
+    location.reload()
   }
 </script>
 
