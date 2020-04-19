@@ -53,7 +53,7 @@ export const notes = (function createNoteStore () {
       title: /^SEA{/g.test(note.title)
         ? await SEA.decrypt(note.title, salt)
         : note.title,
-      content: /^SEA{/g.test(note.title)
+      content: /^SEA{/g.test(note.content)
         ? await SEA.decrypt(note.content, salt)
         : note.content
     }
