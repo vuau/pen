@@ -97,21 +97,21 @@ export const user = (function createUserStore () {
         const defaultConfig = getDefaultConfig()
         const encryptedConfig = await SEA.encrypt(defaultConfig, salt)
         gunUser.get('config').put(encryptedConfig)
-        update(user => ({ ...user, config: encryptedConfig }))
+        update((user) => ({ ...user, config: encryptedConfig }))
         await saveAuthInfo({ user, pass }, defaultConfig.pin)
       })
       .on(async (configValue) => {
         const config = await SEA.decrypt(configValue, salt)
         if (!config) return
-        update(user => ({ ...user, config }))
+        update((user) => ({ ...user, config }))
         await saveAuthInfo({ user, pass }, config.pin)
       })
-    update(user => ({ ...user, isLoggedIn: true }))
+    update((user) => ({ ...user, isLoggedIn: true }))
   }
 
   const createUser = async (user, pass) => {
-    return await new Promise(resolve => {
-      gunUser.create(user, pass, async ack => {
+    return await new Promise((resolve) => {
+      gunUser.create(user, pass, async (ack) => {
         if (ack.err) return resolve(ack.err)
         return await login(user, pass)
       })
@@ -119,8 +119,8 @@ export const user = (function createUserStore () {
   }
 
   const login = async (user, pass) => {
-    return await new Promise(resolve => {
-      gunUser.auth(user, pass, ack => {
+    return await new Promise((resolve) => {
+      gunUser.auth(user, pass, (ack) => {
         if (ack.err) return resolve(ack.err)
         resolve()
         finishLogin({ user, pass, ack })
@@ -155,6 +155,18 @@ export const user = (function createUserStore () {
   }
 })()
 
+function compareTitle (a, b) {
+  var titleA = a.title.toUpperCase()
+  var titleB = b.title.toUpperCase()
+  if (titleA < titleB) {
+    return -1
+  }
+  if (titleA > titleB) {
+    return 1
+  }
+  return 0
+}
+
 export const displayedNotes = derived(
   [notes, searchKeyword],
   ([$notes, $searchKeyword]) => {
@@ -173,6 +185,6 @@ export const displayedNotes = derived(
         arr.push({ id, title, content })
       }
     }
-    return arr
+    return arr.sort(compareTitle)
   }
 )
