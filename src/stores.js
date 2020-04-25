@@ -20,10 +20,10 @@ export const modal = writable(null)
 /* NOTES */
 export const notes = (function createNoteStore () {
   const { subscribe, update, set } = writable({})
-  const updateToStore = ({ id, title, content }) => {
+  const updateToStore = ({ id, title, content }, isDeleted) => {
     update((notes) => ({
       ...notes,
-      [id]: { title, content }
+      [id]: !isDeleted && { title, content }
     }))
   }
 
@@ -33,7 +33,10 @@ export const notes = (function createNoteStore () {
       content: await SEA.encrypt(content, salt)
     }
     if (id) {
-      return await gunNotes.get(id).put(data).then()
+      return await gunNotes
+        .get(id)
+        .put(data)
+        .then()
     } else {
       return await gunNotes.set(data).then()
     }
@@ -45,8 +48,7 @@ export const notes = (function createNoteStore () {
 
   const listen = async function (note, id) {
     if (!note) {
-      // maybe deleted or bad data
-      update((notes) => notes.filter((n) => n.id !== id))
+      updateToStore({ id }, true)
       return
     }
     const data = {
@@ -181,10 +183,10 @@ export const displayedNotes = derived(
         ) {
           arr.push({ id, title, content })
         }
-      } else {
+      } else if (title) {
         arr.push({ id, title, content })
       }
     }
-    return arr.sort(compareTitle)
+    return arr.filter((note) => note).sort(compareTitle)
   }
 )

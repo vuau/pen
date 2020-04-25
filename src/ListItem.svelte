@@ -1,7 +1,7 @@
 <svelte:options immutable={true} />
 <script>
   import { push } from 'svelte-spa-router'
-  import { showActions, deleteNote } from './stores.js'
+  import { showActions, notes } from './stores.js'
   import { whenEnter } from './utils.js'
 
   export let id = null
@@ -13,13 +13,13 @@
 
   async function confirmDelete () {
     if (confirm(`Are you sure to delete "${title}"?`)) {
-      await deleteNote(id)
+      await notes.deleteNote(id)
     }
   }
 
   async function confirmPublish () {
-    if (confirm(`Are you sure to delete "${title}"?`)) {
-      await deleteNote(id)
+    if (confirm(`Are you sure to publish "${title}"?`)) {
+      /* await deleteNote(id) */
     }
   }
 </script>
