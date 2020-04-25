@@ -4,7 +4,7 @@
   import SimpleMirror from 'simplemirror'
 
   import { notes } from './stores.js'
-  import commands from './editorCommands.js'
+  import config from './editorCommands.js'
   import { debounce, whenEsc } from './utils.js'
 
   export let params = {}
@@ -48,7 +48,7 @@
         content = value
         autosave()
       },
-      commands
+      config
     })
   }
 

@@ -8,7 +8,7 @@ let gun
 if (process.env.NODE_ENV === 'production') {
   gun = Gun(['https://pensync.glitch.me/gun'])
 } else {
-  gun = Gun(['https://gun-us.herokuapp.com/gun'])
+  gun = Gun()
   window.gun = gun
 }
 

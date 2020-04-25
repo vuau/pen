@@ -1,5 +1,3 @@
-import SimpleMirror from 'simplemirror'
-
 export default {
   undo: {
     shortcuts: ['Mod-z'],
@@ -24,59 +22,40 @@ export default {
   h1: {
     text: 'H1',
     className: 'avenir',
-    inputRule: SimpleMirror.builtInInputRules.headingRule
+    inputRule: /^#\s/
   },
   h2: {
     text: 'H2',
-    className: 'avenir'
+    className: 'avenir',
+    inputRule: /^##\s/
   },
   h3: {
-    text: 'H3'
+    text: 'H3',
+    inputRule: /^###\s/
   },
   h4: {
     text: 'H4',
-    className: 'avenir'
+    className: 'avenir',
+    inputRule: /^####\s/
   },
   orderedList: {
     className: 'icon-ordered-list',
-    inputRule: SimpleMirror.builtInInputRules.orderedListRule
+    inputRule: /^(\d+)\.\s$/
   },
   unorderedList: {
     className: 'icon-unordered-list',
-    inputRule: SimpleMirror.builtInInputRules.unorderedListRule
+    inputRule: /^\s*([-+*])\s$/
   },
   indent: {
-    className: 'icon-indent',
-    shortcuts: ['Tab']
+    className: 'icon-indent'
   },
   outdent: {
-    className: 'icon-outdent',
-    shortcuts: ['Shift-Tab']
+    className: 'icon-outdent'
   },
   quote: {
-    className: 'icon-quote',
-    inputRule: SimpleMirror.builtInInputRules.quoteRule
+    className: 'icon-quote'
   },
   code: {
-    className: 'icon-code',
-    inputRule: SimpleMirror.builtInInputRules.codeRule
-  },
-  enter: {
-    shortcuts: ['Enter']
-  },
-  break: {
-    shortcuts: ['Shift-Enter', 'Ctrl-Enter']
-  },
-  exit: {
-    shortcuts: ['Mod-Enter']
-  },
-  backspace: {
-    shortcuts: ['Backspace', 'Mod-Backspace']
-  },
-  delete: {
-    shortcuts: ['Delete', 'Mod-Delete']
-  },
-  selectAll: {
-    shortcuts: ['Mod-a']
+    className: 'icon-code'
   }
 }
