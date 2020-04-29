@@ -10,6 +10,7 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   gun = Gun()
   window.gun = gun
+  localStorage.clear()
 }
 
 const gunUser = gun.user()
