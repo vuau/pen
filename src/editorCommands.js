@@ -53,9 +53,11 @@ export default {
     className: 'icon-outdent'
   },
   quote: {
-    className: 'icon-quote'
+    className: 'icon-quote',
+    inputRule: /^\s*>\s$/
   },
   code: {
-    className: 'icon-code'
+    className: 'icon-code',
+    inputRule: /^```$/
   }
 }

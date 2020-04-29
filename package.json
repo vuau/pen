@@ -34,7 +34,7 @@
     "postcss-nested": "^4.2.1",
     "postcss-preset-env": "^6.7.0",
     "regenerator-runtime": "^0.13.5",
-    "simplemirror": "^1.0.9",
+    "simplemirror": "^1.0.10",
     "standard": "^14.3.3",
     "svelte": "^3.20.1",
     "svelte-spa-router": "^2.1.0",
