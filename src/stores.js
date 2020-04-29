@@ -83,6 +83,7 @@ export const user = (function createUserStore () {
     }
     return null
   }
+
   const saveAuthInfo = async ({ user, pass }, pin) => {
     const authEncrypted = await SEA.encrypt({ user, pass }, pin)
     localStorage.setItem('auth', authEncrypted)
@@ -111,29 +112,35 @@ export const user = (function createUserStore () {
     update((user) => ({ ...user, isLoggedIn: true }))
   }
 
-  const createUser = async (user, pass) => {
-    return await new Promise((resolve) => {
-      gunUser.create(user, pass, async (ack) => {
-        if (ack.err) return resolve(ack.err)
-        return await login(user, pass)
+  const createUser = (user, pass) =>
+    new Promise((resolve) => {
+      gunUser.create(user, pass, (ack) => {
+        if (ack.err) {
+          resolve(ack.err)
+          return
+        }
+        return login(user, pass)
       })
     })
-  }
 
-  const login = async (user, pass) => {
-    return await new Promise((resolve) => {
+  const login = (user, pass) =>
+    new Promise((resolve) => {
       gunUser.auth(user, pass, (ack) => {
-        if (ack.err) return resolve(ack.err)
-        resolve()
+        if (ack.err) {
+          resolve(ack.err)
+          return
+        }
         finishLogin({ user, pass, ack })
+        resolve()
       })
     })
-  }
+
   const logout = () => {
     gunUser.leave()
     set({ isLoggedIn: false })
     localStorage.removeItem('auth')
   }
+
   const loginWithPin = async function (pin) {
     const authInfo = await getAuthInfo(pin)
     if (authInfo) {
