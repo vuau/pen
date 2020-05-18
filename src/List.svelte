@@ -77,7 +77,7 @@
         on:keyup={whenEsc(toggleSearch)}
         tabindex="0" 
         placeholder="Type to search..."
-        class="input-reset outline-transparent br0 bn pa2 w-100"
+        class="input-reset outline-transparent br0 bn ph2 pv3 w-100"
         type="text"
         aria-describedby="name-desc"
         autocomplete="off" />

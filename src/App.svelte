@@ -44,7 +44,7 @@
 </main>
 
 {#if $modal}
-  <div class="sans-serif absolute top-0 left-0 right-0 bottom-0 z-1 flex items-center justify-center bg-black-10">
+  <div class="sans-serif fixed top-0 left-0 right-0 bottom-0 z-1 flex items-center justify-center bg-black-10">
     <div class="bg-white relative pa2">
       {#if !$modal.noXButton}
         <div on:click={$modal.onClose} class="absolute top-0 right-0 white bg-dark-gray w2 pvs tc flex items-center">
