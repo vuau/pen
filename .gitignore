@@ -2,3 +2,5 @@ node_modules/
 dist/
 .cache
 .env
+
+.DS_Store
