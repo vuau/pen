@@ -1,5 +1,6 @@
 import { writable, derived } from 'svelte/store'
 import { gunUser, SEA } from './contexts'
+import { v4 as uuidv4 } from 'uuid'
 
 let gunNotes
 let salt
@@ -32,14 +33,9 @@ export const notes = (function createNoteStore () {
       title: await SEA.encrypt(title, salt),
       content: await SEA.encrypt(content, salt)
     }
-    if (id) {
-      return await gunNotes
-        .get(id)
-        .put(data)
-        .then()
-    } else {
-      return await gunNotes.set(data).then()
-    }
+    id = id || uuidv4()
+    await gunNotes.get(id).put(data).then()
+    return id
   }
 
   const deleteNote = async function (id) {

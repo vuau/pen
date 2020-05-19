@@ -8,7 +8,7 @@ let gun
 if (process.env.NODE_ENV === 'production') {
   gun = Gun(['https://pensync.glitch.me/gun'])
 } else {
-  gun = Gun()
+  gun = Gun(['http://localhost:8765/gun'])
   window.gun = gun
   localStorage.clear()
 }

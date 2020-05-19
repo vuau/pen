@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "parcel src/index.html --port 5000",
+    "dev-server": "node node_modules/gun/examples/http.js",
+    "dev-client": "parcel src/index.html --port 5000",
+    "dev": "run-p dev-server dev-client",
     "clean-dist": "rimraf dist",
     "build-parcel": "parcel build src/index.html",
     "build-workbox": "workbox injectManifest workbox-config.js",

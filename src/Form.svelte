@@ -57,9 +57,9 @@
       ...(id && { id }),
       title: title || 'No title',
       content: content || ''
-    }).then((ack) => {
+    }).then(createdId => {
       if (!id) {
-        id = ack._['#']
+        id = createdId
       }
     })
   }, 500)
