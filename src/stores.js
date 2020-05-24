@@ -56,25 +56,34 @@ export const notes = (function createNoteStore () {
   }
 
   const moveNote = async function (noteId, currentFolderId, newFolderId) {
-    const noteData = await gunNotes.get(noteId).once()
+    const note = gunNotes.get(noteId)
+
+    if (newFolderId) {
+      await gunNotes
+        .get(newFolderId)
+        .get('children')
+        .get(noteId)
+        .put(note)
+        .then()
+    } else {
+      await gunNotes
+        .get(noteId)
+        .put(note)
+        .then()
+    }
+
     if (currentFolderId) {
-      gunNotes
+      await gunNotes
         .get(currentFolderId)
         .get('children')
         .get(noteId)
         .put(null)
+        .then()
     } else {
-      gunNotes.get(noteId).put(null)
-    }
-
-    if (newFolderId) {
-      gunNotes
-        .get(newFolderId)
-        .get('children')
+      await gunNotes
         .get(noteId)
-        .put(noteData)
-    } else {
-      gunNotes.get(noteId).put(noteData)
+        .put(null)
+        .then()
     }
   }
 
@@ -229,8 +238,8 @@ export const user = (function createUserStore () {
 })()
 
 function compareTitle (a, b) {
-  var titleA = a.title.toUpperCase()
-  var titleB = b.title.toUpperCase()
+  var titleA = a.title.toString().toUpperCase()
+  var titleB = b.title.toString().toUpperCase()
   if (titleA < titleB) {
     return -1
   }
