@@ -54,6 +54,7 @@
   }
 
   const autosave = debounce(() => {
+    if (!content && !title) return
     notes.updateNote({
       ...(id && { id }),
       ...(folderId && { folderId }),
