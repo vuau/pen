@@ -24,6 +24,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-hand:before {
+  content: "\e919";
+}
 .icon-x:before {
   content: "\e900";
 }
@@ -35,6 +38,9 @@
 }
 .icon-undo:before {
   content: "\e90f";
+}
+.icon-vote:before {
+  content: "\e91b";
 }
 .icon-bold:before {
   content: "\e902";
@@ -65,6 +71,9 @@
 }
 .icon-strikethrough:before {
   content: "\e908";
+}
+.icon-download:before {
+  content: "\e91a";
 }
 .icon-folder:before {
   content: "\e917";

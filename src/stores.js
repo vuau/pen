@@ -17,6 +17,7 @@ export const showActions = writable(false)
 export const showSearch = writable(false)
 export const searchKeyword = writable('')
 export const modal = writable(null)
+export const movingNote = writable(null)
 
 /* NOTES */
 export const notes = (function createNoteStore () {
@@ -54,12 +55,39 @@ export const notes = (function createNoteStore () {
     await gunNotes.get(id).put(null)
   }
 
+  const moveNote = async function (noteId, currentFolderId, newFolderId) {
+    const noteData = await gunNotes.get(noteId).once()
+    if (currentFolderId) {
+      gunNotes
+        .get(currentFolderId)
+        .get('children')
+        .get(noteId)
+        .put(null)
+    } else {
+      gunNotes.get(noteId).put(null)
+    }
+
+    if (newFolderId) {
+      gunNotes
+        .get(newFolderId)
+        .get('children')
+        .get(noteId)
+        .put(noteData)
+    } else {
+      gunNotes.get(noteId).put(noteData)
+    }
+  }
+
   const createFolder = async function (title, parentId) {
     if (parentId) {
-      return await gunNotes.get(parentId).get('children').get(uuidv4()).put({
-        title: await SEA.encrypt(title, salt),
-        type: 'folder'
-      })
+      return await gunNotes
+        .get(parentId)
+        .get('children')
+        .get(uuidv4())
+        .put({
+          title: await SEA.encrypt(title, salt),
+          type: 'folder'
+        })
     }
     await gunNotes.get(uuidv4()).put({
       title: await SEA.encrypt(title, salt),
@@ -104,6 +132,7 @@ export const notes = (function createNoteStore () {
     updateNote,
     createFolder,
     deleteNote,
+    moveNote,
     start
   }
 })()
