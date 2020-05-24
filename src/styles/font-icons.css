@@ -60,8 +60,17 @@
 .icon-quote:before {
   content: "\e907";
 }
+.icon-file:before {
+  content: "\e916";
+}
 .icon-strikethrough:before {
   content: "\e908";
+}
+.icon-folder:before {
+  content: "\e917";
+}
+.icon-create_folder:before {
+  content: "\e918";
 }
 .icon-config:before {
   content: "\e90d";

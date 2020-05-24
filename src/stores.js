@@ -21,25 +21,50 @@ export const modal = writable(null)
 /* NOTES */
 export const notes = (function createNoteStore () {
   const { subscribe, update, set } = writable({})
-  const updateToStore = ({ id, title, content }, isDeleted) => {
+  const updateToStore = ({ id, title, content, type }, isDeleted) => {
     update((notes) => ({
       ...notes,
-      [id]: !isDeleted && { title, content }
+      [id]: !isDeleted && { title, content, type }
     }))
   }
 
-  const updateNote = async function ({ id, title, content }) {
+  const updateNote = async function ({ id, title, content, folderId }) {
     const data = {
       title: await SEA.encrypt(title, salt),
       content: await SEA.encrypt(content, salt)
     }
     id = id || uuidv4()
-    await gunNotes.get(id).put(data).then()
+    if (folderId) {
+      await gunNotes
+        .get(folderId)
+        .get('children')
+        .get(id)
+        .put(data)
+        .then()
+    } else {
+      await gunNotes
+        .get(id)
+        .put(data)
+        .then()
+    }
     return id
   }
 
   const deleteNote = async function (id) {
     await gunNotes.get(id).put(null)
+  }
+
+  const createFolder = async function (title, parentId) {
+    if (parentId) {
+      return await gunNotes.get(parentId).get('children').get(uuidv4()).put({
+        title: await SEA.encrypt(title, salt),
+        type: 'folder'
+      })
+    }
+    await gunNotes.get(uuidv4()).put({
+      title: await SEA.encrypt(title, salt),
+      type: 'folder'
+    })
   }
 
   const listen = async function (note, id) {
@@ -53,16 +78,33 @@ export const notes = (function createNoteStore () {
         : note.title,
       content: /^SEA{/g.test(note.content)
         ? await SEA.decrypt(note.content, salt)
-        : note.content
+        : note.content,
+      type: note.type
     }
     updateToStore({ ...data, id })
+  }
+
+  const start = function (folderId) {
+    gunNotes = gunUser.get('notes')
+    set({})
+    if (!folderId) {
+      gunNotes.map().on(notes.listen)
+    } else {
+      gunNotes
+        .get(folderId)
+        .get('children')
+        .map()
+        .on(listen)
+    }
   }
   return {
     subscribe,
     set,
     listen,
     updateNote,
-    deleteNote
+    createFolder,
+    deleteNote,
+    start
   }
 })()
 
@@ -86,9 +128,6 @@ export const user = (function createUserStore () {
   }
 
   const finishLogin = ({ user, pass, ack }) => {
-    gunNotes = gunUser.get('notes')
-    gunNotes.map().on(notes.listen)
-    notes.set({})
     salt = ack.sea
     gunUser
       .get('config')
@@ -176,7 +215,9 @@ export const displayedNotes = derived(
   [notes, searchKeyword],
   ([$notes, $searchKeyword]) => {
     const arr = []
-    for (const [id, { title, content }] of Object.entries($notes)) {
+    for (const [id, { title, content, type, children }] of Object.entries(
+      $notes
+    )) {
       if ($searchKeyword) {
         if (
           (title &&
@@ -184,10 +225,10 @@ export const displayedNotes = derived(
           (content &&
             content.toLowerCase().includes($searchKeyword.toLowerCase()))
         ) {
-          arr.push({ id, title, content })
+          arr.push({ id, title, content, type, children })
         }
       } else if (title) {
-        arr.push({ id, title, content })
+        arr.push({ id, title, content, type, children })
       }
     }
     return arr.filter((note) => note).sort(compareTitle)

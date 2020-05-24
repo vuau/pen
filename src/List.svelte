@@ -1,16 +1,48 @@
 <script>
   import { tick, onMount } from 'svelte'
-  import { push } from 'svelte-spa-router'
-  import { modal, showActions, showSearch, searchKeyword, displayedNotes, user } from './stores.js'
+  import { push, pop } from 'svelte-spa-router'
+  import { modal, showActions, showSearch, searchKeyword, displayedNotes, user, notes } from './stores.js'
   import ListItem from './ListItem.svelte'
   import { debounce, whenEsc, whenEnter } from './utils.js'
   import ConfigUserModal from './modals/ConfigUser.svelte'
+  import NewFolderModal from './modals/NewFolder.svelte'
+
+  export let params = {}
 
   const isMac = typeof navigator !== 'undefined' ? /Mac/.test(navigator.platform) : false
+
   let searchInput
+  let folderId
+  let unsubscribe
+  let createLink
+
+  $: {
+    folderId = params.id
+    createLink = `/notes/new${folderId ? `/${folderId}`: ''}`
+    notes.start(folderId)
+  }
+
+  function goToRoot () {
+    push('/')
+  }
+
+  function goUpOneLevel () {
+    pop()
+  }
 
   function openNewNote () {
-    push('/notes/new')
+    push(createLink)
+  }
+
+  function openNewFolder () {
+    modal.set({
+      title: 'New folder',
+      parentId: folderId,
+      content: NewFolderModal,
+      onClose: () => {
+        modal.set(null)
+      }
+    })
   }
 
   function toggleActions () {
@@ -55,11 +87,12 @@
 
 <section class="mw7 center">
   <h2 class="h3 {$showSearch ? '' : 'sticky'} athelas ma0 ph2 pv3 ph0-ns bb b--near-black flex items-center justify-between">
-    <span>
+    <span on:click={goToRoot} class="pointer">
       Pen
     </span>
     <div class="flex items-center">
       <span tabindex="0" on:click={openNewNote} on:keyup={whenEnter(openNewNote)} class="dim icon-create w2 tc pointer"></span>
+      <span tabindex="0" on:click={openNewFolder} on:keyup={whenEnter(openNewFolder)} class="dim icon-create_folder w2 tc pointer"></span>
       {#if $displayedNotes.length > 0}
         <span tabindex="0" on:click={toggleSearch} on:keyup={whenEnter(toggleSearch)} class="dim icon-search w2 tc pointer {$showSearch ? 'blue' : ''}"></span>
         <span tabindex="0" on:click={toggleActions} on:keyup={whenEnter(toggleActions)} class="dim icon-config w2 tc pointer {$showActions ? 'blue' : ''}"></span>
@@ -88,15 +121,25 @@
       </span>
     </div>
   {/if}
+  {#if folderId}
+    <div
+      tabindex="0"
+      on:click={goUpOneLevel}
+      on:keyup={whenEnter(goUpOneLevel)}
+      class="note-item pointer flex items-center justify-between lh-copy pv3 ph2 ph0-ns ba bl-0 bt-0 br-0 b--dotted b--black-30"
+    >
+      <span>/..</span>
+    </div>
+  {/if}
   {#if $displayedNotes.length > 0}
     <ul class="list ph2 ph0-ns mt0 overflow-x-hidden">
-      {#each $displayedNotes as {title, id}}
-        <ListItem {title} {id}></ListItem>
+      {#each $displayedNotes as {title, id, type}}
+        <ListItem {title} {id} {type}></ListItem>
       {/each}
     </ul>
   {:else}
-    <small class="f6 black-60 db ph2 ph0-ns pt4">
-      There is no notes. <a href="/#/notes/new" class="blue link">Create one?</a>
+    <small class="f6 black-60 db ph2 ph0-ns pt3">
+      There is no notes. <a href={'/#' + createLink} class="blue link">Create one?</a>
     </small>
   {/if}
 </section>

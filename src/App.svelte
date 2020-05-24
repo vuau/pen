@@ -11,7 +11,8 @@
 
   const routes = {
     '/': List,
-    '/notes/new': Form,
+    '/notes/folder/:id': List,
+    '/notes/new/:folderId?': Form,
     '/notes/:id': Form
   }
 
@@ -33,15 +34,17 @@
   })
 </script>
 
-<main class="w-100 sans-serif bg-white">
-  {#if $user.isLoggedIn}
+{#if $user.isLoggedIn}
+  <main class="w-100 sans-serif bg-white">
     <Router {routes} />
-  {:else}
+  </main>
+{:else}
+  <main class="w-100 h-100 sans-serif bg-white">
     {#if !isProcessing}
       <Login />
     {/if}
-  {/if}
-</main>
+  </main>
+{/if}
 
 {#if $modal}
   <div class="sans-serif fixed top-0 left-0 right-0 bottom-0 z-1 flex items-center justify-center bg-black-10">

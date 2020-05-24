@@ -1,6 +1,6 @@
 <script>
   import { onMount, onDestroy } from 'svelte'
-  import { push } from 'svelte-spa-router'
+  import { pop } from 'svelte-spa-router'
   import SimpleMirror from 'simplemirror'
 
   import { notes } from './stores.js'
@@ -11,6 +11,7 @@
 
   let title, content
   let id = params.id
+  let folderId = params.folderId
   let editor
   let unsubscribe
   let showFormatTool = false
@@ -55,6 +56,7 @@
   const autosave = debounce(() => {
     notes.updateNote({
       ...(id && { id }),
+      ...(folderId && { folderId }),
       title: title || 'No title',
       content: content || ''
     }).then(createdId => {
@@ -65,7 +67,8 @@
   }, 500)
 
   function goToList () {
-    push('/')
+    /* push('/') */
+    pop()
   }
 
   function toggleFormatTool () {
