@@ -7,16 +7,17 @@
   export let id = null
   export let title = ''
   export let type = null
-  export let folderId = null
+  export let path = ''
 
   $: isFolder = type === 'folder'
 
   const viewNote = () => {
-    push(`/notes/${id}`)
+    push(`/notes/${id}/${path}`)
   }
 
   const viewFolder = () => {
-    push(`/notes/folder/${id}`)
+    let newPath = [...path.split('_').filter(p => p !== ''), id]
+    push(`/notes/folder/${newPath.join('_')}`)
   }
 
   async function confirmDelete () {
@@ -34,14 +35,14 @@
   function selectToMoveNote () {
     movingNote.set({
       noteId: id,
-      fromFolder: folderId
+      fromPath: path
     })
   }
 
   function moveNote() {
     if (type === 'folder') {
-      notes.moveNote($movingNote.noteId, $movingNote.fromFolder, id)
-      movingNote.set(null)
+      const toPath = [...path.split('_').filter(p => p !== ''), id].join('_')
+      notes.moveNote($movingNote.noteId, $movingNote.fromPath, toPath)
     }
   }
 </script>

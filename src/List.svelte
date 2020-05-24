@@ -1,7 +1,7 @@
 <script>
   import { tick, onMount } from 'svelte'
   import { push, pop } from 'svelte-spa-router'
-  import { modal, showActions, showSearch, searchKeyword, displayedNotes, user, notes } from './stores.js'
+  import { modal, showActions, showSearch, searchKeyword, displayedNotes, user, notes, movingNote } from './stores.js'
   import ListItem from './ListItem.svelte'
   import { debounce, whenEsc, whenEnter } from './utils.js'
   import ConfigUserModal from './modals/ConfigUser.svelte'
@@ -12,14 +12,15 @@
   const isMac = typeof navigator !== 'undefined' ? /Mac/.test(navigator.platform) : false
 
   let searchInput
-  let folderId
+  let path
   let unsubscribe
   let createLink
 
   $: {
-    folderId = params.id
-    createLink = `/notes/new${folderId ? `/${folderId}`: ''}`
-    notes.start(folderId)
+    path = params.path
+    // need decompress
+    createLink = `/notes/new${path ? `/${path}`: ''}`
+    notes.start(path)
   }
 
   function goToRoot () {
@@ -37,7 +38,7 @@
   function openNewFolder () {
     modal.set({
       title: 'Create folder',
-      parentId: folderId,
+      path: path,
       content: NewFolderModal,
       onClose: () => {
         modal.set(null)
@@ -47,6 +48,7 @@
 
   function toggleActions () {
     showActions.update(f => !f)
+    movingNote.set(null)
   }
 
   function configUser () {
@@ -121,7 +123,7 @@
       </span>
     </div>
   {/if}
-  {#if folderId}
+  {#if path}
     <div
       tabindex="0"
       on:click={goUpOneLevel}
@@ -134,7 +136,7 @@
   {#if $displayedNotes.length > 0}
     <ul class="list ph2 ph0-ns mt0 overflow-x-hidden">
       {#each $displayedNotes as {title, id, type}}
-        <ListItem {title} {id} {type} {folderId}></ListItem>
+        <ListItem {title} {id} {type} {path}></ListItem>
       {/each}
     </ul>
   {:else}

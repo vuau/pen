@@ -22,46 +22,74 @@ export const movingNote = writable(null)
 /* NOTES */
 export const notes = (function createNoteStore () {
   const { subscribe, update, set } = writable({})
-  const updateToStore = ({ id, title, content, type }, isDeleted) => {
-    update((notes) => ({
-      ...notes,
-      [id]: !isDeleted && { title, content, type }
-    }))
+  const updateToStore = ({ id, ...data }, isDeleted) => {
+    update((notes) => {
+      if (isDeleted) {
+        delete notes[id]
+        return notes
+      }
+      return {
+        ...notes,
+        [id]: data
+      }
+    })
   }
 
-  const updateNote = async function ({ id, title, content, folderId }) {
+  const updateNote = async function ({ id, title, content, path = '' }) {
     const data = {
       title: await SEA.encrypt(title, salt),
       content: await SEA.encrypt(content, salt)
     }
     id = id || uuidv4()
-    if (folderId) {
-      await gunNotes
-        .get(folderId)
-        .get('children')
-        .get(id)
-        .put(data)
-        .then()
-    } else {
-      await gunNotes
-        .get(id)
-        .put(data)
-        .then()
-    }
+    const parts = path.split('_').filter((p) => p !== '')
+    let node = gunNotes
+    parts.forEach((id) => {
+      node = node.get(id).get('children')
+    })
+    await node
+      .get(id)
+      .put(data)
+      .then()
     return id
   }
 
-  const deleteNote = async function (id) {
-    await gunNotes.get(id).put(null)
+  const deleteNote = async function (id, path) {
+    // await gunNotes.get(id).put(null)
   }
 
-  const moveNote = async function (noteId, currentFolderId, newFolderId) {
-    const note = gunNotes.get(noteId)
+  const moveNote = async function (noteId, fromPath, toPath) {
+    let nodeFrom = gunNotes
+    fromPath
+      .split('_')
+      .filter((p) => p !== '')
+      .forEach((id) => {
+        nodeFrom = nodeFrom.get(id).get('children')
+      })
 
-    if (newFolderId) {
+    let nodeTo = gunNotes
+    toPath
+      .split('_')
+      .filter((p) => p !== '')
+      .forEach((id) => {
+        nodeTo = nodeTo.get(id).get('children')
+      })
+
+    const note = nodeFrom.get(noteId)
+
+    if (fromPath) {
+      await nodeFrom
+        .get(noteId)
+        .put(null)
+        .then()
+    } else {
       await gunNotes
-        .get(newFolderId)
-        .get('children')
+        .get(noteId)
+        .put(null)
+        .then()
+    }
+
+    if (toPath) {
+      await nodeTo
         .get(noteId)
         .put(note)
         .then()
@@ -72,31 +100,20 @@ export const notes = (function createNoteStore () {
         .then()
     }
 
-    if (currentFolderId) {
-      await gunNotes
-        .get(currentFolderId)
-        .get('children')
-        .get(noteId)
-        .put(null)
-        .then()
-    } else {
-      await gunNotes
-        .get(noteId)
-        .put(null)
-        .then()
-    }
+    movingNote.set(null)
   }
 
-  const createFolder = async function (title, parentId) {
-    if (parentId) {
-      return await gunNotes
-        .get(parentId)
-        .get('children')
-        .get(uuidv4())
-        .put({
-          title: await SEA.encrypt(title, salt),
-          type: 'folder'
-        })
+  const createFolder = async function (title, path) {
+    if (path) {
+      const parts = path.split('_')
+      let node = gunNotes
+      parts.forEach((id) => {
+        node = node.get(id).get('children')
+      })
+      return await node.get(uuidv4()).put({
+        title: await SEA.encrypt(title, salt),
+        type: 'folder'
+      })
     }
     await gunNotes.get(uuidv4()).put({
       title: await SEA.encrypt(title, salt),
@@ -121,17 +138,18 @@ export const notes = (function createNoteStore () {
     updateToStore({ ...data, id })
   }
 
-  const start = function (folderId) {
+  const start = function (path) {
     gunNotes = gunUser.get('notes')
     set({})
-    if (!folderId) {
+    if (!path) {
       gunNotes.map().on(notes.listen)
     } else {
-      gunNotes
-        .get(folderId)
-        .get('children')
-        .map()
-        .on(listen)
+      const parts = path.split('_')
+      let node = gunNotes
+      parts.forEach((id) => {
+        node = node.get(id).get('children')
+      })
+      node.map().on(listen)
     }
   }
   return {

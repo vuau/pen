@@ -11,9 +11,9 @@
 
   const routes = {
     '/': List,
-    '/notes/folder/:id': List,
-    '/notes/new/:folderId?': Form,
-    '/notes/:id': Form
+    '/notes/folder/:path': List,
+    '/notes/new/:path?': Form,
+    '/notes/:id/:path?': Form
   }
 
   onMount(() => {

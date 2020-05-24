@@ -11,7 +11,7 @@
 
   let title, content
   let id = params.id
-  let folderId = params.folderId
+  let path = params.path
   let editor
   let unsubscribe
   let showFormatTool = false
@@ -57,7 +57,7 @@
     if (!content && !title) return
     notes.updateNote({
       ...(id && { id }),
-      ...(folderId && { folderId }),
+      ...(path && { path }),
       title: title || 'No title',
       content: content || ''
     }).then(createdId => {

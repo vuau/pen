@@ -14,7 +14,7 @@
   })
 
   async function onSubmit () {
-    await notes.createFolder(folderName, $modal.parentId)
+    await notes.createFolder(folderName, $modal.path)
     $modal.onClose()
   }
 </script>
