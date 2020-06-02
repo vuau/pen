@@ -54,7 +54,18 @@ export const notes = (function createNoteStore () {
   }
 
   const deleteNote = async function (id, path) {
-    // await gunNotes.get(id).put(null)
+    let node = gunNotes
+    if (path) {
+      path
+        .split('_')
+        .filter((p) => p !== '')
+        .forEach((id) => {
+          node = node.get(id).get('children')
+        })
+    } else {
+      node = node.get(id)
+    }
+    return await node.put(null)
   }
 
   const moveNote = async function (noteId, fromPath, toPath) {
