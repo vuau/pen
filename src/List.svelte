@@ -17,8 +17,8 @@
   let createLink
 
   $: {
+    notes.stop(path)
     path = params.path
-    // need decompress
     createLink = `/notes/new${path ? `/${path}`: ''}`
     notes.start(path)
   }

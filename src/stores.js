@@ -163,6 +163,16 @@ export const notes = (function createNoteStore () {
       node.map().on(listen)
     }
   }
+
+  const stop = function (path = '') {
+    let node = gunUser.get('notes')
+    const parts = path.split('_').filter((p) => p !== '')
+    parts.forEach((id) => {
+      node = node.get(id).get('children')
+    })
+    set({})
+    node.off()
+  }
   return {
     subscribe,
     set,
@@ -171,7 +181,8 @@ export const notes = (function createNoteStore () {
     createFolder,
     deleteNote,
     moveNote,
-    start
+    start,
+    stop
   }
 })()
 
