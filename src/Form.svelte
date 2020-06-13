@@ -56,9 +56,9 @@
   const autosave = debounce(() => {
     if (!content && !title) return
     notes.updateNote({
-      ...(id && { id }),
-      ...(path && { path }),
-      title: title || 'No title',
+      id,
+      path,
+      title,
       content: content || ''
     }).then(createdId => {
       if (!id) {
