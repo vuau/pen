@@ -11,7 +11,7 @@ const getDefaultConfig = () => {
   }
 }
 
-const getParentNode = (path) => {
+export const getParentNode = (path) => {
   const parts = (path || '').split('_').filter((p) => p !== '')
   let node = gunUser.get('notes')
   parts.forEach((id) => {
@@ -26,7 +26,7 @@ const encrypt = async (data) => ({
   content: await SEA.encrypt(data.content, salt)
 })
 
-const decrypt = async (data) => ({
+export const decrypt = async (data) => ({
   ...data,
   title: /^SEA{/g.test(data.title)
     ? await SEA.decrypt(data.title, salt)
@@ -42,6 +42,7 @@ export const showSearch = writable(false)
 export const searchKeyword = writable('')
 export const modal = writable(null)
 export const movingNote = writable(null)
+export const searchResults = writable([])
 
 /* NOTES */
 export const notes = (function createNoteStore () {
@@ -247,18 +248,18 @@ export const displayedNotes = derived(
     for (const [id, { title, content, type, children }] of Object.entries(
       $notes
     )) {
-      if ($searchKeyword) {
-        if (
-          (title &&
-            title.toLowerCase().includes($searchKeyword.toLowerCase())) ||
-          (content &&
-            content.toLowerCase().includes($searchKeyword.toLowerCase()))
-        ) {
-          arr.push({ id, title, content, type, children })
-        }
-      } else if (title) {
-        arr.push({ id, title, content, type, children })
-      }
+      // if ($searchKeyword) {
+      //   if (
+      //     (title &&
+      //       title.toLowerCase().includes($searchKeyword.toLowerCase())) ||
+      //     (content &&
+      //       content.toLowerCase().includes($searchKeyword.toLowerCase()))
+      //   ) {
+      //     arr.push({ id, title, content, type, children })
+      //   }
+      // } else if (title) {
+      arr.push({ id, title, content, type, children })
+      // }
     }
     return arr.filter((note) => note).sort(compareTitle)
   }

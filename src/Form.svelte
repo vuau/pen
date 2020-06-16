@@ -3,7 +3,8 @@
   import { pop } from 'svelte-spa-router'
   import SimpleMirror from 'simplemirror'
 
-  import { notes } from './stores.js'
+  import { gunUser } from './contexts.js'
+  import { notes, getParentNode, decrypt } from './stores.js'
   import config from './editorCommands.js'
   import { debounce, whenEsc } from './utils.js'
 
@@ -19,8 +20,8 @@
 
   onMount(() => {
     if (id) {
-      unsubscribe = notes.subscribe((noteItems) => {
-        const editingNote = noteItems[id]
+      getParentNode(path).get(id).once(async (data, id) => {
+        const editingNote = await decrypt(data)
         if (editingNote) {
           title = editingNote.title
           content = editingNote.content

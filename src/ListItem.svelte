@@ -12,7 +12,7 @@
   $: isFolder = type === 'folder'
 
   const viewNote = () => {
-    push(`/notes/${id}/${path}`)
+    push(`/notes/${id}/${path || ''}`)
   }
 
   const viewFolder = () => {

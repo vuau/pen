@@ -9,10 +9,13 @@ if (process.env.NODE_ENV === 'production') {
   gun = Gun(['https://pensync.glitch.me/gun'])
 } else {
   gun = Gun(['http://localhost:8765/gun'])
-  window.gun = gun
-  localStorage.clear()
 }
 
 const gunUser = gun.user()
+
+if (process.env.NODE_ENV !== 'production') {
+  window.gun = gun
+  window.gunUser = gunUser
+}
 
 export { gun, gunUser, SEA }

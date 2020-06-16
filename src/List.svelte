@@ -1,9 +1,12 @@
 <script>
-  import { tick, onMount } from 'svelte'
-  import { push, pop } from 'svelte-spa-router'
-  import { modal, showActions, showSearch, searchKeyword, displayedNotes, user, notes, movingNote } from './stores.js'
+  import {tick, onMount} from 'svelte'
+  import {push, pop} from 'svelte-spa-router'
+  import {
+    modal, showActions, showSearch, searchKeyword, displayedNotes, user, notes, movingNote, getParentNode,
+    decrypt, searchResults
+  } from './stores.js'
   import ListItem from './ListItem.svelte'
-  import { debounce, whenEsc, whenEnter } from './utils.js'
+  import {debounce, whenEsc, whenEnter} from './utils.js'
   import ConfigUserModal from './modals/ConfigUser.svelte'
   import NewFolderModal from './modals/NewFolder.svelte'
 
@@ -19,23 +22,23 @@
   $: {
     notes.stop(path)
     path = params.path
-    createLink = `/notes/new${path ? `/${path}`: ''}`
+    createLink = `/notes/new${path ? `/${path}` : ''}`
     notes.start(path)
   }
 
-  function goToRoot () {
+  function goToRoot() {
     push('/')
   }
 
-  function goUpOneLevel () {
+  function goUpOneLevel() {
     pop()
   }
 
-  function openNewNote () {
+  function openNewNote() {
     push(createLink)
   }
 
-  function openNewFolder () {
+  function openNewFolder() {
     modal.set({
       title: 'Create folder',
       path: path,
@@ -46,12 +49,12 @@
     })
   }
 
-  function toggleActions () {
+  function toggleActions() {
     showActions.update(f => !f)
     movingNote.set(null)
   }
 
-  function configUser () {
+  function configUser() {
     modal.set({
       title: 'Account',
       content: ConfigUserModal,
@@ -61,12 +64,38 @@
     })
   }
 
-  async function toggleSearch () {
+  async function toggleSearch() {
     showSearch.update(f => !f)
+    searchResults.set([])
     clearKeyword()
   }
 
-  async function clearKeyword () {
+  function doSearch(text, path) {
+    const node = getParentNode(path)
+    node.map().once(async (data, id) => {
+      if (!data) return
+      const decryptedData = await decrypt(data)
+      if (decryptedData.type === 'folder') {
+        let newPath = [...(path || '').split('_').filter(p => p !== ''), id].join('_')
+        doSearch(text, newPath)
+      } else {
+        if ((decryptedData.title && decryptedData.title.includes(text)) || (decryptedData.content && decryptedData.content.includes(text))) {
+          console.log('found', path, decryptedData)
+          searchResults.update(arr => ([
+            ...arr,
+            {id, ...decryptedData, path}
+          ]))
+        }
+      }
+    })
+  }
+
+  function search() {
+    searchResults.set([])
+    doSearch($searchKeyword)
+  }
+
+  async function clearKeyword() {
     searchKeyword.set('')
     await tick()
     if (searchInput) {
@@ -105,17 +134,23 @@
     </div>
   </h2>
   {#if $showSearch}
-    <div class="bb b--black-20 sticky flex items-center justify-between">
+    <div class="bg-light-gray bb b--black-20 sticky flex items-center justify-between">
       <input
         bind:this={searchInput}
         bind:value={$searchKeyword}
+        on:keyup={whenEnter(search)}
         on:keyup={whenEsc(toggleSearch)}
         tabindex="0" 
         placeholder="Type to search..."
-        class="input-reset outline-transparent br0 bn ph2 pv3 w-100"
+        class="input-reset bg-transparent outline-transparent br0 bn ph2 pv3 w-100"
         type="text"
         aria-describedby="name-desc"
         autocomplete="off" />
+      <span
+        on:click={search}
+        tabindex="0" 
+        class="icon-search w2 tc pointer">
+      </span>
       <span
         on:click={toggleSearch}
         tabindex="0" 
@@ -123,25 +158,33 @@
       </span>
     </div>
   {/if}
-  {#if path}
-    <div
-      tabindex="0"
-      on:click={goUpOneLevel}
-      on:keyup={whenEnter(goUpOneLevel)}
-      class="note-item pointer flex items-center justify-between lh-copy pv3 ph2 ph0-ns ba bl-0 bt-0 br-0 b--dotted b--black-30"
-    >
-      <span>/..</span>
-    </div>
-  {/if}
-  {#if $displayedNotes.length > 0}
+  {#if $searchResults.length > 0 }
     <ul class="list ph2 ph0-ns mt0 overflow-x-hidden">
-      {#each $displayedNotes as {title, id, type}}
+      {#each $searchResults as {title, id, type, path}}
         <ListItem {title} {id} {type} {path}></ListItem>
       {/each}
     </ul>
   {:else}
-    <small class="f6 black-60 db ph2 ph0-ns pt3">
-      There is no notes. <a href={'/#' + createLink} class="blue link">Create one?</a>
-    </small>
+    {#if path}
+      <div
+        tabindex="0"
+        on:click={goUpOneLevel}
+        on:keyup={whenEnter(goUpOneLevel)}
+        class="note-item pointer flex items-center justify-between lh-copy pv3 ph2 ph0-ns ba bl-0 bt-0 br-0 b--dotted b--black-30"
+      >
+        <span>/..</span>
+      </div>
+    {/if}
+    {#if $displayedNotes.length > 0}
+      <ul class="list ph2 ph0-ns mt0 overflow-x-hidden">
+        {#each $displayedNotes as {title, id, type}}
+          <ListItem {title} {id} {type} {path}></ListItem>
+        {/each}
+      </ul>
+    {:else}
+      <small class="f6 black-60 db ph2 ph0-ns pt3">
+        There is no notes. <a href={'/#' + createLink} class="blue link">Create one?</a>
+      </small>
+    {/if}
   {/if}
 </section>
