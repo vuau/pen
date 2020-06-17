@@ -230,6 +230,9 @@ export const user = (function createUserStore () {
 })()
 
 function compareTitle (a, b) {
+  if (!a.title && b.title) return -1
+  if (a.title && !b.title) return 1
+
   var titleA = a.title.toString().toUpperCase()
   var titleB = b.title.toString().toUpperCase()
   if (titleA < titleB) {
