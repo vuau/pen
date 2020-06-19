@@ -42,7 +42,7 @@ export const showSearch = writable(false)
 export const searchKeyword = writable('')
 export const modal = writable(null)
 export const movingNote = writable(null)
-export const searchResults = writable([])
+export const searchResults = writable({})
 
 /* NOTES */
 export const notes = (function createNoteStore () {
@@ -245,24 +245,15 @@ function compareTitle (a, b) {
 }
 
 export const displayedNotes = derived(
-  [notes, searchKeyword],
-  ([$notes, $searchKeyword]) => {
+  [notes],
+  ([$notes]) => {
     const arr = []
     for (const [id, { title, content, type, children }] of Object.entries(
       $notes
     )) {
-      // if ($searchKeyword) {
-      //   if (
-      //     (title &&
-      //       title.toLowerCase().includes($searchKeyword.toLowerCase())) ||
-      //     (content &&
-      //       content.toLowerCase().includes($searchKeyword.toLowerCase()))
-      //   ) {
-      //     arr.push({ id, title, content, type, children })
-      //   }
-      // } else if (title) {
-      arr.push({ id, title, content, type, children })
-      // }
+      if (title) {
+        arr.push({ id, title, content, type, children })
+      }
     }
     return arr.filter((note) => note).sort(compareTitle)
   }

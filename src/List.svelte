@@ -18,12 +18,17 @@
   let path
   let unsubscribe
   let createLink
+  let results = []
 
   $: {
     notes.stop(path)
     path = params.path
     createLink = `/notes/new${path ? `/${path}` : ''}`
     notes.start(path)
+  }
+
+  $: {
+    results = Object.values($searchResults)
   }
 
   function goToRoot() {
@@ -66,10 +71,11 @@
 
   async function toggleSearch() {
     showSearch.update(f => !f)
-    searchResults.set([])
+    searchResults.set({})
     clearKeyword()
   }
 
+  // TODO: refactor, move to store
   function doSearch(text, path) {
     const node = getParentNode(path)
     node.map().once(async (data, id) => {
@@ -79,19 +85,24 @@
         let newPath = [...(path || '').split('_').filter(p => p !== ''), id].join('_')
         doSearch(text, newPath)
       } else {
-        if ((decryptedData.title && decryptedData.title.includes(text)) || (decryptedData.content && decryptedData.content.includes(text))) {
+        if ((decryptedData.title && decryptedData.title.toLowerCase().includes(text.toLowerCase())) ||
+          (decryptedData.content && decryptedData.content.toLowerCase().includes(text.toLowerCase()))) {
           console.log('found', path, decryptedData)
-          searchResults.update(arr => ([
-            ...arr,
-            {id, ...decryptedData, path}
-          ]))
+          searchResults.update(data => ({
+            ...data,
+            [id]: {
+              id,
+              ...decryptedData,
+              path
+            }
+          }))
         }
       }
     })
   }
 
   function search() {
-    searchResults.set([])
+    searchResults.set({})
     doSearch($searchKeyword)
   }
 
@@ -110,6 +121,9 @@
     // Open search box when pressing: Ctrl-S on Mac or Alt-S on Win
     if ((isMac && pressedKeys.ControlLeft && pressedKeys.KeyS) || (!isMac && pressedKeys.AltLeft && pressedKeys.KeyS)) {
       await toggleSearch()
+    }
+    if (pressedKeys.Escape) {
+      await goUpOneLevel()
     }
   }
 </script>
@@ -158,9 +172,9 @@
       </span>
     </div>
   {/if}
-  {#if $searchResults.length > 0 }
+  {#if results.length > 0 }
     <ul class="list ph2 ph0-ns mt0 overflow-x-hidden">
-      {#each $searchResults as {title, id, type, path}}
+      {#each results as {title, id, type, path}}
         <ListItem {title} {id} {type} {path}></ListItem>
       {/each}
     </ul>
