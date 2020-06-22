@@ -5,3 +5,5 @@ radata/
 .env
 
 .DS_Store
+
+.vercel
