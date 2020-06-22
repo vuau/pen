@@ -23,7 +23,7 @@
 
   async function confirmDelete () {
     if (confirm(`Are you sure to delete "${title}"?`)) {
-      await notes.deleteNote(id)
+      await notes.deleteNote(id, path)
     }
   }
 
