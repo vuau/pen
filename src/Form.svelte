@@ -81,10 +81,10 @@
 <svelte:window on:keyup={whenEsc(goToList)} />
 
 <section class="mw7 center">
-  <div class="ph2 pb2 ph0-ns black-80">
+  <div class="ph2 pb2 ph0-ns black-80 flex flex-column">
     <div
       class="flex items-center justify-between bt-0 bl-0 br-0 bb
-      b--black-20 {showFormatTool ? '' : 'sticky'}">
+      b--black-20">
       <input
         bind:this={titleInput}
         bind:value={title}

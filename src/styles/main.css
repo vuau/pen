@@ -45,7 +45,8 @@ body {
 }
 
 #content {
-  min-height: calc(100vh - 73px);
+  height: calc(100vh - 73px);
+  overflow: auto;
 }
 
 #content.showMenu .menubar {
