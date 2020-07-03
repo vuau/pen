@@ -190,7 +190,7 @@
       </div>
     {/if}
     {#if $displayedNotes.length > 0}
-      <ul class="list ph2 ph0-ns mt0 overflow-x-hidden">
+      <ul id="list" class="list ph2 ph0-ns mt0 overflow-x-hidden overflow-y-auto">
         {#each $displayedNotes as {title, id, type}}
           <ListItem {title} {id} {type} {path}></ListItem>
         {/each}

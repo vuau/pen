@@ -2,7 +2,7 @@ html,
 body {
   height: 100%;
   overscroll-behavior: contain;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 .no-select {
@@ -44,6 +44,10 @@ body {
   background-color: lightyellow;
 }
 
+#list {
+  height: calc(100vh - 65px);
+  overflow: auto;
+}
 #content {
   height: calc(100vh - 73px);
   overflow: auto;
