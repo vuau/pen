@@ -8,7 +8,7 @@
   let inputEl
 
   async function checkSubmit () {
-    if (!pin || pin.length < 4) return;
+    if (!pin || String(pin).length < 4) return;
     let err = await user.loginWithPin(pin)
     if (err) {
       alert(err)
