@@ -48,7 +48,8 @@
   }
 </script>
 
-<li transition:fade|local tabindex="0" on:click={isFolder ? viewFolder : viewNote} on:keyup={whenEnter(isFolder ? viewFolder : viewNote)} class="note-item pointer flex items-center justify-between lh-copy pv3 ba bl-0 bt-0 br-0 b--dotted b--black-30">
+<li transition:fade|local tabindex="0" on:click={isFolder ? viewFolder : viewNote} on:keyup={whenEnter(isFolder ?
+  viewFolder : viewNote)} class="note-item mh5-ns pointer flex items-center justify-between lh-copy pv3 ba bl-0 bt-0 br-0 b--dotted b--black-30">
   <span class="dim flex items-center">
     {#if isFolder}
       <span class="icon-folder mr2 gray"></span>

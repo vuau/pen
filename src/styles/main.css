@@ -1,7 +1,7 @@
 html,
 body {
   height: 100%;
-  overscroll-behavior: contain;
+  overscroll-behavior: none;
   overflow: hidden;
 }
 
@@ -70,6 +70,8 @@ body {
 }
 
 .ProseMirror {
-  /* flex: 1 1 auto; */
-  /* padding-top: 10px; */
+  @media screen and (min-width: 30em) {
+    margin-left: 4rem;
+    margin-right: 4rem;
+  }
 }

@@ -34,17 +34,15 @@
   })
 </script>
 
-{#if $user.isLoggedIn}
-  <main class="w-100 sans-serif bg-white">
-    <Router {routes} />
-  </main>
-{:else}
-  <main class="w-100 h-100 sans-serif bg-white">
-    {#if !isProcessing}
-      <Login />
-    {/if}
-  </main>
-{/if}
+<main class="w-100 h-100 sans-serif bg-white">
+  {#if $user.isLoggedIn}
+      <Router {routes} />
+  {:else}
+      {#if !isProcessing}
+        <Login />
+      {/if}
+  {/if}
+</main>
 
 {#if $modal}
   <div class="sans-serif fixed top-0 left-0 right-0 bottom-0 z-1 flex items-center justify-center bg-black-10">

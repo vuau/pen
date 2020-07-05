@@ -80,8 +80,8 @@
 
 <svelte:window on:keyup={whenEsc(goToList)} />
 
-<section class="mw7 center">
-  <div class="ph2 pb2 ph0-ns black-80 flex flex-column">
+<section class="h-100 flex flex-column center black-80">
+  <div class="mh5-ns">
     <div
       class="flex items-center justify-between bt-0 bl-0 br-0 bb
       b--black-20">
@@ -101,9 +101,9 @@
         <span on:click={goToList} class="icon-x w2 pv2 tc pointer no-select"></span>
       </div>
     </div>
-    <div
-      id="content"
-      class="flex flex-column outline-transparent lh-copy {showFormatTool ? 'showMenu' : ''}"
-      />
   </div>
+  <div
+    id="content"
+    class="flex flex-column outline-transparent lh-copy {showFormatTool ? 'showMenu' : ''}"
+    />
 </section>

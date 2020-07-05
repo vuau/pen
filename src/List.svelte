@@ -70,9 +70,9 @@
   }
 
   async function toggleSearch() {
+    clearKeyword()
     showSearch.update(f => !f)
     searchResults.set({})
-    clearKeyword()
   }
 
   // TODO: refactor, move to store
@@ -119,7 +119,8 @@
     pressedKeys[e.code] = e.type === 'keydown'
 
     // Open search box when pressing: Ctrl-S on Mac or Alt-S on Win
-    if ((isMac && pressedKeys.ControlLeft && pressedKeys.KeyS) || (!isMac && pressedKeys.AltLeft && pressedKeys.KeyS)) {
+    if (pressedKeys.Slash || (isMac && pressedKeys.ControlLeft && pressedKeys.KeyS) || (!isMac && pressedKeys.AltLeft && pressedKeys.KeyS)) {
+      e.preventDefault()
       await toggleSearch()
     }
     if (pressedKeys.Escape) {
@@ -130,50 +131,52 @@
 
 <svelte:window on:keydown={handleShortcuts} on:keyup={handleShortcuts} />
 
-<section class="mw7 center">
-  <h2 class="h3 {$showSearch ? '' : 'sticky'} athelas ma0 ph2 pv3 ph0-ns bb b--near-black flex items-center justify-between">
-    <span on:click={goToRoot} class="pointer">
-      Pen
-    </span>
-    <div class="flex items-center">
-      <span tabindex="0" on:click={openNewNote} on:keyup={whenEnter(openNewNote)} class="dim icon-create w2 tc pointer"></span>
-      <span tabindex="0" on:click={openNewFolder} on:keyup={whenEnter(openNewFolder)} class="dim icon-create_folder w2 tc pointer"></span>
-      {#if $displayedNotes.length > 0}
-        <span tabindex="0" on:click={toggleSearch} on:keyup={whenEnter(toggleSearch)} class="dim icon-search w2 tc pointer {$showSearch ? 'blue' : ''}"></span>
-        <span tabindex="0" on:click={toggleActions} on:keyup={whenEnter(toggleActions)} class="dim icon-config w2 tc pointer {$showActions ? 'blue' : ''}"></span>
-      {/if}
-      <span class="dib br b--black h1 ml2 mr2"></span>
-      <span tabindex="0" on:click={configUser}  on:keyup={whenEnter(configUser)} class="dim icon-user w2 tc pointer"></span>
-      <span tabindex="0" on:click={user.logout}  on:keyup={whenEnter(user.logout)} class="dim icon-power w2 tc pointer"></span>
-    </div>
-  </h2>
-  {#if $showSearch}
-    <div class="bg-light-gray bb b--black-20 sticky flex items-center justify-between">
-      <input
-        bind:this={searchInput}
-        bind:value={$searchKeyword}
-        on:keyup={whenEnter(search)}
-        on:keyup={whenEsc(toggleSearch)}
-        tabindex="0" 
-        placeholder="Type to search..."
-        class="input-reset bg-transparent outline-transparent br0 bn ph2 pv3 w-100"
-        type="text"
-        aria-describedby="name-desc"
-        autocomplete="off" />
-      <span
-        on:click={search}
-        tabindex="0" 
-        class="icon-search w2 tc pointer">
+<section class="h-100 flex flex-column center">
+  <div class="mh5-ns">
+    <h2 class="h3 {$showSearch ? '' : 'sticky'} athelas ma0 ph2 pv3 ph0-ns bb b--near-black flex items-center justify-between">
+      <span on:click={goToRoot} class="pointer">
+        Pen
       </span>
-      <span
-        on:click={toggleSearch}
-        tabindex="0" 
-        class="icon-x w2 tc pointer">
-      </span>
-    </div>
-  {/if}
+      <div class="flex items-center">
+        <span tabindex="0" on:click={openNewNote} on:keyup={whenEnter(openNewNote)} class="dim icon-create w2 tc pointer"></span>
+        <span tabindex="0" on:click={openNewFolder} on:keyup={whenEnter(openNewFolder)} class="dim icon-create_folder w2 tc pointer"></span>
+        {#if $displayedNotes.length > 0}
+          <span tabindex="0" on:click={toggleSearch} on:keyup={whenEnter(toggleSearch)} class="dim icon-search w2 tc pointer {$showSearch ? 'blue' : ''}"></span>
+          <span tabindex="0" on:click={toggleActions} on:keyup={whenEnter(toggleActions)} class="dim icon-config w2 tc pointer {$showActions ? 'blue' : ''}"></span>
+        {/if}
+        <span class="dib br b--black h1 ml2 mr2"></span>
+        <span tabindex="0" on:click={configUser}  on:keyup={whenEnter(configUser)} class="dim icon-user w2 tc pointer"></span>
+        <span tabindex="0" on:click={user.logout}  on:keyup={whenEnter(user.logout)} class="dim icon-power w2 tc pointer"></span>
+      </div>
+    </h2>
+    {#if $showSearch}
+      <div class="bg-light-gray bb b--black-20 sticky flex items-center justify-between">
+        <input
+          bind:this={searchInput}
+          bind:value={$searchKeyword}
+          on:keyup={whenEnter(search)}
+          on:keyup={whenEsc(toggleSearch)}
+          tabindex="0" 
+          placeholder="Type to search..."
+          class="input-reset bg-transparent outline-transparent br0 bn ph2 pv3 w-100"
+          type="text"
+          aria-describedby="name-desc"
+          autocomplete="off" />
+        <span
+          on:click={search}
+          tabindex="0" 
+          class="icon-search w2 tc pointer">
+        </span>
+        <span
+          on:click={toggleSearch}
+          tabindex="0" 
+          class="icon-x w2 tc pointer">
+        </span>
+      </div>
+    {/if}
+  </div>
   {#if results.length > 0 }
-    <ul class="list ph2 ph0-ns mt0 overflow-x-hidden">
+    <ul class="list mt0 pl0 overflow-x-hidden overflow-y-auto">
       {#each results as {title, id, type, path}}
         <ListItem {title} {id} {type} {path}></ListItem>
       {/each}
@@ -184,19 +187,19 @@
         tabindex="0"
         on:click={goUpOneLevel}
         on:keyup={whenEnter(goUpOneLevel)}
-        class="note-item pointer flex items-center justify-between lh-copy pv3 ph2 ph0-ns ba bl-0 bt-0 br-0 b--dotted b--black-30"
+        class="mh5-ns note-item pointer flex items-center justify-between lh-copy pv3 ph2 ph0-ns ba bl-0 bt-0 br-0 b--dotted b--black-30"
       >
         <span>/..</span>
       </div>
     {/if}
     {#if $displayedNotes.length > 0}
-      <ul id="list" class="list ph2 ph0-ns mt0 overflow-x-hidden overflow-y-auto">
+      <ul id="list" class="list ph2 ph0-ns mt0 ml0 overflow-x-hidden overflow-y-auto">
         {#each $displayedNotes as {title, id, type}}
           <ListItem {title} {id} {type} {path}></ListItem>
         {/each}
       </ul>
     {:else}
-      <small class="f6 black-60 db ph2 ph0-ns pt3">
+      <small class="mh5-ns f6 black-60 db ph2 ph0-ns pt3">
         There is no notes. <a href={'/#' + createLink} class="blue link">Create one?</a>
       </small>
     {/if}

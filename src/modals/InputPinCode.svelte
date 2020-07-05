@@ -6,10 +6,13 @@
 
   let pin
   let inputEl
+  let isProcessing
 
   async function checkSubmit () {
-    if (!pin || String(pin).length < 4) return;
+    if (!pin || String(pin).length < 4 || isProcessing) return;
+    isProcessing = true
     let err = await user.loginWithPin(pin)
+    isProcessing = false
     if (err) {
       alert(err)
       return
@@ -30,7 +33,7 @@
 <form on:submit|preventDefault class="black-80">
   <div class="measure">
     <label for="pin" class="f6 b db mb2">Unlock by pin code</label>
-    <input type="number" bind:this={inputEl} bind:value={pin} on:keyup={debounce(checkSubmit, 200)} id="pin" class="input-reset ba b--black-20 pa2 mb2 db w-100"
+    <input type="number" bind:this={inputEl} bind:value={pin} on:keyup={debounce(checkSubmit, 100)} id="pin" class="input-reset ba b--black-20 pa2 mb2 db w-100"
     aria-describedby="pin-desc" />
     <small id="pin-desc" class="f6 black-60 db mb2">
       You can find your Pin code in the account setting
