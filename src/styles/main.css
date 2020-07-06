@@ -71,7 +71,9 @@ body {
   padding-left: 8px;
   padding-right: 8px;
   @media screen and (min-width: 30em) {
-    margin-left: 4rem;
-    margin-right: 4rem;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: calc(4rem + 8px);
+    padding-right: calc(4rem + 8px);
   }
 }
