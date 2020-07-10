@@ -76,10 +76,15 @@ body {
     }
   }
   @media screen and (max-width: 30em) {
-    flex-direction: column;
-    justify-content: center;
+    flex-wrap: nowrap;
     overflow-x: auto;
-    height: 54px;
+    min-height: 53px;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    .menuitem {
+      flex: 0 0 40px;
+    }
   }
 }
 
