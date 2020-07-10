@@ -58,6 +58,28 @@ body {
 
 .menubar {
   display: none;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
+  @media screen and (min-width: 30em) {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: calc(4rem);
+    padding-right: calc(4rem);
+    height: auto;
+    flex-direction: row;
+    border-bottom: 0;
+    &:after {
+      content: '';
+      width: 100%;
+      border-bottom: 1px solid lightgray;
+    }
+  }
+  @media screen and (max-width: 30em) {
+    flex-direction: column;
+    justify-content: center;
+    overflow-x: auto;
+  }
 }
 
 .menuitem {
