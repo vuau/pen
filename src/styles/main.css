@@ -79,6 +79,7 @@ body {
     flex-direction: column;
     justify-content: center;
     overflow-x: auto;
+    height: 54px;
   }
 }
 
