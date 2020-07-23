@@ -31,6 +31,14 @@
     localStorage.removeItem('auth')
     location.reload()
   }
+
+  function clear () {
+    pin = pin.substr(0, pin.length - 1)
+  }
+
+  function clearAll () {
+    pin = ""
+  }
 </script>
 
 <form on:submit|preventDefault class="black-80">
@@ -39,11 +47,13 @@
     <small id="pin-desc" class="f6 black-60 db mb2">
       You can find your Pin code in the account setting
     </small>
-    <input type="password" value={pin} class="input-reset ba b--black-20 pa2 mb2 db w-100" />
+    <input type="password" readonly value={pin} class="input-reset ba b--black-20 pa2 mb2 db w-100" />
     <div class="numpad ba flex flex-wrap">
       {#each Array.from(Array(10), (_, i) => i >= 9 ? 0 : i + 1) as number}
-        <div class="ph2 pv3 w-third tc pointer" on:click={chooseNumber(number)}>{number}</div>
+        <div class="pv3 w-third tc pointer f3 no-select" on:click={chooseNumber(number)}>{number}</div>
       {/each}
+      <div class="pv3 w-third tc pointer f4 ttu no-select" on:click={clear}>Del</div>
+      <div class="pv3 w-third tc pointer f4 ttu no-select" on:click={clearAll}>Clear</div>
     </div>
   </div>
   <div class="mt3">
