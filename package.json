@@ -13,7 +13,8 @@
     "build-workbox": "workbox injectManifest workbox-config.js",
     "build": "run-s clean-dist build-parcel build-workbox",
     "serve": "serve dist",
-    "prod": "run-s build serve"
+    "prod": "run-s build serve",
+    "build-icon": "cd src/images && npx pwa-asset-generator pen.svg -i ../index.html -m ../manifest.webmanifest"
   },
   "author": "Au Pham <phamvuau@gmail.com>",
   "license": "ISC",
