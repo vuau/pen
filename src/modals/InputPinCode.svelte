@@ -50,10 +50,10 @@
     <input type="password" readonly value={pin} class="input-reset ba b--black-20 pa2 mb2 db w-100" />
     <div class="numpad ba flex flex-wrap">
       {#each Array.from(Array(10), (_, i) => i >= 9 ? 0 : i + 1) as number}
-        <div class="pv3 w-third tc pointer f3 no-select" on:click={chooseNumber(number)}>{number}</div>
+        <button class="pv3 w-third tc pointer f3 no-select" on:click={chooseNumber(number)}>{number}</button>
       {/each}
-      <div class="pv3 w-third tc pointer f4 ttu no-select" on:click={clear}>Del</div>
-      <div class="pv3 w-third tc pointer f4 ttu no-select" on:click={clearAll}>Clear</div>
+      <button class="pv3 w-third tc pointer f4 ttu no-select" on:click={clear}>Del</button>
+      <button class="pv3 w-third tc pointer f4 ttu no-select" on:click={clearAll}>Clear</button>
     </div>
   </div>
   <div class="mt3">
