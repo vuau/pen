@@ -6,7 +6,7 @@ import 'gun/lib/then'
 let gun
 
 if (process.env.NODE_ENV === 'production') {
-  gun = Gun(['https://pensync.glitch.me/gun', 'http://pvaklb.ddns.net/gun'])
+  gun = Gun(['https://pensync.glitch.me/gun', 'https://pvaklb.ddns.net/gun'])
 } else {
   gun = Gun(['http://localhost:8765/gun'])
 }
