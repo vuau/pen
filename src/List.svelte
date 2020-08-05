@@ -131,7 +131,7 @@
 
 <svelte:window on:keydown={handleShortcuts} on:keyup={handleShortcuts} />
 
-<section class="h-100 flex flex-column center">
+<section class="h-100 flex flex-column center nobounce">
   <div class="mh5-ns">
     <h2 class="h3 {$showSearch ? '' : 'sticky'} athelas ma0 ph2 pv3 ph0-ns bb b--near-black flex items-center justify-between">
       <span on:click={goToRoot} class="pointer">

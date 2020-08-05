@@ -5,6 +5,10 @@ body {
   overflow: hidden;
 }
 
+.nobounce {
+  -webkit-overflow-scrolling: touch;
+}
+
 .no-select {
   user-select: none;
 }

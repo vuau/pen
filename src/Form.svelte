@@ -80,7 +80,7 @@
 
 <svelte:window on:keyup={whenEsc(goToList)} />
 
-<section class="h-100 flex flex-column center black-80">
+<section class="h-100 flex flex-column center black-80 nobounce">
   <div class="mh5-ns">
     <div
       class="flex items-center justify-between bt-0 bl-0 br-0 bb

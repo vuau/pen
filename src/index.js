@@ -2,12 +2,17 @@ import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 
 import 'tachyons'
+import 'inobounce'
+import smoothscroll from 'smoothscroll-polyfill'
+
 import 'simplemirror/dist/SimpleMirror.css'
 import './styles/font-icons.css'
 import './styles/main.css'
 import './styles/water.css'
 
 import App from './App.svelte'
+
+smoothscroll.polyfill()
 
 const app = new App({
   target: document.body
