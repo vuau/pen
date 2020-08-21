@@ -1,11 +1,15 @@
-# Somewhere
+# Pen
 
-Decentralized Note Taking App
+Encrypted-Decentralized Note Taking App (built with [GunDB](https://gun.eco) + [Svelte](https://svelte.dev/)). Free to use at https://pen.now.sh
 
-## TODO
-- [X] Deploy to now.sh
-- [X] Add Auth
-- [ ] Sync to S3
-- [X] Improve responsiveness
-- [ ] Turn to PWA
-- [ ] WYSIWYG editor by Prosemirror or maybe a simple editor is enough?
+## Features
+- Offline-First (PWA)
+- Decentralized
+- Encrypted
+- Share-able (WIP)
+
+## How to develop
+```bash
+npm install
+npm run dev
+```
