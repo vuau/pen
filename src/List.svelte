@@ -182,26 +182,26 @@
       {/each}
     </ul>
   {:else}
-    {#if path}
-      <div
-        tabindex="0"
-        on:click={goUpOneLevel}
-        on:keyup={whenEnter(goUpOneLevel)}
-        class="mh5-ns note-item pointer flex items-center justify-between lh-copy pv3 ph2 ph0-ns ba bl-0 bt-0 br-0 b--dotted b--black-30"
-      >
-        <span>/..</span>
-      </div>
-    {/if}
-    {#if $displayedNotes.length > 0}
-      <ul id="list" class="list ph2 ph0-ns mt0 ml0 overflow-x-hidden overflow-y-auto">
-        {#each $displayedNotes as {title, id, type}}
-          <ListItem {title} {id} {type} {path}></ListItem>
-        {/each}
-      </ul>
-    {:else}
-      <small class="mh5-ns f6 black-60 db ph2 ph0-ns pt3">
-        There is no notes. <a href={'/#' + createLink} class="blue link">Create one?</a>
-      </small>
-    {/if}
+    <ul id="list" class="list ph2 ph0-ns mt0 ml0 overflow-x-hidden overflow-y-auto">
+      {#if path}
+        <li
+          tabindex="0"
+          on:click={goUpOneLevel}
+          on:keyup={whenEnter(goUpOneLevel)}
+          class="mh5-ns note-item pointer flex items-center justify-between lh-copy pv3 ph2 ph0-ns ba bl-0 bt-0 br-0 b--dotted b--black-30"
+        >
+          <span>/..</span>
+        </li>
+      {/if}
+      {#if $displayedNotes.length > 0}
+          {#each $displayedNotes as {title, id, type}}
+            <ListItem {title} {id} {type} {path}></ListItem>
+          {/each}
+      {:else}
+        <small class="mh5-ns f6 black-60 db ph2 ph0-ns pt3">
+          There is no notes. <a href={'/#' + createLink} class="blue link">Create one?</a>
+        </small>
+      {/if}
+    </ul>
   {/if}
 </section>
