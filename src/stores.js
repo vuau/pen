@@ -11,22 +11,22 @@ const getDefaultConfig = () => {
   }
 }
 
-export const getParentNode = (path) => {
-  const parts = (path || '').split('_').filter((p) => p !== '')
-  let node = gunUser.get('notes')
-  parts.forEach((id) => {
+export const getParentNode = (path, root = gunUser) => {
+  const parts = (path || '').split('_').filter(p => p !== '')
+  let node = root.get('notes')
+  parts.forEach(id => {
     node = node.get(id).get('children')
   })
   return node
 }
 
-const encrypt = async (data) => ({
+const encrypt = async data => ({
   ...data,
-  title: await SEA.encrypt(data.title, salt),
-  content: await SEA.encrypt(data.content, salt)
+  ...(data.title && { title: await SEA.encrypt(data.title, salt) }),
+  ...(data.content && { content: await SEA.encrypt(data.content, salt) })
 })
 
-export const decrypt = async (data) => ({
+export const decrypt = async data => ({
   ...data,
   title: /^SEA{/g.test(data.title)
     ? await SEA.decrypt(data.title, salt)
@@ -48,7 +48,7 @@ export const searchResults = writable({})
 export const notes = (function createNoteStore () {
   const { subscribe, update, set } = writable({})
   const updateToStore = ({ id, ...data }, isDeleted) => {
-    update((notes) => {
+    update(notes => {
       if (isDeleted) {
         delete notes[id]
         return notes
@@ -61,15 +61,38 @@ export const notes = (function createNoteStore () {
   }
 
   const updateNote = async function ({
+    path,
     id = uuidv4(),
-    title = 'No title',
-    content = '',
-    path
+    title,
+    content,
+    slug, // slug or domain
+    type, // folder or file
+    mode, // private - public - shared
+    ...rest
   }) {
-    const data = await encrypt({ title, content })
+    const data = {
+      ...(title && { title }),
+      ...(content && { content }),
+      ...(slug && { slug }),
+      ...(type && { type }),
+      ...(mode && { mode }),
+      ...rest
+    }
+    console.log(mode)
+    const dataToUpdate = !mode || mode !== 'public' ? await encrypt(data) : data
+    console.log(dataToUpdate)
+    if (mode === 'public') {
+      if (slug && slug.trim() !== '') {
+        await gunUser
+          .get('slugs')
+          .get(slug)
+          .put(`${path}_${id}`)
+          .then()
+      }
+    }
     await getParentNode(path)
       .get(id)
-      .put(data)
+      .put(dataToUpdate)
       .then()
     return id
   }
@@ -144,7 +167,7 @@ export const user = (function createUserStore () {
     isLoggedIn: false
   })
 
-  const getAuthInfo = async (pin) => {
+  const getAuthInfo = async pin => {
     const encryptedAuth = localStorage.getItem('auth')
     if (encryptedAuth) {
       return await SEA.decrypt(encryptedAuth, pin)
@@ -165,21 +188,21 @@ export const user = (function createUserStore () {
         const defaultConfig = getDefaultConfig()
         const encryptedConfig = await SEA.encrypt(defaultConfig, salt)
         gunUser.get('config').put(encryptedConfig)
-        update((user) => ({ ...user, config: encryptedConfig }))
+        update(user => ({ ...user, config: encryptedConfig }))
         await saveAuthInfo({ user, pass }, defaultConfig.pin)
       })
-      .on(async (configValue) => {
+      .on(async configValue => {
         const config = await SEA.decrypt(configValue, salt)
         if (!config) return
-        update((user) => ({ ...user, config }))
+        update(user => ({ ...user, config }))
         await saveAuthInfo({ user, pass }, config.pin)
       })
-    update((user) => ({ ...user, isLoggedIn: true }))
+    update(user => ({ ...user, isLoggedIn: true }))
   }
 
   const createUser = (user, pass) =>
-    new Promise((resolve) => {
-      gunUser.create(user, pass, (ack) => {
+    new Promise(resolve => {
+      gunUser.create(user, pass, ack => {
         if (ack.err) {
           resolve(ack.err)
           return
@@ -189,8 +212,8 @@ export const user = (function createUserStore () {
     })
 
   const login = (user, pass) =>
-    new Promise((resolve) => {
-      gunUser.auth(user, pass, (ack) => {
+    new Promise(resolve => {
+      gunUser.auth(user, pass, ack => {
         if (ack.err) {
           resolve(ack.err)
           return
@@ -244,17 +267,12 @@ function compareTitle (a, b) {
   return 0
 }
 
-export const displayedNotes = derived(
-  [notes],
-  ([$notes]) => {
-    const arr = []
-    for (const [id, { title, content, type, children }] of Object.entries(
-      $notes
-    )) {
-      if (title) {
-        arr.push({ id, title, content, type, children })
-      }
+export const displayedNotes = derived([notes], ([$notes]) => {
+  const arr = []
+  for (const [id, note] of Object.entries($notes)) {
+    if (note.title) {
+      arr.push({ id, ...note })
     }
-    return arr.filter((note) => note).sort(compareTitle)
   }
-)
+  return arr.filter(note => note).sort(compareTitle)
+})

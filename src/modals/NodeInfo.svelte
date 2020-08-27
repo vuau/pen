@@ -1,0 +1,67 @@
+<script>
+  import { notes, modal, getParentNode } from '../stores.js'
+  import { gunUser } from '../contexts.js'
+  import { onMount } from 'svelte'
+
+  const { id, path } = $modal.data
+  const modes = ['private', 'public']
+  let slug
+  let selectedMode
+
+  onMount(() => {
+    getParentNode(path)
+      .get(id)
+      .once(v => {
+        selectedMode = v.mode || 'private'
+        slug = v.slug
+      })
+  })
+
+  function onSubmit () {
+    notes.updateNote({ path, id, slug, mode: selectedMode })
+    $modal.onClose()
+  }
+
+  function onCopyURL () {
+    window.prompt(
+      'Copy to clipboard: Ctrl+C, Enter',
+      `${location.origin}/#/user/${gunUser.is.pub}/${slug}`
+    )
+  }
+</script>
+
+<div class="black-80">
+  <div class="mt3">
+    <label class="f6 b db mb2">Visibility</label>
+    {#each modes as value}
+      <label class="mr2">
+        <input bind:group={selectedMode} name="type" type="radio" {value} />
+        <span class="ttu">{value}</span>
+      </label>
+    {/each}
+  </div>
+  {#if selectedMode === 'public'}
+    <div class="mt3">
+      <label for="slug" class="f6 b db mb2">Slug</label>
+      <input
+        bind:value={slug}
+        type="text"
+        id="slug"
+        class="input-reset ba b--black-20 pa2 mb2 db w-100"
+        aria-describedby="slug" />
+      <span
+        class="f6 link dim br3 ba ph3 pv2 mb2 dib black"
+        on:click|preventDefault={onCopyURL}>
+        Show URL
+      </span>
+    </div>
+  {/if}
+  <div class="mt3">
+    <a
+      href="#0"
+      on:click|preventDefault={onSubmit}
+      class="f6 link dim br1 ph3 pv2 mb2 dib white bg-black">
+      Save
+    </a>
+  </div>
+</div>

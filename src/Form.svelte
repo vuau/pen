@@ -3,16 +3,15 @@
   import { pop } from 'svelte-spa-router'
   import SimpleMirror from 'simplemirror'
 
-  import { gunUser } from './contexts.js'
   import { notes, getParentNode, decrypt } from './stores.js'
   import config from './editorCommands.js'
   import { debounce, whenEsc } from './utils.js'
 
   export let params = {}
 
-  let title, content
+  let title, content, mode
   let id = params.id
-  let path = params.path
+  const path = params.path
   let editor
   let unsubscribe
   let showFormatTool = false
@@ -21,10 +20,11 @@
   onMount(() => {
     if (id) {
       getParentNode(path).get(id).once(async (data, id) => {
-        const editingNote = await decrypt(data)
+        const editingNote = data.mode === 'public' ? data : await decrypt(data)
         if (editingNote) {
           title = editingNote.title
           content = editingNote.content
+          mode = editingNote.mode
           createEditor(content)
         }
       })
@@ -60,7 +60,8 @@
       id,
       path,
       title,
-      content: content || ''
+      content,
+      mode
     }).then(createdId => {
       if (!id) {
         id = createdId

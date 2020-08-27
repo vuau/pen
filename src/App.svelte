@@ -1,7 +1,12 @@
 <script>
   import { onMount } from 'svelte'
   import Router from 'svelte-spa-router'
+
+  import AppLayout from './layouts/App.svelte'
+  import PageLayout from './layouts/Page.svelte'
+
   import List from './List.svelte'
+  import Page from './Page.svelte'
   import Form from './Form.svelte'
   import Login from './Login.svelte'
   import InputPinCode from './modals/InputPinCode.svelte'
@@ -11,13 +16,15 @@
 
   const routes = {
     '/': List,
+    '/user/:pub/:slug': Page,
     '/notes/folder/:path': List,
     '/notes/new/:path?': Form,
     '/notes/:id/:path?': Form
   }
 
   onMount(() => {
-    if ($user.isLoggedIn) return
+    if ($user.isLoggedIn || window.location.href.search('user') !== -1) return
+
     const auth = localStorage.getItem('auth')
     if (auth) {
       isProcessing = true
@@ -34,15 +41,21 @@
   })
 </script>
 
-<main class="w-100 h-100 sans-serif bg-white">
-  {#if $user.isLoggedIn}
+{#if window.location.href.search('user') !== -1}
+  <PageLayout>
+    <Router {routes} />
+  </PageLayout>
+{:else}
+  <AppLayout>
+    {#if $user.isLoggedIn}
       <Router {routes} />
-  {:else}
+    {:else}
       {#if !isProcessing}
         <Login />
       {/if}
-  {/if}
-</main>
+    {/if}
+  </AppLayout>
+{/if}
 
 {#if $modal}
   <div class="sans-serif fixed top-0 left-0 right-0 bottom-0 z-1 flex items-center justify-center bg-black-10">
