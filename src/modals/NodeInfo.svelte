@@ -30,7 +30,7 @@
     let url
 
     if (isProduction) {
-      url = `https://page.now.sh#/${slug}?pub=${gunUser.is.pub}`
+      url = `https://nicepage.now.sh#/${slug}?pub=${gunUser.is.pub}`
     } else {
       url = `http://${location.hostname}:5001#/${slug}?pub=${gunUser.is.pub}`
     }
