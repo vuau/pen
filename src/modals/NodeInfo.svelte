@@ -7,6 +7,8 @@
   const modes = ['private', 'public']
   let slug
   let selectedMode
+  let title, content
+  const isProduction = process.env.NODE_ENV === 'production'
 
   onMount(() => {
     getParentNode(path)
@@ -14,19 +16,26 @@
       .once(v => {
         selectedMode = v.mode || 'private'
         slug = v.slug
+        title = v.title
+        content = v.content
       })
   })
 
   function onSubmit () {
-    notes.updateNote({ path, id, slug, mode: selectedMode })
+    notes.updateNote({ path, id, title, content, slug, mode: selectedMode })
     $modal.onClose()
   }
 
   function onCopyURL () {
-    window.prompt(
-      'Copy to clipboard: Ctrl+C, Enter',
-      `${location.origin}/#/user/${gunUser.is.pub}/${slug}`
-    )
+    let url
+
+    if (isProduction) {
+      url = `https://page.now.sh#/${slug}?pub=${gunUser.is.pub}`
+    } else {
+      url = `http://${location.hostname}:5001#/${slug}?pub=${gunUser.is.pub}`
+    }
+
+    window.prompt('Copy to clipboard: Ctrl+C, Enter', url)
   }
 </script>
 
