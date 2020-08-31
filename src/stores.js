@@ -28,12 +28,16 @@ const encrypt = async data => ({
 
 export const decrypt = async data => ({
   ...data,
-  title: /^SEA{/g.test(data.title)
-    ? await SEA.decrypt(data.title, salt)
-    : data.title,
-  content: /^SEA{/g.test(data.content)
-    ? await SEA.decrypt(data.content, salt)
-    : data.content
+  ...(data.title && {
+    title: /^SEA{/g.test(data.title)
+      ? await SEA.decrypt(data.title, salt)
+      : data.title
+  }),
+  ...(data.content && {
+    content: /^SEA{/g.test(data.content)
+      ? await SEA.decrypt(data.content, salt)
+      : data.content
+  })
 })
 
 /* ACTIONS */
@@ -78,8 +82,9 @@ export const notes = (function createNoteStore () {
       ...(mode && { mode }),
       ...rest
     }
-    console.log(mode)
-    const dataToUpdate = !mode || mode !== 'public' ? await encrypt(data) : data
+    console.log(mode, data)
+    const dataToUpdate =
+      !mode || mode !== 'public' ? await encrypt(data) : await decrypt(data)
     console.log(dataToUpdate)
     if (mode === 'public') {
       if (slug && slug.trim() !== '') {
