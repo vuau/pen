@@ -7,7 +7,7 @@
   const modes = ['private', 'public']
   let slug
   let selectedMode
-  let title, content
+  let title, content, type, headerTag
   const isProduction = process.env.NODE_ENV === 'production'
 
   onMount(() => {
@@ -18,11 +18,13 @@
         slug = v.slug
         title = v.title
         content = v.content
+        type = v.type
+        headerTag = v.headerTag
       })
   })
 
   function onSubmit () {
-    notes.updateNote({ path, id, title, content, slug, mode: selectedMode })
+    notes.updateNote({ path, id, title, content, slug, mode: selectedMode, headerTag })
     $modal.onClose()
   }
 
@@ -39,7 +41,16 @@
   }
 </script>
 
-<div class="black-80">
+<div class="modal black-80">
+  <div class="mt3">
+    <label for="Name" class="f6 b db mb2">Name</label>
+    <input
+      bind:value={title}
+      type="text"
+      id="title"
+      class="input-reset ba b--black-20 pa2 mb2 db w-100"
+      aria-describedby="title" />
+  </div>
   <div class="mt3">
     <label class="f6 b db mb2">Visibility</label>
     {#each modes as value}
@@ -64,6 +75,16 @@
         Show URL
       </span>
     </div>
+    {#if type === 'folder'}
+      <div class="mt3">
+        <label for="headerTag" class="f6 b db mb2">Header Tag</label>
+        <textarea
+          bind:value={headerTag}
+          id="headerTag"
+          class="input-reset ba b--black-20 pa2 mb2 db w-100"
+          aria-describedby="headerTag" />
+      </div>
+    {/if}
   {/if}
   <div class="mt3">
     <a

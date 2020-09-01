@@ -30,7 +30,7 @@
 
   async function openInfo () {
     modal.set({
-      title: `Details of ${title}`,
+      title: `Settings of "${title}"`,
       data: {
         id,
         path,
