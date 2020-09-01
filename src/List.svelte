@@ -143,7 +143,11 @@
       await toggleSearch()
     }
     if (pressedKeys.Escape) {
-      await goUpOneLevel()
+      if ($modal) {
+        modal.set(null)
+      } else {
+        goUpOneLevel()
+      }
     }
   }
 </script>
