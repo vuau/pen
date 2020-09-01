@@ -46,7 +46,7 @@
           class="input-reset ba b--black-20 pa2 mb2 db w-100"
           type="text"
           aria-describedby="username"
-          autocomplete="off" />
+          autocomplete="new-password" />
       </div>
       <div class="pb3">
         <label for="password" class="f6 b db mb2">Password</label>
@@ -56,7 +56,7 @@
           class="input-reset ba b--black-20 pa2 mb2 db w-100"
           type="password"
           aria-describedby="password"
-          autocomplete="off" />
+          autocomplete="new-password" />
         {#if isRegister}
           <small id="password-desc" class="f6 black-60 db mb2">
             Be careful! You cannot reset your password if you forgot it.

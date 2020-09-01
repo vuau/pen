@@ -1,20 +1,17 @@
 <script>
-  import { onMount } from 'svelte'
-  import { push } from 'svelte-spa-router'
   import { user, modal } from '../stores.js'
-  import { debounce, whenEnter } from '../utils.js'
 
   let pin = ''
-  let inputEl
   let isProcessing
 
   async function checkSubmit () {
-    if (!pin || String(pin).length < 4 || isProcessing) return;
+    if (!pin || String(pin).length < 4 || isProcessing) return
     isProcessing = true
-    let err = await user.loginWithPin(pin)
+    const err = await user.loginWithPin(pin)
     isProcessing = false
     if (err) {
       alert(err)
+      pin = ''
       return
     }
     $modal.onClose()
@@ -22,8 +19,8 @@
 
   function chooseNumber (number) {
     return () => {
-      pin = `${pin}${number}` 
-      checkSubmit(pin)
+      pin = `${pin}${number}`
+      checkSubmit()
     }
   }
 
@@ -37,9 +34,23 @@
   }
 
   function clearAll () {
-    pin = ""
+    pin = ''
+  }
+
+  const handleKey = async e => {
+    console.log(e)
+    if (e.code === 'Escape') {
+      $modal.onClose()
+      return
+    }
+    if (e.code.search('Digit') !== -1) {
+      pin = `${pin}${e.code.split('Digit')[1]}`
+      checkSubmit()
+    }
   }
 </script>
+
+<svelte:window on:keyup={handleKey} />
 
 <form on:submit|preventDefault class="black-80">
   <div class="measure">
@@ -47,13 +58,28 @@
     <small id="pin-desc" class="f6 black-60 db mb2">
       You can find your Pin code in the account setting
     </small>
-    <input type="password" readonly value={pin} class="input-reset ba b--black-20 pa2 mb2 db w-100" />
+    <input
+      type="password"
+      readonly
+      autocomplete="new-password"
+      value={pin}
+      class="input-reset ba b--black-20 pa2 mb2 db w-100" />
     <div class="numpad ba flex flex-wrap">
-      {#each Array.from(Array(10), (_, i) => i >= 9 ? 0 : i + 1) as number}
-        <button class="pv3 w-third tc pointer f3 no-select" on:click={chooseNumber(number)}>{number}</button>
+      {#each Array.from(Array(10), (_, i) => (i >= 9 ? 0 : i + 1)) as number}
+        <button
+          class="pv3 w-third tc pointer f3 no-select"
+          on:click={chooseNumber(number)}>
+          {number}
+        </button>
       {/each}
-      <button class="pv3 w-third tc pointer f4 ttu no-select" on:click={clear}>Del</button>
-      <button class="pv3 w-third tc pointer f4 ttu no-select" on:click={clearAll}>Clear</button>
+      <button class="pv3 w-third tc pointer f4 ttu no-select" on:click={clear}>
+        Del
+      </button>
+      <button
+        class="pv3 w-third tc pointer f4 ttu no-select"
+        on:click={clearAll}>
+        Clear
+      </button>
     </div>
   </div>
   <div class="mt3">

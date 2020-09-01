@@ -1,6 +1,9 @@
 <script>
   import { onMount } from 'svelte'
   import Router from 'svelte-spa-router'
+
+  import AppLayout from './layouts/App.svelte'
+
   import List from './List.svelte'
   import Form from './Form.svelte'
   import Login from './Login.svelte'
@@ -18,6 +21,7 @@
 
   onMount(() => {
     if ($user.isLoggedIn) return
+
     const auth = localStorage.getItem('auth')
     if (auth) {
       isProcessing = true
@@ -34,15 +38,15 @@
   })
 </script>
 
-<main class="w-100 h-100 sans-serif bg-white">
+<AppLayout>
   {#if $user.isLoggedIn}
-      <Router {routes} />
+    <Router {routes} />
   {:else}
-      {#if !isProcessing}
-        <Login />
-      {/if}
+    {#if !isProcessing}
+      <Login />
+    {/if}
   {/if}
-</main>
+</AppLayout>
 
 {#if $modal}
   <div class="sans-serif fixed top-0 left-0 right-0 bottom-0 z-1 flex items-center justify-center bg-black-10">

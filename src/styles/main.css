@@ -109,3 +109,9 @@ body {
     padding-right: calc(4rem + 8px);
   }
 }
+
+.modal {
+  @media screen and (min-width: 30em) {
+    min-width: 30em;
+  }
+}
