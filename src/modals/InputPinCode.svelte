@@ -61,6 +61,7 @@
     <input
       type="password"
       readonly
+      autocomplete="new-password"
       value={pin}
       class="input-reset ba b--black-20 pa2 mb2 db w-100" />
     <div class="numpad ba flex flex-wrap">
