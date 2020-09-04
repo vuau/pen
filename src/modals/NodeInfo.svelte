@@ -1,6 +1,7 @@
 <script>
   import { notes, modal, getParentNode } from '../stores.js'
   import { gunUser } from '../contexts.js'
+  import { decrypt } from '../stores.js'
   import { onMount } from 'svelte'
 
   const { id, path } = $modal.data
@@ -13,13 +14,14 @@
   onMount(() => {
     getParentNode(path)
       .get(id)
-      .once(v => {
-        selectedMode = v.mode || 'private'
-        slug = v.slug
-        title = v.title
-        content = v.content
-        type = v.type
-        headerTag = v.headerTag
+      .once(async v => {
+        const data = await decrypt(v)
+        selectedMode = data.mode || 'private'
+        slug = data.slug
+        title = data.title
+        content = data.content
+        type = data.type
+        headerTag = data.headerTag
       })
   })
 

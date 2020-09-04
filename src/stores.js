@@ -72,6 +72,7 @@ export const notes = (function createNoteStore () {
     slug, // slug or domain
     type, // folder or file
     mode, // private - public - shared
+    headerTag,
     ...rest
   }) {
     const data = {
@@ -80,12 +81,11 @@ export const notes = (function createNoteStore () {
       ...(slug && { slug }),
       ...(type && { type }),
       ...(mode && { mode }),
+      ...(headerTag && { headerTag }),
       ...rest
     }
-    console.log(mode, data)
     const dataToUpdate =
       !mode || mode !== 'public' ? await encrypt(data) : await decrypt(data)
-    console.log(dataToUpdate)
     if (mode === 'public') {
       if (slug && slug.trim() !== '') {
         await gunUser
