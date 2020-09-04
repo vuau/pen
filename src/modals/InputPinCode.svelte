@@ -38,7 +38,6 @@
   }
 
   const handleKey = async e => {
-    console.log(e)
     if (e.code === 'Escape') {
       $modal.onClose()
       return
