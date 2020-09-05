@@ -34,9 +34,9 @@
     let url
 
     if (isProduction) {
-      url = `https://nicepage.now.sh#/${slug}?pub=${gunUser.is.pub}`
+      url = `https://nicepage.now.sh/${slug}/${gunUser.is.pub}`
     } else {
-      url = `http://${location.hostname}:5001#/${slug}?pub=${gunUser.is.pub}`
+      url = `http://${location.hostname}:3000/${slug}/${gunUser.is.pub}`
     }
 
     window.prompt('Copy to clipboard: Ctrl+C, Enter', url)
