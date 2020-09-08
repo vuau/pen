@@ -113,14 +113,15 @@ export const notes = (function createNoteStore () {
     const nodeTo = getParentNode(toPath)
     const note = nodeFrom.get(noteId)
 
-    await nodeFrom
-      .get(noteId)
-      .put(null)
-      .then()
-
+    // Bug: insert to nodeTo before removing from nodeFrom, otherwise data will be lost
     await nodeTo
       .get(noteId)
       .put(note)
+      .then()
+
+    await nodeFrom
+      .get(noteId)
+      .put(null)
       .then()
 
     movingNote.set(null)
