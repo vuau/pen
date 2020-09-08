@@ -27,8 +27,8 @@ const gun = new Gun({
 
 const gunUser = gun.user()
 
+window.gun = gun
 if (process.env.NODE_ENV !== 'production') {
-  window.gun = gun
   window.gunUser = gunUser
 }
 

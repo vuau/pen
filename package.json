@@ -9,7 +9,7 @@
     "dev-client": "parcel src/index.html --port 5000",
     "dev": "run-p dev-server dev-client",
     "clean-dist": "rimraf dist",
-    "build-parcel": "parcel build src/index.html",
+    "build-parcel": "parcel build src/index.html --no-source-maps",
     "build-workbox": "workbox injectManifest workbox-config.js",
     "build": "run-s clean-dist build-parcel build-workbox",
     "serve": "serve dist",
@@ -21,9 +21,6 @@
   "browserslist": [
     "defaults"
   ],
-  "svelte": {
-    "sourceMaps": true
-  },
   "devDependencies": {
     "autoprefixer": "^9.7.6",
     "autosize": "^4.0.2",
