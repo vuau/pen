@@ -7,7 +7,7 @@ import 'gun/lib/webrtc'
 let gun
 
 if (process.env.NODE_ENV === 'production') {
-  gun = Gun(['https://pensync.glitch.me/gun', 'https://pvaklb.ddns.net/gun'])
+  gun = Gun(['https://pensync.glitch.me/gun'])
 } else {
   gun = Gun(['http://localhost:8765/gun'])
 }
