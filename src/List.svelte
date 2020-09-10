@@ -29,6 +29,10 @@
   let createLink
   let results = []
 
+  let isSearchDone = false
+  let isSearching = false
+  let searchTimeout
+
   $: {
     notes.stop(path)
     path = params.path
@@ -86,6 +90,9 @@
 
   // TODO: refactor, move to store
   function doSearch (text, path) {
+    searchTimeout = setTimeout(() => {
+      isSearchDone = true
+    }, 1000)
     const node = getParentNode(path)
     node.map().once(async (data, id) => {
       if (!data) return
@@ -103,7 +110,6 @@
           (decryptedData.content &&
             decryptedData.content.toLowerCase().includes(text.toLowerCase()))
         ) {
-          console.log('found', path, decryptedData)
           searchResults.update(data => ({
             ...data,
             [id]: {
@@ -112,6 +118,7 @@
               path
             }
           }))
+          clearTimeout(searchTimeout)
         }
       }
     })
@@ -119,7 +126,16 @@
 
   function search () {
     searchResults.set({})
+    isSearching = true
+    isSearchDone = false
     doSearch($searchKeyword)
+  }
+
+  $: {
+    if (isSearchDone) {
+      isSearching = false
+      console.log('DONE', results)
+    }
   }
 
   async function clearKeyword () {
@@ -223,7 +239,9 @@
       </div>
     {/if}
   </div>
-  {#if results.length > 0}
+  {#if isSearching}
+    <small class="mh5-ns f6 black-60 db ph2 ph0-ns pt3">Searching...</small>
+  {:else if results.length > 0}
     <ul class="list mt0 pl0 overflow-x-hidden overflow-y-auto">
       {#each results as { title, id, type, path }}
         <ListItem {title} {id} {type} {path} />
