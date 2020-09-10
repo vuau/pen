@@ -1,5 +1,4 @@
 <script>
-  import { fade } from 'svelte/transition'
   import { push } from 'svelte-spa-router'
   import { showActions, notes, movingNote, modal } from './stores.js'
   import { whenEnter } from './utils.js'
@@ -60,7 +59,6 @@
 
 <svelte:options immutable={true} />
 <li
-  transition:fade|local
   tabindex="0"
   on:click={isFolder ? viewFolder : viewNote}
   on:keyup={whenEnter(isFolder ? viewFolder : viewNote)}
