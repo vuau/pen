@@ -1,6 +1,6 @@
 <script>
   import { tick } from 'svelte'
-  import { push, pop } from 'svelte-spa-router'
+  import { push, pop, location } from 'svelte-spa-router'
   import {
     modal,
     showActions,
@@ -49,6 +49,7 @@
   }
 
   function goUpOneLevel () {
+    if ($location === '/') return
     pop()
   }
 
@@ -86,6 +87,8 @@
     clearKeyword()
     showSearch.update(f => !f)
     searchResults.set({})
+    isSearchDone = false
+    isSearching = false
   }
 
   // TODO: refactor, move to store
@@ -241,12 +244,16 @@
   </div>
   {#if isSearching}
     <small class="mh5-ns f6 black-60 db ph2 ph0-ns pt3">Searching...</small>
-  {:else if results.length > 0}
-    <ul class="list mt0 pl0 overflow-x-hidden overflow-y-auto">
-      {#each results as { title, id, type, path }}
-        <ListItem {title} {id} {type} {path} />
-      {/each}
-    </ul>
+  {:else if isSearchDone}
+    {#if results.length > 0}
+      <ul class="list mt0 pl0 overflow-x-hidden overflow-y-auto">
+        {#each results as { title, id, type, path }}
+          <ListItem {title} {id} {type} {path} />
+        {/each}
+      </ul>
+    {:else}
+      <small class="mh5-ns f6 black-60 db ph2 ph0-ns pt3">No results.</small>
+    {/if}
   {:else}
     <ul
       id="list"
