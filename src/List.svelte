@@ -29,9 +29,9 @@
   let createLink
   let results = []
 
-  let isSearchDone = false
   let isSearching = false
   let searchTimeout
+  let debounceSearchTimer
 
   $: {
     notes.stop(path)
@@ -87,14 +87,13 @@
     clearKeyword()
     showSearch.update(f => !f)
     searchResults.set({})
-    isSearchDone = false
     isSearching = false
   }
 
   // TODO: refactor, move to store
   function doSearch (text, path) {
     searchTimeout = setTimeout(() => {
-      isSearchDone = true
+      isSearching = false
     }, 1000)
     const node = getParentNode(path)
     node.map().once(async (data, id) => {
@@ -128,17 +127,12 @@
   }
 
   function search () {
-    searchResults.set({})
-    isSearching = true
-    isSearchDone = false
-    doSearch($searchKeyword)
-  }
-
-  $: {
-    if (isSearchDone) {
-      isSearching = false
-      console.log('DONE', results)
-    }
+    clearTimeout(debounceSearchTimer)
+    debounceSearchTimer = setTimeout(() => {
+      searchResults.set({})
+      isSearching = true
+      doSearch($searchKeyword)
+    }, 700)
   }
 
   async function clearKeyword () {
@@ -164,9 +158,13 @@
     if (pressedKeys.Escape) {
       if ($modal) {
         modal.set(null)
-      } else {
-        goUpOneLevel()
+        return
       }
+      if ($showSearch) {
+        toggleSearch()
+        return
+      }
+      goUpOneLevel()
     }
   }
 </script>
@@ -222,7 +220,7 @@
         <input
           bind:this={searchInput}
           bind:value={$searchKeyword}
-          on:keyup={whenEnter(search)}
+          on:keyup={search}
           on:keyup={whenEsc(toggleSearch)}
           tabindex="0"
           placeholder="Type to search..."
@@ -242,9 +240,7 @@
       </div>
     {/if}
   </div>
-  {#if isSearching}
-    <small class="mh5-ns f6 black-60 db ph2 ph0-ns pt3">Searching...</small>
-  {:else if isSearchDone}
+  {#if $searchKeyword && $searchKeyword !== ''}
     {#if results.length > 0}
       <ul class="list mt0 pl0 overflow-x-hidden overflow-y-auto">
         {#each results as { title, id, type, path }}
@@ -252,7 +248,11 @@
         {/each}
       </ul>
     {:else}
-      <small class="mh5-ns f6 black-60 db ph2 ph0-ns pt3">No results.</small>
+      {#if isSearching }
+        <small class="mh5-ns f6 black-60 db ph2 ph0-ns pt3">Searching...</small>
+      {:else}
+        <small class="mh5-ns f6 black-60 db ph2 ph0-ns pt3">No results.</small>
+      {/if}
     {/if}
   {:else}
     <ul
