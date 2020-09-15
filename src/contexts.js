@@ -6,7 +6,7 @@ import '@gooddollar/gun/lib/then'
 let peers
 
 if (process.env.NODE_ENV === 'production') {
-  peers = ['https://pensync.glitch.me/gun']
+  peers = ['https://pensync.glitch.me/gun', 'https://pvaklb.ddns.net/gun']
 } else {
   peers = ['http://localhost:8765/gun']
 }
