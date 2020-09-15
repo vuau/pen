@@ -12,7 +12,8 @@
     movingNote,
     getParentNode,
     decrypt,
-    searchResults
+    searchResults,
+    isFromNote
   } from './stores.js'
   import ListItem from './ListItem.svelte'
   import { whenEsc, whenEnter } from './utils.js'
@@ -34,10 +35,16 @@
   let debounceSearchTimer
 
   $: {
-    notes.stop(path)
-    path = params.path
-    createLink = `/notes/new${path ? `/${path}` : ''}`
-    notes.start(path)
+    if ($isFromNote) {
+      isFromNote.set(false)
+      path = params.path
+      createLink = `/notes/new${path ? `/${path}` : ''}`
+    } else {
+      notes.stop(path)
+      path = params.path
+      createLink = `/notes/new${path ? `/${path}` : ''}`
+      notes.start(path)
+    }
   }
 
   $: {

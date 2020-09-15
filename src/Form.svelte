@@ -3,7 +3,7 @@
   import { pop } from 'svelte-spa-router'
   import SimpleMirror from 'simplemirror'
 
-  import { notes, getParentNode, decrypt } from './stores.js'
+  import { notes, getParentNode, decrypt, isFromNote } from './stores.js'
   import config from './editorCommands.js'
   import { debounce, whenEsc } from './utils.js'
 
@@ -17,17 +17,26 @@
   let showFormatTool = false
   let titleInput
 
-  onMount(() => {
+  onMount(async () => {
     if (id) {
-      getParentNode(path).get(id).once(async (data, id) => {
+      if ($notes[id]) {
+        const data = $notes[id]
         const editingNote = data.mode === 'public' ? data : await decrypt(data)
-        if (editingNote) {
-          title = editingNote.title
-          content = editingNote.content
-          mode = editingNote.mode
-          createEditor(content)
-        }
-      })
+        title = editingNote.title
+        content = editingNote.content
+        mode = editingNote.mode
+        createEditor(content)
+      } else {
+        getParentNode(path).get(id).once(async data => {
+          const editingNote = data.mode === 'public' ? data : await decrypt(data)
+          if (editingNote) {
+            title = editingNote.title
+            content = editingNote.content
+            mode = editingNote.mode
+            createEditor(content)
+          }
+        })
+      }
     } else {
       createEditor()
       if (titleInput) {
@@ -70,7 +79,7 @@
   }, 500)
 
   function goToList () {
-    /* push('/') */
+    isFromNote.set(true)
     pop()
   }
 

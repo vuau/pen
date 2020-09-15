@@ -47,6 +47,7 @@ export const searchKeyword = writable('')
 export const modal = writable(null)
 export const movingNote = writable(null)
 export const searchResults = writable({})
+export const isFromNote = writable(false)
 
 /* NOTES */
 export const notes = (function createNoteStore () {
