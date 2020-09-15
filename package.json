@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev-server": "node node_modules/gun/examples/http.js",
+    "dev-server": "node node_modules/@gooddollar/gun/examples/http.js",
     "dev-client": "parcel src/index.html --port 5000",
     "dev": "run-p dev-server dev-client",
     "clean-dist": "rimraf dist",
@@ -33,7 +33,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "eslint-plugin-svelte3": "^2.7.3",
-    "gun": "0.2020.520",
+    "@gooddollar/gun": "^0.2020.902",
     "inobounce": "^0.2.0",
     "npm-run-all": "^4.1.5",
     "parcel-bundler": "^1.12.4",

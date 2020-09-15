@@ -81,21 +81,21 @@
         <span
           on:click|stopPropagation={selectToMoveNote}
           tabindex="0"
-          class="dim ml1 tc w2 pointer icon-hand" />
+          class="dim ml1 tc w2 pv2 pointer icon-hand" />
         <span
           on:click|stopPropagation={confirmDelete}
           tabindex="0"
-          class="dim ml1 tc w2 pointer icon-delete" />
+          class="dim ml1 tc w2 pv2 pointer icon-delete" />
         <span
           on:click|stopPropagation={openInfo}
           tabindex="0"
-          class="dim ml1 tc w2 pointer icon-info" />
+          class="dim ml1 tc w2 pv2 pointer icon-info" />
       {:else if $movingNote.noteId !== id}
         {#if isFolder}
           <span
             on:click|stopPropagation={moveNote}
             tabindex="0"
-            class="dim ml1 tc w2 pointer icon-vote" />
+            class="dim ml1 tc pv2 w2 pointer icon-vote" />
         {/if}
       {/if}
     </div>

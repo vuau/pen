@@ -1,7 +1,7 @@
-import Gun from 'gun/gun'
-import SEA from 'gun/sea'
-import 'gun/lib/not'
-import 'gun/lib/then'
+import Gun from '@gooddollar/gun/gun'
+import SEA from '@gooddollar/gun/sea'
+import '@gooddollar/gun/lib/not'
+import '@gooddollar/gun/lib/then'
 
 let peers
 
