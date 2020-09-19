@@ -1,12 +1,16 @@
 <script>
   import FileSaver from 'file-saver'
-  import { user, modal, decrypt, getParentNode } from '../stores.js'
+  import { user, modal, getParentNode } from '../stores.js'
   import { whenEnter } from '../utils.js'
+  import { gunUser } from '../contexts.js'
+  import Gun from '@gooddollar/gun/gun'
 
   let pin = $user.config ? $user.config.pin : ''
   let searchTimeout
   let isSearching = false
   let startBackup = false
+  let startRestore = false
+  let jsonData
   let searchResults = {}
 
   async function onSubmit () {
@@ -19,51 +23,48 @@
       isSearching = false
     }, 1000)
     const node = getParentNode(path)
-    node.map().once(async (data, id) => {
+    node.map().once((data, id) => {
       if (!data) return
-      const decryptedData = await decrypt(data)
-      if (decryptedData.type === 'folder') {
+      if (data.type === 'folder') {
         const newPath = [
           ...(path || '').split('_').filter(p => p !== ''),
           id
         ].join('_')
+        if (searchTimeout) clearTimeout(searchTimeout)
         doSearch(text, newPath)
-      } else {
-        if (
-          (decryptedData.title &&
-            decryptedData.title.toLowerCase().includes(text.toLowerCase())) ||
-          (decryptedData.content &&
-            decryptedData.content.toLowerCase().includes(text.toLowerCase()))
-        ) {
-          searchResults = {
-            ...searchResults,
-            [id]: {
-              id,
-              ...decryptedData,
-              path
-            }
-          }
-          clearTimeout(searchTimeout)
-        }
       }
+      searchResults[id] = data
     })
   }
   function backup () {
     searchResults = {}
     startBackup = true
     isSearching = true
-    doSearch('')
+    doSearch()
+  }
+  async function restore () {
+    startRestore = true
+    const dataToRestore = JSON.parse(jsonData)
+    Object.values(dataToRestore).map(async node => {
+      const soul = Gun.node.soul(node)
+      const path = soul.split('/').splice(1)
+      if (node) {
+        await gunUser
+          .path(path)
+          .put(node)
+          .then()
+      }
+    })
+    startRestore = false
   }
   $: {
     if (startBackup && !isSearching) {
-      // DONE
-      console.log(searchResults)
       const blob = new Blob([JSON.stringify(searchResults, null, 2)], {
         type: 'application/json'
       })
       const date = new Date()
       const year = date.getFullYear()
-      const month = date.getMonth() + 1 // "+ 1" becouse the 1st month is 0
+      const month = date.getMonth() + 1
       const day = date.getDate()
       const hour = date.getHours()
       const minutes = date.getMinutes()
@@ -86,8 +87,20 @@
       aria-describedby="pin-desc" />
     <small id="pin-desc" class="f6 black-60 db mb2">Pin is used to unlock your
       session.</small>
+
+    <label for="pin" class="f6 b db mt3 mb2">Backup</label>
     <button on:click|preventDefault={backup}>
       {#if isSearching}Processing...{:else}Backup{/if}
+    </button>
+    <small id="restore-desc" class="f6 black-60 db mb2 mt1">Save your data to a JSON file</small>
+    <label for="pin" class="f6 b db mt3 mb2">Restore</label>
+    <textarea
+      class="mt1 ba"
+      bind:value={jsonData}
+      placeholder="Paste here json data to restore" />
+    <small id="restore-desc" class="f6 black-60 db mb2 mt1">Only JSON data which belongs to this user can be restored.</small>
+    <button on:click|preventDefault={restore}>
+      {#if startRestore}Processing...{:else}Restore{/if}
     </button>
   </div>
   <div class="mt3">
