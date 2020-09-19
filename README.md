@@ -11,6 +11,8 @@ Encrypted-Decentralized Note Taking App (built with [GunDB](https://gun.eco) + [
 *Your data is not controlled by a centralized server. There are a server which is just another peer in the network to keep your latest changes always available to sync.*
 - Share-able  
 *There is an option to turn off the encryption so that you can publish/share your notes.*
+- Backup/Restore  
+*You can backup/restore your encrypted data to/from a JSON file*
 
 ## How to develop
 ```bash
