@@ -3,6 +3,8 @@
   import { gunUser } from '../contexts.js'
   import { decrypt } from '../stores.js'
   import { onMount } from 'svelte'
+  import slugify from 'slugify'
+  import Clipboard from 'clipboard'
 
   const { id, path } = $modal.data
   const modes = ['private', 'public']
@@ -17,29 +19,36 @@
       .once(async v => {
         const data = await decrypt(v)
         selectedMode = data.mode || 'private'
-        slug = data.slug
+        slug = data.slug || slugify(data.title).toLowerCase()
         title = data.title
         content = data.content
         type = data.type
         headerTag = data.headerTag
       })
+    const clipboard = new Clipboard('#URL') //eslint-disable-line
+    clipboard.on('success', function () {
+      alert('URL copied!')
+    })
   })
 
   function onSubmit () {
-    notes.updateNote({ path, id, title, content, slug, mode: selectedMode, headerTag })
+    notes.updateNote({
+      path,
+      id,
+      title,
+      content,
+      slug,
+      mode: selectedMode,
+      headerTag
+    })
     $modal.onClose()
   }
 
-  function onCopyURL () {
-    let url
-
+  function getURL () {
     if (isProduction) {
-      url = `https://denote.link/${slug}/${gunUser.is.pub}`
-    } else {
-      url = `http://${location.hostname}:5001/${slug}/${gunUser.is.pub}`
+      return `https://denote.link/${slug}/${gunUser.is.pub}`
     }
-
-    window.prompt('Copy to clipboard: Ctrl+C, Enter', url)
+    return `http://${location.hostname}:5001/${slug}/${gunUser.is.pub}`
   }
 </script>
 
@@ -65,17 +74,20 @@
   {#if selectedMode === 'public'}
     <div class="mt3">
       <label for="slug" class="f6 b db mb2">Slug</label>
-      <input
-        bind:value={slug}
-        type="text"
-        id="slug"
-        class="input-reset ba b--black-20 pa2 mb2 db w-100"
-        aria-describedby="slug" />
-      <span
-        class="f6 link dim br3 ba ph3 pv2 mb2 dib black"
-        on:click|preventDefault={onCopyURL}>
-        Show URL
-      </span>
+      <div class="flex">
+        <input
+          bind:value={slug}
+          type="text"
+          id="slug"
+          class="input-reset ba b--black-20 pa2 db w-100"
+          aria-describedby="slug" />
+        <span
+          id="URL"
+          data-clipboard-text={getURL()}
+          class="f6 link dim ba b--black-20 bl-0 ph2 pv2 w4 dib black pointer lh-title tc">
+          Copy URL
+        </span>
+      </div>
     </div>
     {#if type === 'folder'}
       <div class="mt3">
