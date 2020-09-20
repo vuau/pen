@@ -108,6 +108,9 @@
 .icon-vote:before {
   content: "\e91b";
 }
+.icon-back:before {
+  content: "\e91d";
+}
 .icon-info:before {
   content: "\e91c";
 }
