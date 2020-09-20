@@ -18,6 +18,7 @@
   let titleInput
 
   onMount(async () => {
+    isFromNote.set(true)
     if (id) {
       if ($notes[id]) {
         const data = $notes[id]
@@ -79,7 +80,6 @@
   }, 500)
 
   function goToList () {
-    isFromNote.set(true)
     pop()
   }
 
@@ -95,25 +95,25 @@
     <div
       class="flex items-center justify-between bt-0 bl-0 br-0 bb
       b--black-20">
+     <span on:click={goToList} class="icon-back w2 pl3 pr2 pv2 tc pointer no-select"></span>
       <input
         bind:this={titleInput}
         bind:value={title}
         on:keyup={autosave}
         id="title"
         placeholder="Title"
-        class="input-reset outline-transparent h3 f4 br0 bn pv3 ph2 mr2 db w-100"
+        class="input-reset outline-transparent h3 f4 br0 bn pv3 mr2 db w-100"
         type="text"
         aria-describedby="name-desc"
         autocomplete="off" />
 
       <div class="flex items-center f4">
-        <span on:click={toggleFormatTool} class="icon-format w2 pv2 tc pointer no-select fix-icon {showFormatTool ? 'blue' : ''}"></span>
-        <span on:click={goToList} class="icon-x w2 pv2 tc pointer no-select"></span>
+        <span on:click={toggleFormatTool} class="icon-format w2 ph3 pv2 tc pointer no-select fix-icon {showFormatTool ? 'blue' : ''}"></span>
       </div>
     </div>
   </div>
   <div
     id="content"
-    class="flex flex-column outline-transparent lh-copy {showFormatTool ? 'showMenu' : ''}"
+    class="flex flex-column flex-auto outline-transparent lh-copy {showFormatTool ? 'showMenu' : ''}"
     />
 </section>
