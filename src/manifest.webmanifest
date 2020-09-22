@@ -5,7 +5,7 @@
   "background_color": "#ffffff",
   "display": "standalone",
   "orientation": "portrait",
-  "Scope": "/",
+  "scope": "/",
   "start_url": "/",
   "icons": [
     {
@@ -19,11 +19,6 @@
       "sizes": "512x512",
       "type": "image/jpg",
       "purpose": "maskable any"
-    },
-    {
-      "src": "./images/favicon.ico",
-      "type": "image/x-icon",
-      "sizes": "48x48"
     }
   ],
   "splash_pages": null
