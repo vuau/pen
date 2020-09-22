@@ -6,10 +6,6 @@ body {
   touch-action: manipulation;
 }
 
-.nobounce {
-  -webkit-overflow-scrolling: touch;
-}
-
 .no-select {
   user-select: none;
 }
@@ -59,6 +55,17 @@ body {
 
 #content.showMenu .menubar {
   display: flex;
+  @media screen and (max-width: 30em) {
+    display: block;
+    height: 53px;
+    min-height: 53px;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 }
 
 .menubar {
@@ -80,21 +87,16 @@ body {
       border-bottom: 1px solid lightgray;
     }
   }
-  @media screen and (max-width: 30em) {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    min-height: 53px;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-    .menuitem {
-      flex: 0 0 40px;
-    }
-  }
 }
 
 .menuitem {
   font-size: 1.25em;
+  @media screen and (max-width: 30em) {
+    display: inline-flex;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+  }
 }
 
 .ProseMirror {

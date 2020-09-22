@@ -2,7 +2,7 @@ import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 
 import 'tachyons'
-import 'inobounce'
+// import 'inobounce'
 import smoothscroll from 'smoothscroll-polyfill'
 
 import 'simplemirror/dist/SimpleMirror.css'
