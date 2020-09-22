@@ -10,6 +10,10 @@ body {
   user-select: none;
 }
 
+.nobounce {
+  -webkit-overflow-scrolling: touch;
+}
+
 .fix-icon {
   margin-top: 1px;
 }
@@ -60,6 +64,7 @@ body {
     height: 53px;
     min-height: 53px;
     overflow: scroll;
+    scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     white-space: nowrap;
     &::-webkit-scrollbar {
