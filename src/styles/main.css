@@ -3,6 +3,7 @@ body {
   height: 100%;
   overscroll-behavior: none;
   overflow: hidden;
+  touch-action: manipulation;
 }
 
 .nobounce {
