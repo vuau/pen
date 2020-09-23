@@ -9,6 +9,8 @@ import svelte from 'rollup-plugin-svelte'
 import { terser } from 'rollup-plugin-terser'
 import nodePolyfills from 'rollup-plugin-node-polyfills'
 import replace from '@rollup/plugin-replace'
+import copy from 'rollup-plugin-copy'
+import path from 'path'
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -20,7 +22,8 @@ const plugins = [
     emitCss: true
   }),
   postcss({
-    extract: './dist/bundle.css'
+    sourceMap: isDev,
+    extract: path.resolve('./dist/bundle.css')
   }),
   resolve({
     browser: true,
@@ -30,6 +33,9 @@ const plugins = [
   nodePolyfills(),
   replace({
     'process.env.NODE_ENV': isDev ? '"development"' : '"production"'
+  }),
+  copy({
+    targets: [{ src: 'src/styles/fonts/*', dest: 'dist/fonts' }]
   }),
   html({
     template: 'src/index.html',
