@@ -35,7 +35,11 @@ const plugins = [
     'process.env.NODE_ENV': isDev ? '"development"' : '"production"'
   }),
   copy({
-    targets: [{ src: 'src/styles/fonts/*', dest: 'dist/fonts' }]
+    targets: [
+      { src: 'src/styles/fonts/*', dest: 'dist/fonts' },
+      { src: 'src/images/*', dest: 'dist/images' },
+      { src: 'src/manifest.webmanifest', dest: 'dist/' }
+    ]
   }),
   html({
     template: 'src/index.html',

@@ -6,15 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev-server": "node node_modules/@gooddollar/gun/examples/http.js",
-    "dev-client": "rm -rf ./dist && NODE_ENV=development rollup --config --watch",
-    "build-client": "rm -rf ./dist && NODE_ENV=production rollup --config",
+    "dev-client": "rimraf dist && NODE_ENV=development rollup --config --watch",
+    "build-client": "rimraf dist && NODE_ENV=production rollup --config",
     "dev": "run-p dev-server dev-client",
     "clean-dist": "rimraf dist",
     "build-workbox": "workbox injectManifest workbox-config.js",
-    "build": "run-s clean-dist build-client",
+    "build": "run-s clean-dist build-client build-workbox",
     "serve": "sirv dist",
-    "prod": "run-s build serve",
-    "build-icon": "cd src/images && npx pwa-asset-generator pen.svg -i ../index.html -m ../manifest.webmanifest"
+    "prod": "run-s build serve"
   },
   "author": "Au Pham <phamvuau@gmail.com>",
   "license": "ISC",
