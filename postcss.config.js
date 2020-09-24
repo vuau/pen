@@ -4,9 +4,9 @@ const postcssNested = require('postcss-nested')
 const postcssPresetEnv = require('postcss-preset-env')
 
 const purgeConfig = {
+  css: ['./src/styles/main.css', './src/styles/water.css'],
   content: ['./src/index.html', './src/**/*.svelte'],
-  whitelistPatterns: [/svelte-/],
-  defaultExtractor: content => content.match(/[A-Za-z0-9-_:/]+/g) || []
+  whitelistPatterns: [/svelte-/, /menubar/, /menuitem/, /ProseMirror/]
 }
 
 const plugins =
