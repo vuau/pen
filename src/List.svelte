@@ -276,8 +276,8 @@
         </li>
       {/if}
       {#if $displayedNotes.length > 0}
-        {#each $displayedNotes as { title, id, type, mode }}
-          <ListItem {title} {id} {type} {mode} {path} />
+        {#each $displayedNotes as { title, id, type, mode, updatedTime }}
+          <ListItem {title} {id} {type} {mode} {path} {updatedTime} />
         {/each}
       {:else}
         <small class="mh5-ns f6 black-60 db ph2 ph0-ns pt3">

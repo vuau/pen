@@ -83,6 +83,7 @@ export const notes = (function createNoteStore () {
       ...(type && { type }),
       ...(mode && { mode }),
       ...(headerTag && { headerTag }),
+      updatedTime: Date.now(),
       ...rest
     }
     const dataToUpdate =
@@ -259,7 +260,10 @@ export const user = (function createUserStore () {
   }
 })()
 
-function compareTitle (a, b) {
+function compare (a, b) {
+  if (a.updatedTime > b.updatedTime) return -1
+  if (a.updatedTime < b.updatedTime) return 1
+
   if (!a.title && b.title) return -1
   if (a.title && !b.title) return 1
 
@@ -275,11 +279,16 @@ function compareTitle (a, b) {
 }
 
 export const displayedNotes = derived([notes], ([$notes]) => {
-  const arr = []
+  const folders = []
+  const files = []
   for (const [id, note] of Object.entries($notes)) {
-    if (note.title) {
-      arr.push({ id, ...note })
+    if (note && note.title) {
+      if (note.type === 'folder') {
+        folders.push({ id, ...note })
+      } else {
+        files.push({ id, ...note })
+      }
     }
   }
-  return arr.filter(note => note).sort(compareTitle)
+  return [...folders.sort(compare), ...files.sort(compare)]
 })
