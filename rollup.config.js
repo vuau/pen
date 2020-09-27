@@ -27,7 +27,8 @@ const plugins = [
   }),
   resolve({
     browser: true,
-    dedupe: ['svelte']
+    dedupe: ['svelte'],
+    preferBuiltins: false
   }),
   commonjs(),
   nodePolyfills(),
