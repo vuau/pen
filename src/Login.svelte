@@ -27,7 +27,7 @@
 <section class="mw6 h-100 center flex items-center" on:keyup={whenEnter(onSubmit)}>
   <div class="w-100 pa3 pt0">
     <h1 class="f2 fw7 ttu tracked lh-title mt0 mb2 avenir tc">
-      Pen
+      deNOTE 
     </h1>
     <h4 class="f5 fw1 i lh-title mt0 tc mb5">A decentralized note taking app</h4>
 

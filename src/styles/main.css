@@ -4,6 +4,7 @@ body {
   overscroll-behavior: none;
   overflow: hidden;
   touch-action: manipulation;
+  -webkit-overflow-scrolling: touch;
 }
 
 .no-select {

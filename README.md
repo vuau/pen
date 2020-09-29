@@ -1,10 +1,10 @@
-# Pen
+# DeNOTE
 
-Encrypted-Decentralized Note Taking App (built with [GunDB](https://gun.eco) + [Svelte](https://svelte.dev/)). Free to use at https://pen.now.sh
+Encrypted-Decentralized Note Taking App (built with [GunDB](https://gun.eco) + [Svelte](https://svelte.dev/)). Free to use at https://app.denote.link
 
 ## Features
 - Offline-First  
-*Pen can work offline. Your data will be synced accross browsers/devices when you are online. Pen is also a PWA so you can install it on your phone or computer.*
+*DeNOTE can work offline. Your data will be synced accross browsers/devices when you are online. DeNOTE is also a PWA so you can install it on your phone or computer.*
 - Encrypted  
 *Your data is stored with an end-to-end encryption by default, which means nobody but you can read your data.*
 - Decentralized   

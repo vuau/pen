@@ -183,7 +183,7 @@
     <h2
       class="h3 {$showSearch ? '' : 'sticky'} athelas ma0 ph2 pv3 ph0-ns bb
       b--near-black flex items-center justify-between">
-      <span on:click={goToRoot} class="pointer">Pen</span>
+      <span on:click={goToRoot} class="pointer">deNOTE</span>
       <div class="flex items-center">
         <span
           tabindex="0"
