@@ -18,7 +18,7 @@ const app = new App({
   target: document.body
 })
 
-const initServiceWorker = async () => {
+const init = async () => {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
     const { Workbox } = await import('workbox-window')
     const wb = new Workbox('/sw.js')
@@ -31,8 +31,12 @@ const initServiceWorker = async () => {
     })
     wb.register()
   }
+  // prevent momentum scroll
+  window.addEventListener('touchmove', e => e.preventDefault(), {
+    passive: false
+  })
 }
 
-window.onload = initServiceWorker
+window.onload = init
 
 export default app

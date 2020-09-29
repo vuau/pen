@@ -1,8 +1,8 @@
 html,
 body {
   height: 100%;
+  overflow: auto;
   overscroll-behavior: none;
-  overflow: hidden;
   touch-action: manipulation;
 }
 
@@ -10,9 +10,9 @@ body {
   user-select: none;
 }
 
-.nobounce {
-  -webkit-overflow-scrolling: touch;
-}
+/* .nobounce { */
+/*   -webkit-overflow-scrolling: touch; */
+/* } */
 
 .fix-icon {
   margin-top: 1px;
