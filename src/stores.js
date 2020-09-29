@@ -130,7 +130,11 @@ export const notes = (function createNoteStore () {
   }
 
   const createFolder = async function (title, path) {
-    const data = await encrypt({ title, type: 'folder' })
+    const data = await encrypt({
+      title,
+      type: 'folder',
+      updatedTime: Date.now()
+    })
     return await getParentNode(path)
       .get(uuidv4())
       .put(data)
@@ -261,8 +265,8 @@ export const user = (function createUserStore () {
 })()
 
 function compare (a, b) {
-  if (a.updatedTime > b.updatedTime) return -1
-  if (a.updatedTime < b.updatedTime) return 1
+  // if (a.updatedTime > b.updatedTime) return -1
+  // if (a.updatedTime < b.updatedTime) return 1
 
   if (!a.title && b.title) return -1
   if (a.title && !b.title) return 1
@@ -290,5 +294,5 @@ export const displayedNotes = derived([notes], ([$notes]) => {
       }
     }
   }
-  return [...folders.sort(compare), ...files.sort(compare)]
+  return [...files.sort(compare), ...folders.sort(compare)]
 })

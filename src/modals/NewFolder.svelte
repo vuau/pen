@@ -1,7 +1,6 @@
 <script>
   import { notes, modal } from '../stores.js'
   import { onMount } from 'svelte'
-  import { SEA } from '../contexts.js'
   import { whenEnter } from '../utils.js'
 
   let folderName = ''
