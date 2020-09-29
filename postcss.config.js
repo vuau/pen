@@ -5,7 +5,7 @@ const postcssPresetEnv = require('postcss-preset-env')
 const cssnano = require('cssnano')
 
 const purgeConfig = {
-  css: ['./src/styles/main.css', './src/styles/water.css'],
+  css: ['./src/styles/main.css'],
   content: ['./src/index.html', './src/**/*.svelte'],
   whitelistPatterns: [/svelte-/, /menubar/, /menuitem/, /ProseMirror/]
 }

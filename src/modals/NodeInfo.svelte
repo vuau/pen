@@ -63,7 +63,7 @@
       aria-describedby="title" />
   </div>
   <div class="mt3">
-    <label class="f6 b db mb2">Visibility</label>
+    <span class="f6 b db mb2">Visibility</span>
     {#each modes as value}
       <label class="mr2">
         <input bind:group={selectedMode} name="type" type="radio" {value} />
