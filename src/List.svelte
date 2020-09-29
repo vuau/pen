@@ -183,9 +183,8 @@
     <h2
       class="h3 {$showSearch ? '' : 'sticky'} athelas ma0 ph2 pv3 ph0-ns bb
       b--near-black flex items-center justify-between">
-      <span on:click={goToRoot} class="pointer">
-        deNOTE
-        {#if navigator.onLine}<sup class="green">online</sup>{:else}<sup class="gray">offline</sup>{/if}
+      <span on:click={goToRoot} class="pointer {navigator.onLine ? 'green' : 'gray'}">
+        deNote
       </span>
       <div class="flex items-center">
         <span

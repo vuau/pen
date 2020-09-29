@@ -1,9 +1,11 @@
 html,
 body {
   height: 100%;
-  overflow: auto;
   overscroll-behavior: none;
   touch-action: manipulation;
+  position: fixed;
+  width: 100%;
+  overflow: hidden;
 }
 
 .no-select {
@@ -52,9 +54,13 @@ body {
 #list {
   height: calc(100vh - 65px);
   overflow: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 #content {
   overflow: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 #content.showMenu .menubar {
