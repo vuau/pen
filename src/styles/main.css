@@ -11,7 +11,7 @@ body {
 }
 
 .nobounce {
-  -webkit-overflow-scrolling: touch;
+  --webkit-overflow-scrolling: touch;
 }
 
 .fix-icon {
@@ -20,7 +20,7 @@ body {
 
 .sticky {
   position: sticky;
-  position: -webkit-sticky;
+  position: --webkit-sticky;
   top: 0;
   background: white;
   z-index: 1;
