@@ -18,20 +18,6 @@ const app = new App({
   target: document.body
 })
 
-function scrollToPreventBounce (htmlElement) {
-  const { scrollTop, offsetHeight, scrollHeight } = htmlElement
-
-  // If at top, bump down 1px
-  if (scrollTop <= 0) {
-    htmlElement.scrollTo(0, 1)
-    return
-  }
-
-  // If at bottom, bump up 1px
-  if (scrollTop + offsetHeight >= scrollHeight) {
-    htmlElement.scrollTo(0, scrollHeight - offsetHeight - 1)
-  }
-}
 const init = async () => {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
     const { Workbox } = await import('workbox-window')
@@ -45,7 +31,6 @@ const init = async () => {
     })
     wb.register()
   }
-  document.htmlElement.addEventListener('touchstart', scrollToPreventBounce)
 }
 
 window.onload = init
