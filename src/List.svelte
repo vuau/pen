@@ -157,7 +157,8 @@
     // Open search box when pressing: Ctrl-S on Mac or Alt-S on Win
     if (
       (isMac && pressedKeys.ControlLeft && pressedKeys.KeyS) ||
-      (!isMac && pressedKeys.AltLeft && pressedKeys.KeyS)
+        (!isMac && pressedKeys.AltLeft && pressedKeys.KeyS) ||
+        (!$showSearch && pressedKeys.Slash)
     ) {
       e.preventDefault()
       await toggleSearch()
