@@ -172,6 +172,10 @@
         toggleSearch()
         return
       }
+      if ($showActions) {
+        toggleActions()
+        return
+      }
       goUpOneLevel()
     }
   }
