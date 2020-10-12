@@ -13,7 +13,7 @@
     getParentNode,
     decrypt,
     searchResults,
-    isFromNote
+    isFromNote,
   } from './stores.js'
   import ListItem from './ListItem.svelte'
   import { whenEsc, whenEnter } from './utils.js'
@@ -51,54 +51,54 @@
     results = Object.values($searchResults)
   }
 
-  function goToRoot () {
+  function goToRoot() {
     push('/')
   }
 
-  function goUpOneLevel () {
+  function goUpOneLevel() {
     if ($location === '/') return
     pop()
   }
 
-  function openNewNote () {
+  function openNewNote() {
     push(createLink)
   }
 
-  function openNewFolder () {
+  function openNewFolder() {
     modal.set({
       title: 'Create folder',
       path: path,
       content: NewFolderModal,
       onClose: () => {
         modal.set(null)
-      }
+      },
     })
   }
 
-  function toggleActions () {
-    showActions.update(f => !f)
+  function toggleActions() {
+    showActions.update((f) => !f)
     movingNote.set(null)
   }
 
-  function configUser () {
+  function configUser() {
     modal.set({
       title: 'Account',
       content: ConfigUserModal,
       onClose: () => {
         modal.set(null)
-      }
+      },
     })
   }
 
-  async function toggleSearch () {
+  async function toggleSearch() {
     clearKeyword()
-    showSearch.update(f => !f)
+    showSearch.update((f) => !f)
     searchResults.set({})
     isSearching = false
   }
 
   // TODO: refactor, move to store
-  function doSearch (text, path) {
+  function doSearch(text, path) {
     searchTimeout = setTimeout(() => {
       isSearching = false
     }, 1000)
@@ -108,8 +108,8 @@
       const decryptedData = await decrypt(data)
       if (decryptedData.type === 'folder') {
         const newPath = [
-          ...(path || '').split('_').filter(p => p !== ''),
-          id
+          ...(path || '').split('_').filter((p) => p !== ''),
+          id,
         ].join('_')
         doSearch(text, newPath)
       } else {
@@ -119,13 +119,13 @@
           (decryptedData.content &&
             decryptedData.content.toLowerCase().includes(text.toLowerCase()))
         ) {
-          searchResults.update(data => ({
+          searchResults.update((data) => ({
             ...data,
             [id]: {
               id,
               ...decryptedData,
-              path
-            }
+              path,
+            },
           }))
           clearTimeout(searchTimeout)
         }
@@ -133,7 +133,7 @@
     })
   }
 
-  function search () {
+  function search() {
     clearTimeout(debounceSearchTimer)
     debounceSearchTimer = setTimeout(() => {
       searchResults.set({})
@@ -142,7 +142,7 @@
     }, 700)
   }
 
-  async function clearKeyword () {
+  async function clearKeyword() {
     searchKeyword.set('')
     await tick()
     if (searchInput) {
@@ -151,14 +151,14 @@
   }
 
   const pressedKeys = {}
-  const handleShortcuts = async e => {
+  const handleShortcuts = async (e) => {
     pressedKeys[e.code] = e.type === 'keydown'
 
     // Open search box when pressing: Ctrl-S on Mac or Alt-S on Win
     if (
       (isMac && pressedKeys.ControlLeft && pressedKeys.KeyS) ||
-        (!isMac && pressedKeys.AltLeft && pressedKeys.KeyS) ||
-        (!$showSearch && pressedKeys.Slash)
+      (!isMac && pressedKeys.AltLeft && pressedKeys.KeyS) ||
+      (!$showSearch && pressedKeys.Slash)
     ) {
       e.preventDefault()
       await toggleSearch()
@@ -188,7 +188,9 @@
     <h2
       class="h3 {$showSearch ? '' : 'sticky'} athelas ma0 ph2 pv3 ph0-ns bb
       b--near-black flex items-center justify-between">
-      <span on:click={goToRoot} class="pointer {navigator.onLine ? 'green' : 'gray'}">
+      <span
+        on:click={goToRoot}
+        class="pointer {navigator.onLine ? 'green' : 'gray'}">
         deNote
       </span>
       <div class="flex items-center">
@@ -261,12 +263,10 @@
           <ListItem {title} {id} {type} {path} />
         {/each}
       </ul>
+    {:else if isSearching}
+      <small class="mh5-ns f6 black-60 db ph2 ph0-ns pt3">Searching...</small>
     {:else}
-      {#if isSearching }
-        <small class="mh5-ns f6 black-60 db ph2 ph0-ns pt3">Searching...</small>
-      {:else}
-        <small class="mh5-ns f6 black-60 db ph2 ph0-ns pt3">No results.</small>
-      {/if}
+      <small class="mh5-ns f6 black-60 db ph2 ph0-ns pt3">No results.</small>
     {/if}
   {:else}
     <ul

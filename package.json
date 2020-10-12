@@ -46,7 +46,7 @@
     "prettier": "^2.1.2",
     "prettier-eslint": "^11.0.0",
     "prettier-eslint-cli": "^5.0.0",
-    "prettier-plugin-svelte": "^1.2.1",
+    "prettier-plugin-svelte": "^1.4.0",
     "regenerator-runtime": "^0.13.7",
     "rimraf": "^3.0.2",
     "rollup": "^2.6.1",
