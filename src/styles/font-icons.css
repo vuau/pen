@@ -25,94 +25,97 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-x:before {
+.icon-image:before {
   content: "\e900";
 }
-.icon-create:before {
+.icon-x:before {
   content: "\e901";
 }
-.icon-bold:before {
+.icon-create:before {
   content: "\e902";
 }
-.icon-format:before {
+.icon-bold:before {
   content: "\e903";
 }
-.icon-italic:before {
+.icon-format:before {
   content: "\e904";
 }
-.icon-unordered-list:before {
+.icon-italic:before {
   content: "\e905";
 }
-.icon-ordered-list:before {
+.icon-unordered-list:before {
   content: "\e906";
 }
-.icon-quote:before {
+.icon-ordered-list:before {
   content: "\e907";
 }
-.icon-strikethrough:before {
+.icon-quote:before {
   content: "\e908";
 }
-.icon-check:before {
+.icon-strikethrough:before {
   content: "\e909";
 }
-.icon-uncheck:before {
+.icon-check:before {
   content: "\e90a";
 }
-.icon-code:before {
+.icon-uncheck:before {
   content: "\e90b";
 }
-.icon-power:before {
+.icon-code:before {
   content: "\e90c";
 }
-.icon-config:before {
+.icon-power:before {
   content: "\e90d";
 }
-.icon-redo:before {
+.icon-config:before {
   content: "\e90e";
 }
-.icon-undo:before {
+.icon-redo:before {
   content: "\e90f";
 }
-.icon-outdent:before {
+.icon-undo:before {
   content: "\e910";
 }
-.icon-indent:before {
+.icon-outdent:before {
   content: "\e911";
 }
-.icon-public:before {
+.icon-indent:before {
   content: "\e912";
 }
-.icon-user:before {
+.icon-public:before {
   content: "\e913";
 }
-.icon-delete:before {
+.icon-user:before {
   content: "\e914";
 }
-.icon-search:before {
+.icon-delete:before {
   content: "\e915";
 }
-.icon-file:before {
+.icon-search:before {
   content: "\e916";
 }
-.icon-folder:before {
+.icon-file:before {
   content: "\e917";
 }
-.icon-create_folder:before {
+.icon-folder:before {
   content: "\e918";
 }
-.icon-hand:before {
+.icon-create_folder:before {
   content: "\e919";
 }
-.icon-download:before {
+.icon-hand:before {
   content: "\e91a";
 }
-.icon-vote:before {
+.icon-download:before {
   content: "\e91b";
 }
-.icon-back:before {
-  content: "\e91d";
+.icon-vote:before {
+  content: "\e91c";
 }
 .icon-info:before {
-  content: "\e91c";
+  content: "\e91d";
+}
+.icon-back:before {
+  content: "\e91e";
 }
 /* purgecss end ignore */

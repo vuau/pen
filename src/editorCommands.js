@@ -59,5 +59,17 @@ export default {
   code: {
     className: 'icon-code',
     inputRule: /^```$/
+  },
+  insertImage: {
+    className: 'icon-image',
+    ...(process.env.NODE_ENV === 'production' && {
+      options: {
+        cloudinary: {
+          cloudName: process.env.CLOUD_NAME,
+          uploadPreset: process.env.UPLOAD_PRESET,
+          googleApiKey: process.env.GOOGLE_API_KEY
+        }
+      }
+    })
   }
 }
