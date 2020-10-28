@@ -33,7 +33,10 @@ const plugins = [
   commonjs(),
   nodePolyfills(),
   replace({
-    'process.env.NODE_ENV': isDev ? '"development"' : '"production"'
+    'process.env.NODE_ENV': isDev ? '"development"' : '"production"',
+    'process.env.CLOUD_NAME': process.env.CLOUD_NAME,
+    'process.env.UPLOAD_PRESET': process.env.UPLOAD_PRESET,
+    'process.env.GOOGLE_API_KEY': process.env.GOOGLE_API_KEY
   }),
   copy({
     targets: [
