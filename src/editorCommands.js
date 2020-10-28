@@ -67,7 +67,8 @@ export default {
         cloudinary: {
           cloudName: process.env.CLOUD_NAME,
           uploadPreset: process.env.UPLOAD_PRESET,
-          googleApiKey: process.env.GOOGLE_API_KEY
+          googleApiKey: process.env.GOOGLE_API_KEY,
+          sources: ['local', 'camera', 'image_search', 'url']
         }
       }
     })
