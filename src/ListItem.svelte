@@ -1,7 +1,15 @@
 <script>
   import { fade } from 'svelte/transition'
   import { push } from 'svelte-spa-router'
-  import { showActions, notes, movingNote, modal } from './stores.js'
+  import {
+    showActions,
+    notes,
+    movingNote,
+    modal,
+    searchKeyword,
+    showSearch,
+    searchResults
+  } from './stores.js'
   import { whenEnter } from './utils.js'
   import NodeInfo from './modals/NodeInfo.svelte'
 
@@ -18,6 +26,11 @@
   }
 
   const viewFolder = () => {
+    // To trigger render when opening folder from search result
+    searchKeyword.set('')
+    showSearch.set(false)
+    searchResults.set({})
+    //
     const newPath = [...path.split('_').filter(p => p !== ''), id]
     push(`/notes/folder/${newPath.join('_')}`)
   }
@@ -69,12 +82,8 @@
   <span class="dim flex items-center">
     {#if isFolder}
       <span class="icon-folder mr2 gray" />
-    {:else}
-      <span class="icon-file mr2 gray" />
-    {/if}
-    {#if mode === 'public'}
-      <span class="icon-public mr2 green" />
-    {/if}
+    {:else}<span class="icon-file mr2 gray" />{/if}
+    {#if mode === 'public'}<span class="icon-public mr2 green" />{/if}
     {title}
   </span>
   {#if $showActions}

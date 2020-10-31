@@ -13,7 +13,7 @@
     getParentNode,
     decrypt,
     searchResults,
-    isFromNote,
+    isFromNote
   } from './stores.js'
   import ListItem from './ListItem.svelte'
   import { whenEsc, whenEnter } from './utils.js'
@@ -51,54 +51,54 @@
     results = Object.values($searchResults)
   }
 
-  function goToRoot() {
+  function goToRoot () {
     push('/')
   }
 
-  function goUpOneLevel() {
+  function goUpOneLevel () {
     if ($location === '/') return
     pop()
   }
 
-  function openNewNote() {
+  function openNewNote () {
     push(createLink)
   }
 
-  function openNewFolder() {
+  function openNewFolder () {
     modal.set({
       title: 'Create folder',
       path: path,
       content: NewFolderModal,
       onClose: () => {
         modal.set(null)
-      },
+      }
     })
   }
 
-  function toggleActions() {
-    showActions.update((f) => !f)
+  function toggleActions () {
+    showActions.update(f => !f)
     movingNote.set(null)
   }
 
-  function configUser() {
+  function configUser () {
     modal.set({
       title: 'Account',
       content: ConfigUserModal,
       onClose: () => {
         modal.set(null)
-      },
+      }
     })
   }
 
-  async function toggleSearch() {
+  async function toggleSearch () {
     clearKeyword()
-    showSearch.update((f) => !f)
+    showSearch.update(f => !f)
     searchResults.set({})
     isSearching = false
   }
 
   // TODO: refactor, move to store
-  function doSearch(text, path) {
+  function doSearch (text, path) {
     searchTimeout = setTimeout(() => {
       isSearching = false
     }, 1000)
@@ -106,34 +106,34 @@
     node.map().once(async (data, id) => {
       if (!data) return
       const decryptedData = await decrypt(data)
+      if (
+        (decryptedData.title &&
+          decryptedData.title.toLowerCase().includes(text.toLowerCase())) ||
+        (decryptedData.content &&
+          decryptedData.content.toLowerCase().includes(text.toLowerCase()))
+      ) {
+        searchResults.update(data => ({
+          ...data,
+          [id]: {
+            id,
+            ...decryptedData,
+            path
+          }
+        }))
+      }
       if (decryptedData.type === 'folder') {
         const newPath = [
-          ...(path || '').split('_').filter((p) => p !== ''),
-          id,
+          ...(path || '').split('_').filter(p => p !== ''),
+          id
         ].join('_')
         doSearch(text, newPath)
       } else {
-        if (
-          (decryptedData.title &&
-            decryptedData.title.toLowerCase().includes(text.toLowerCase())) ||
-          (decryptedData.content &&
-            decryptedData.content.toLowerCase().includes(text.toLowerCase()))
-        ) {
-          searchResults.update((data) => ({
-            ...data,
-            [id]: {
-              id,
-              ...decryptedData,
-              path,
-            },
-          }))
-          clearTimeout(searchTimeout)
-        }
+        clearTimeout(searchTimeout)
       }
     })
   }
 
-  function search() {
+  function search () {
     clearTimeout(debounceSearchTimer)
     debounceSearchTimer = setTimeout(() => {
       searchResults.set({})
@@ -142,7 +142,7 @@
     }, 700)
   }
 
-  async function clearKeyword() {
+  async function clearKeyword () {
     searchKeyword.set('')
     await tick()
     if (searchInput) {
@@ -151,7 +151,7 @@
   }
 
   const pressedKeys = {}
-  const handleShortcuts = async (e) => {
+  const handleShortcuts = async e => {
     pressedKeys[e.code] = e.type === 'keydown'
 
     // Open search box when pressing: Ctrl-S on Mac or Alt-S on Win
