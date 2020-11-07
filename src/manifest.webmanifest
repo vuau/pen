@@ -12,13 +12,13 @@
       "src": "images/pen.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
       "src": "images/pen.svg",
       "sizes": "512x512",
       "type": "image/svg+xml",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
   ],
   "splash_pages": null
