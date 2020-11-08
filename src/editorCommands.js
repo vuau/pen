@@ -56,9 +56,13 @@ export default {
     className: 'icon-quote',
     inputRule: /^\s*>\s$/
   },
-  code: {
+  codeBlock: {
     className: 'icon-code',
     inputRule: /^```$/
+  },
+  code: {
+    className: 'icon-code',
+    inputRule: /`(\S(?:|.*?\S))`$/
   },
   insertImage: {
     className: 'icon-image',
