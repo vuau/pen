@@ -61,7 +61,6 @@ export default {
     inputRule: /^```$/
   },
   code: {
-    className: 'icon-code',
     inputRule: /`(\S(?:|.*?\S))`$/
   },
   insertImage: {
