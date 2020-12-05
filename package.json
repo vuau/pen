@@ -22,7 +22,7 @@
   ],
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^2.1.2",
-    "@gooddollar/gun": "^0.2020.902",
+    "@gooddollar/gun": "0.2020.910",
     "@rollup/plugin-commonjs": "^11.0.0",
     "@rollup/plugin-node-resolve": "^7.0.0",
     "@rollup/plugin-replace": "^2.3.3",
