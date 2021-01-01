@@ -67,7 +67,7 @@ export const notes = (function createNoteStore () {
 
   const updateNote = async function ({
     path,
-    id = uuidv4(),
+    id,
     title,
     content,
     slug, // slug or domain

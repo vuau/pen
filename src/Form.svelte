@@ -1,6 +1,7 @@
 <script>
   import { onMount, onDestroy } from 'svelte'
   import { pop } from 'svelte-spa-router'
+  import { v4 as uuidv4 } from 'uuid'
   import SimpleMirror from 'simplemirror'
 
   import { notes, getParentNode, decrypt, isFromNote } from './stores.js'
@@ -10,7 +11,7 @@
   export let params = {}
 
   let title, content, mode
-  let id = params.id
+  const id = params.id || uuidv4()
   const path = params.path
   let editor
   let unsubscribe
@@ -28,15 +29,21 @@
         mode = editingNote.mode
         createEditor(content)
       } else {
-        getParentNode(path).get(id).once(async data => {
-          const editingNote = data.mode === 'public' ? data : await decrypt(data)
-          if (editingNote) {
-            title = editingNote.title
-            content = editingNote.content
-            mode = editingNote.mode
+        getParentNode(path)
+          .get(id)
+          .once(async data => {
+            let editingNote
+            let title = ''
+            let content = ''
+            let mode
+            if (data) {
+              editingNote = data.mode === 'public' ? data : await decrypt(data)
+              title = editingNote.title
+              content = editingNote.content
+              mode = editingNote.mode
+            }
             createEditor(content)
-          }
-        })
+          })
       }
     } else {
       createEditor()
@@ -72,10 +79,6 @@
       title,
       content,
       mode
-    }).then(createdId => {
-      if (!id) {
-        id = createdId
-      }
     })
   }, 500)
 
@@ -95,7 +98,9 @@
     <div
       class="flex items-center justify-between bt-0 bl-0 br-0 bb
       b--black-20">
-     <span on:click={goToList} class="icon-back w2 pl3 pr2 pv2 tc pointer no-select"></span>
+      <span
+        on:click={goToList}
+        class="icon-back w2 pl3 pr2 pv2 tc pointer no-select" />
       <input
         bind:this={titleInput}
         bind:value={title}
@@ -108,12 +113,13 @@
         autocomplete="off" />
 
       <div class="flex items-center f4">
-        <span on:click={toggleFormatTool} class="icon-format w2 ph3 pv2 tc pointer no-select fix-icon {showFormatTool ? 'blue' : ''}"></span>
+        <span
+          on:click={toggleFormatTool}
+          class="icon-format w2 ph3 pv2 tc pointer no-select fix-icon {showFormatTool ? 'blue' : ''}" />
       </div>
     </div>
   </div>
   <div
     id="content"
-    class="flex flex-column flex-auto outline-transparent lh-copy {showFormatTool ? 'showMenu' : ''}"
-    />
+    class="flex flex-column flex-auto outline-transparent lh-copy {showFormatTool ? 'showMenu' : ''}" />
 </section>
