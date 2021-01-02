@@ -20,36 +20,29 @@
 
   onMount(async () => {
     isFromNote.set(true)
-    if (id) {
-      if ($notes[id]) {
-        const data = $notes[id]
-        const editingNote = data.mode === 'public' ? data : await decrypt(data)
-        title = editingNote.title
-        content = editingNote.content
-        mode = editingNote.mode
-        createEditor(content)
-      } else {
-        getParentNode(path)
-          .get(id)
-          .once(async data => {
-            let editingNote
-            let title = ''
-            let content = ''
-            let mode
-            if (data) {
-              editingNote = data.mode === 'public' ? data : await decrypt(data)
-              title = editingNote.title
-              content = editingNote.content
-              mode = editingNote.mode
-            }
-            createEditor(content)
-          })
-      }
+    if ($notes[id]) {
+      const data = $notes[id]
+      const editingNote = data.mode === 'public' ? data : await decrypt(data)
+      title = editingNote.title
+      content = editingNote.content
+      mode = editingNote.mode
+      createEditor(content)
     } else {
-      createEditor()
-      if (titleInput) {
-        titleInput.focus()
-      }
+      getParentNode(path)
+        .get(id)
+        .once(async data => {
+          let editingNote
+          if (data) {
+            editingNote = data.mode === 'public' ? data : await decrypt(data)
+            title = editingNote.title
+            content = editingNote.content
+            mode = editingNote.mode
+          }
+          createEditor(content)
+          if (!title) {
+            titleInput.focus()
+          }
+        })
     }
   })
 
