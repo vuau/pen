@@ -35,27 +35,6 @@
     push(`/notes/folder/${newPath.join('_')}`)
   }
 
-  async function confirmDelete () {
-    if (confirm(`Are you sure to delete "${title}"?`)) {
-      await notes.deleteNote(id, path)
-    }
-  }
-
-  async function openInfo () {
-    modal.set({
-      title: `Settings of "${title}"`,
-      data: {
-        id,
-        path,
-        mode
-      },
-      content: NodeInfo,
-      onClose: () => {
-        modal.set(null)
-      }
-    })
-  }
-
   function selectToMoveNote () {
     movingNote.set({
       noteId: id,
@@ -93,14 +72,6 @@
           on:click|stopPropagation={selectToMoveNote}
           tabindex="0"
           class="dim ml1 tc w2 pv2 pointer icon-hand" />
-        <span
-          on:click|stopPropagation={confirmDelete}
-          tabindex="0"
-          class="dim ml1 tc w2 pv2 pointer icon-delete" />
-        <span
-          on:click|stopPropagation={openInfo}
-          tabindex="0"
-          class="dim ml1 tc w2 pv2 pointer icon-info" />
       {:else if $movingNote.noteId !== id}
         {#if isFolder}
           <span

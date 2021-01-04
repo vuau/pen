@@ -91,7 +91,7 @@
     <a
       href="#0"
       on:click|preventDefault={onLogin}
-      class="f6 link dim br1 ph2 pv2 mb2 dib black">
+      class="f6 link dim br1 pl0 pr2 pv2 mb2 dib black">
       or Login with password
     </a>
   </div>

@@ -4,7 +4,8 @@
   import { v4 as uuidv4 } from 'uuid'
   import SimpleMirror from 'simplemirror'
 
-  import { notes, getParentNode, decrypt, isFromNote } from './stores.js'
+  import NodeInfo from './modals/NodeInfo.svelte'
+  import { notes, modal, getParentNode, decrypt, isFromNote } from './stores.js'
   import config from './editorCommands.js'
   import { debounce, whenEsc } from './utils.js'
 
@@ -82,6 +83,28 @@
   function toggleFormatTool () {
     showFormatTool = !showFormatTool
   }
+
+  async function confirmDelete () {
+    if (confirm(`Are you sure to delete "${title}"?`)) {
+      await notes.deleteNote(id, path)
+      goToList()
+    }
+  }
+
+  async function openInfo () {
+    modal.set({
+      title: 'Settings',
+      data: {
+        id,
+        path,
+        mode
+      },
+      content: NodeInfo,
+      onClose: () => {
+        modal.set(null)
+      }
+    })
+  }
 </script>
 
 <svelte:window on:keyup={whenEsc(goToList)} />
@@ -108,7 +131,15 @@
       <div class="flex items-center f4">
         <span
           on:click={toggleFormatTool}
-          class="icon-format w2 ph3 pv2 tc pointer no-select fix-icon {showFormatTool ? 'blue' : ''}" />
+          class="icon-format pa2 tc pointer no-select fix-icon {showFormatTool ? 'blue' : ''}" />
+        <span
+          on:click|stopPropagation={confirmDelete}
+          tabindex="0"
+          class="dim ml1 tc pa2 pointer icon-delete" />
+        <span
+          on:click|stopPropagation={openInfo}
+          tabindex="0"
+          class="dim ml1 tc pa2 pointer icon-info" />
       </div>
     </div>
   </div>
