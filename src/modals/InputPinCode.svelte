@@ -42,6 +42,10 @@
       $modal.onClose()
       return
     }
+    if (e.code === 'Backspace') {
+      clear()
+      return
+    }
     if (e.code.search('Digit') !== -1) {
       pin = `${pin}${e.code.split('Digit')[1]}`
       checkSubmit()
@@ -71,7 +75,9 @@
           {number}
         </button>
       {/each}
-      <button class="pv3 w-third tc pointer f4 ttu no-select" on:click={clear}>
+      <button
+        class="pv3 w-third tc pointer f4 ttu no-select"
+        on:click={clear}>
         Del
       </button>
       <button
@@ -85,7 +91,7 @@
     <a
       href="#0"
       on:click|preventDefault={onLogin}
-      class="f6 link dim br1 ph3 pv2 mb2 dib white bg-black">
+      class="f6 link dim br1 ph2 pv2 mb2 dib black">
       or Login with password
     </a>
   </div>
