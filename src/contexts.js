@@ -7,11 +7,7 @@ import '@gooddollar/gun/lib/path'
 let peers
 
 if (process.env.NODE_ENV === 'production') {
-  peers = [
-    'https://pensync.glitch.me/gun',
-    'https://gun-us.herokuapp.com/gun',
-    'https://iris.cx/gun'
-  ]
+  peers = [ 'https://pensync.glitch.me/gun' ]
 } else {
   peers = ['http://localhost:8765/gun']
 }
