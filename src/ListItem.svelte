@@ -31,7 +31,7 @@
     showSearch.set(false)
     searchResults.set({})
     //
-    const newPath = [...path.split('_').filter(p => p !== ''), id]
+    const newPath = [...path.split('_').filter((p) => p !== ''), id]
     push(`/notes/folder/${newPath.join('_')}`)
   }
 
@@ -44,8 +44,29 @@
 
   function moveNote () {
     if (type === 'folder') {
-      const toPath = [...path.split('_').filter(p => p !== ''), id].join('_')
+      const toPath = [...path.split('_').filter((p) => p !== ''), id].join('_')
       notes.moveNote($movingNote.noteId, $movingNote.fromPath, toPath)
+    }
+  }
+
+  async function openInfo () {
+    modal.set({
+      title: 'Settings',
+      data: {
+        id,
+        path,
+        mode
+      },
+      content: NodeInfo,
+      onClose: () => {
+        modal.set(null)
+      }
+    })
+  }
+  async function confirmDelete () {
+    if (confirm(`Are you sure to delete "${title}"?`)) {
+      await notes.deleteNote(id, path)
+      goToList()
     }
   }
 </script>
@@ -80,6 +101,14 @@
             class="dim ml1 tc pv2 w2 pointer icon-vote" />
         {/if}
       {/if}
+      <span
+        on:click|stopPropagation={openInfo}
+        tabindex="0"
+        class="dim ml1 tc pa2 pointer icon-info" />
+      <span
+        on:click|stopPropagation={confirmDelete}
+        tabindex="0"
+        class="dim ml1 tc pa2 pointer icon-delete" />
     </div>
   {/if}
 </li>
