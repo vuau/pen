@@ -13,7 +13,7 @@
     "build-workbox": "workbox injectManifest workbox-config.js",
     "build": "run-s clean-dist build-client build-workbox",
     "serve": "sirv dist",
-    "prod":" NODE_ENV=production && run-s build serve"
+    "prod": " NODE_ENV=production && run-s build serve"
   },
   "author": "Au Pham <phamvuau@gmail.com>",
   "license": "ISC",
@@ -29,7 +29,6 @@
     "autoprefixer": "^9.8.6",
     "autosize": "^4.0.2",
     "babel-eslint": "^10.1.0",
-    "clipboard": "^2.0.6",
     "core-js": "^3.6.5",
     "cssnano": "^4.1.10",
     "eslint": "^7.9.0",

@@ -4,7 +4,6 @@
   import { decrypt } from '../stores.js'
   import { onMount } from 'svelte'
   import slugify from 'slugify'
-  import Clipboard from 'clipboard'
 
   const { id, path } = $modal.data
   const modes = ['private', 'public']
@@ -25,10 +24,6 @@
         type = data.type
         headerTag = data.headerTag
       })
-    const clipboard = new Clipboard('#URL') //eslint-disable-line
-    clipboard.on('success', function () {
-      alert('URL copied!')
-    })
   })
 
   function onSubmit () {
@@ -81,12 +76,18 @@
           id="slug"
           class="input-reset ba b--black-20 pa2 db w-100"
           aria-describedby="slug" />
-        <span
-          id="URL"
-          data-clipboard-text={getURL()}
-          class="f6 link dim ba b--black-20 bl-0 ph2 pv2 w4 dib black pointer lh-title tc">
-          Copy URL
-        </span>
+      </div>
+    </div>
+    <div class="mt3">
+      <label for="url" class="f6 b db mb2">URL</label>
+      <div class="flex">
+        <input
+          value={getURL()}
+          type="text"
+          id="url"
+          readonly
+          class="input-reset ba b--black-20 pa2 db w-100"
+          aria-describedby="url" />
       </div>
     </div>
     {#if type === 'folder'}
