@@ -265,8 +265,8 @@ export const user = (function createUserStore () {
 })()
 
 function compare (a, b) {
-  // if (a.updatedTime > b.updatedTime) return -1
-  // if (a.updatedTime < b.updatedTime) return 1
+  if (a.updatedTime > b.updatedTime) return -1
+  if (a.updatedTime < b.updatedTime) return 1
 
   if (!a.title && b.title) return -1
   if (a.title && !b.title) return 1
