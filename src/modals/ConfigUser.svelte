@@ -3,7 +3,7 @@
   import { user, modal, getParentNode } from '../stores.js'
   import { whenEnter } from '../utils.js'
   import { gunUser } from '../contexts.js'
-  import Gun from '@gooddollar/gun/gun'
+  import Gun from 'gun/gun'
 
   let pin = $user.config ? $user.config.pin : ''
   let searchTimeout

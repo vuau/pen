@@ -1,8 +1,8 @@
-import Gun from '@gooddollar/gun/gun'
-import SEA from '@gooddollar/gun/sea'
-import '@gooddollar/gun/lib/not'
-import '@gooddollar/gun/lib/then'
-import '@gooddollar/gun/lib/path'
+import Gun from 'gun/gun'
+import SEA from 'gun/sea'
+import 'gun/lib/not'
+import 'gun/lib/then'
+import 'gun/lib/path'
 
 Gun.on('opt', function (ctx) {
   if (ctx.once) {
