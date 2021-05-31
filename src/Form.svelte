@@ -93,7 +93,7 @@
 
   function checkToSave (cb) {
     return () => {
-      if (editingNote?.content !== content && confirm(`Save your changes?`)) {
+      if (editingNote && editingNote.content !== content && confirm(`Save your changes?`)) {
         save()
       }
       cb()
