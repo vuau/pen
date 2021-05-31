@@ -70,9 +70,9 @@ export const notes = (function createNoteStore () {
     id,
     title,
     content,
-    slug, // slug or domain
-    type, // folder or file
-    mode, // private - public - shared
+    slug,
+    type,
+    mode,
     headerTag,
     ...rest
   }) {
