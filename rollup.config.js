@@ -11,15 +11,30 @@ import nodePolyfills from 'rollup-plugin-node-polyfills'
 import replace from '@rollup/plugin-replace'
 import copy from 'rollup-plugin-copy'
 import path from 'path'
+import { babel } from '@rollup/plugin-babel'
 
 const isDev = process.env.NODE_ENV === 'development'
 
 const plugins = [
+  commonjs(),
   svelte({
     dev: isDev,
     extensions: ['.svelte'],
     preprocess: preprocess({ postcss: true }),
     emitCss: true
+  }),
+  babel({
+    extensions: ['.js', '.mjs', '.html', '.svelte'],
+    exclude: ['node_modules/@babel/**'],
+    presets: [
+      [
+        '@babel/preset-env',
+        {
+          targets: 'since 2015'
+        }
+      ]
+    ],
+    babelHelpers: 'bundled'
   }),
   postcss({
     sourceMap: isDev,
@@ -27,10 +42,10 @@ const plugins = [
   }),
   resolve({
     browser: true,
-    dedupe: ['svelte'],
+    dedupe: (importee) =>
+      importee === 'svelte' || importee.startsWith('svelte/'),
     preferBuiltins: false
   }),
-  commonjs(),
   nodePolyfills(),
   replace({
     'process.env.NODE_ENV': isDev ? '"development"' : '"production"',
