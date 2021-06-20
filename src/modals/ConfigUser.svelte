@@ -1,6 +1,6 @@
 <script>
   import FileSaver from 'file-saver'
-  import { user, modal, getParentNode } from '../stores.js'
+  import { user, modal, getParentNode, decrypt } from '../stores.js'
   import { whenEnter } from '../utils.js'
   import { gunUser } from '../contexts.js'
   import Gun from 'gun/gun'
@@ -23,7 +23,7 @@
       isSearching = false
     }, 1000)
     const node = getParentNode(path)
-    node.map().once((data, id) => {
+    node.map().once(async (data, id) => {
       if (!data) return
       if (data.type === 'folder') {
         const newPath = [
@@ -33,7 +33,7 @@
         if (searchTimeout) clearTimeout(searchTimeout)
         doSearch(text, newPath)
       }
-      searchResults[id] = data
+      searchResults[id] = await decrypt(data)
     })
   }
   function backup () {
