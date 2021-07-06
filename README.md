@@ -1,6 +1,6 @@
 # DeNOTE
 
-Encrypted-Decentralized Note Taking App (built with [GunDB](https://gun.eco) + [Svelte](https://svelte.dev/)). Free to use at https://app.denote.link
+Encrypted-Decentralized Note Taking App (built with [GunDB](https://gun.eco) + [Svelte](https://svelte.dev/)). Free to use at https://pen.vercel.app
 
 ## Features
 - Offline-First  
